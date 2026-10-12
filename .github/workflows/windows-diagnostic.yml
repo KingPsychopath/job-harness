@@ -40,13 +40,16 @@ jobs:
           $testExecutable = ($testArtifacts | Where-Object { $_.reason -eq 'compiler-artifact' -and $_.profile.test -and $_.executable } | Select-Object -Last 1).executable
           if (-not $testExecutable) { throw 'Protocol test executable was not found' }
           $boardTest = 'dashboard::tests::board_moves_need_current_sources_and_cannot_invent_submission_or_materials'
-          for ($iteration = 1; $iteration -le 20; $iteration++) {
-            $testArgs = if ($iteration -le 5) { @($boardTest, '--exact', '--nocapture') } else { @('--nocapture', '--test-threads=4') }
+          $notificationTest = 'dashboard::tests::notifications_require_tab_nonce_and_stream_only_current_hints'
+          for ($iteration = 1; $iteration -le 25; $iteration++) {
+            $testArgs = if ($iteration -le 5) { @($boardTest, '--exact', '--nocapture') } elseif ($iteration -le 10) { @($notificationTest, '--exact', '--nocapture') } else { @('--nocapture', '--test-threads=4') }
             $outputPath = Join-Path $PWD "test-$iteration.stdout"
             $errorPath = Join-Path $PWD "test-$iteration.stderr"
             Write-Output "Diagnostic iteration $iteration"
             $testProcess = Start-Process -FilePath $testExecutable -ArgumentList $testArgs -PassThru -NoNewWindow -RedirectStandardOutput $outputPath -RedirectStandardError $errorPath
             if (-not $testProcess.WaitForExit(20000)) {
+              # Keep only process metadata; never dump memory, env or command arguments.
+              Get-CimInstance Win32_Process -Filter "ParentProcessId=$($testProcess.Id)" | Select-Object ProcessId, Name, CreationDate
               taskkill /T /F /PID $testProcess.Id | Out-Null
               Get-Content $outputPath, $errorPath
               throw "Protocol test exceeded its 20-second process deadline in iteration $iteration"

@@ -1050,9 +1050,15 @@ mod tests {
     #[tokio::test]
     async fn notifications_require_tab_nonce_and_stream_only_current_hints() {
         use futures_util::StreamExt;
+        // Phase labels only; the diagnostic process owns the hard deadline.
+        let phase = |name: &str| eprintln!("[notification-test] {name}");
+        phase("workspace.initialize.begin");
         let temp = tempfile::tempdir().unwrap();
         harness_core::workspace::initialize(temp.path()).unwrap();
+        phase("workspace.initialize.complete");
+        phase("dashboard.create.begin");
         let state = DashboardState::with_native_policy(temp.path(), 3210, false).unwrap();
+        phase("dashboard.create.complete");
         let app = router(state.clone());
         let cookie = format!("{}={}", state.cookie_name, state.session);
         let request = |nonce: bool| {
@@ -1065,41 +1071,54 @@ mod tests {
             }
             builder.body(Body::empty()).unwrap()
         };
-        assert_eq!(
-            app.clone().oneshot(request(false)).await.unwrap().status(),
-            StatusCode::UNAUTHORIZED
-        );
+        phase("request.missing_nonce.begin");
+        let unauthorized = app.clone().oneshot(request(false)).await.unwrap();
+        phase("request.missing_nonce.complete");
+        assert_eq!(unauthorized.status(), StatusCode::UNAUTHORIZED);
+        phase("request.stream.begin");
         let response = app.oneshot(request(true)).await.unwrap();
+        phase("request.stream.complete");
         assert_eq!(response.status(), StatusCode::OK);
         assert_eq!(
             response.headers()["content-type"],
             "application/x-ndjson; charset=utf-8"
         );
         let mut body = response.into_body().into_data_stream();
+        phase("stream.initial.begin");
         let initial = body.next().await.unwrap().unwrap();
+        phase("stream.initial.complete");
         let initial: Value = serde_json::from_slice(&initial).unwrap();
         assert_eq!(initial["data"]["mode"], "read_only");
         assert!(initial["data"].get("paths").is_none());
         // An idle signal performs no periodic workspace work and emits no snapshots.
+        phase("stream.idle.begin");
         assert!(
             tokio::time::timeout(std::time::Duration::from_millis(250), body.next())
                 .await
                 .is_err()
         );
+        phase("stream.idle.complete");
+        phase("signal.bump.begin");
         state.set_native_review_mode(true).unwrap();
+        phase("signal.bump.complete");
+        phase("stream.changed.begin");
         let changed = tokio::time::timeout(std::time::Duration::from_secs(2), body.next())
             .await
             .unwrap()
             .unwrap()
             .unwrap();
+        phase("stream.changed.complete");
         let changed: Value = serde_json::from_slice(&changed).unwrap();
         assert_ne!(initial["data"]["revision"], changed["data"]["revision"]);
         assert_eq!(changed["data"]["mode"], "local_writes");
-        assert_eq!(
-            state.engine.call("list_events", &json!({"limit":1}))["data"]["page"]["total"],
-            0
-        );
+        phase("events.read.begin");
+        let events = state.engine.call("list_events", &json!({"limit":1}));
+        phase("events.read.complete");
+        assert_eq!(events["data"]["page"]["total"], 0);
+        phase("signal.close.begin");
         state.close_notifications();
+        phase("signal.close.complete");
+        phase("stream.closed.begin");
         assert!(
             tokio::time::timeout(std::time::Duration::from_secs(1), body.next())
                 .await
@@ -1107,6 +1126,16 @@ mod tests {
                 .is_none(),
             "Host shutdown must finish an idle stream"
         );
+        phase("stream.closed.complete");
+        phase("stream.drop.begin");
+        drop(body);
+        phase("stream.drop.complete");
+        phase("dashboard.drop.begin");
+        drop(state);
+        phase("dashboard.drop.complete");
+        phase("workspace.close.begin");
+        temp.close().unwrap();
+        phase("workspace.close.complete");
     }
 
     #[tokio::test]
