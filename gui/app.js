@@ -50,7 +50,7 @@ const focuses = {
   },
 };
 const titles = {
-  pipeline: ["Applications", "Your applications and their next steps."],
+  pipeline: ["Applications"],
   attention: [
     "Attention",
     "Recorded requests, interviews and work awaiting review.",
@@ -1090,14 +1090,18 @@ async function knowledge() {
   view.append(
     section(
       "Notes & evidence",
-      "Originals, proposed interpretations and accepted context stay distinct.",
+      "Interview notes, project stories and the sources behind your answers.",
     ),
   );
-  if (writable) {
-    const actions = node("div", "notes-toolbar");
-    actions.append(button("Add note", composeNote, "primary"));
-    view.append(actions);
-  } else
+  view.append(
+    node(
+      "p",
+      "notes-intro metadata",
+      "Interview notes, project stories and the sources behind your answers.",
+    ),
+  );
+  const actions = node("div", "notes-toolbar");
+  if (!writable)
     view.append(
       node(
         "p",
@@ -1111,14 +1115,16 @@ async function knowledge() {
   archived.checked = state.archivedNotes;
   archiveChoice.append(
     archived,
-    node("span", "metadata", "Include retained archived notes"),
+    node("span", "metadata", "Show archived notes"),
   );
   archived.addEventListener("change", () => {
     state.archivedNotes = archived.checked;
     state.notesOffset = 0;
     load();
   });
-  view.append(archiveChoice);
+  actions.append(archiveChoice);
+  if (writable) actions.append(button("Add note", composeNote, "primary"));
+  view.append(actions);
   const data = await read(
     "/api/notes?" +
       new URLSearchParams({
@@ -1140,12 +1146,12 @@ async function knowledge() {
   ]);
   if (noteRows.length)
     view.append(
-      table(["Note", "Source", "Proposals", "Accepted", "Occurred"], noteRows),
+      table(["Note", "Type", "Proposals", "Reviews", "When"], noteRows),
     );
   if (!(data.notes || []).length)
     view.append(
       empty(
-        "Add supplied notes or a transcript. Their original words stay immutable; summaries and proposed additions require review.",
+        "Add a note or transcript. Keep the original, then review any proposed summary beside it.",
       ),
     );
   const paging = node("div", "paging");
@@ -1247,6 +1253,7 @@ function composeNote() {
 function importForm() {
   const form = node("section", "note-composer");
   const labelField = field("Title");
+  labelField.input.placeholder = "e.g. Product dashboard review";
   const text = field("Your note or transcript", "textarea");
   text.input.placeholder =
     "Paste what happened, what you built or the words from a conversation.";
@@ -1555,8 +1562,16 @@ async function noteReview(id, proposalId) {
           ),
         );
       if (writable && !data.archived && pendingCount) {
-        const by = field("Approved by");
-        const evidence = field("Your review statement", "textarea");
+        const by = field("Your name");
+        const evidence = field("Review note", "textarea");
+        const reviewHelp = node(
+          "span",
+          "field-help",
+          "Describe what you checked against the original before accepting these items.",
+        );
+        reviewHelp.id = "review-help-" + detailGeneration;
+        evidence.input.setAttribute("aria-describedby", reviewHelp.id);
+        evidence.wrap.append(reviewHelp);
         const keyFor = payloadKey();
         const accept = button(
           "Accept 0 selected",

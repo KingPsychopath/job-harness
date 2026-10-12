@@ -10,10 +10,12 @@
     sans-serif;
   font-size: 13px;
   color: #25272b;
-  background: #fff;
+  background: #f4f6fa;
+  --canvas: #f4f6fa;
   --surface: #fff;
-  --sidebar: #f6f6f8;
-  --toolbar: #f9f9fa;
+  --sidebar: #eef1f6;
+  --toolbar: #f0f2f6;
+  --inset: #f6f7fa;
   --text: #25272b;
   --muted: #62666e;
   --line: #dedfe3;
@@ -32,7 +34,7 @@
   --toolbar-height: 48px;
   --radius: 4px;
   --active-ui: #e7eef9;
-  --control-border: #c4c6cc;
+  --control-border: #858c98;
   --primary: #175db5;
   --primary-hover: #124d96;
   --danger: #a43b31;
@@ -241,6 +243,7 @@ main {
   font-size: 11px;
 }
 .view-body {
+  background: var(--canvas);
   overflow: auto;
   flex: 1;
   padding: var(--space-4);
@@ -331,6 +334,7 @@ main {
   min-width: 0;
 }
 .table-wrap {
+  background: var(--surface);
   overflow: auto;
   border: 1px solid var(--line);
   border-radius: 0;
@@ -524,7 +528,7 @@ tbody tr:hover {
 }
 .source-text {
   margin: 9px 0 13px;
-  background: var(--toolbar);
+  background: var(--inset);
   padding: 12px;
   border: 1px solid var(--soft-line);
   font:
@@ -662,6 +666,10 @@ dialog[open] {
 }
 .review-actions .field:first-child {
   margin-top: 3px;
+  max-width: 260px;
+}
+.review-actions textarea {
+  min-height: 88px;
 }
 .primary {
   background: var(--primary);
@@ -751,9 +759,11 @@ th,
 }
 :root[data-theme="light"] {
   color-scheme: light;
+  --canvas: #f4f6fa;
   --surface: #fff;
-  --sidebar: #f6f6f8;
-  --toolbar: #f9f9fa;
+  --sidebar: #eef1f6;
+  --toolbar: #f0f2f6;
+  --inset: #f6f7fa;
   --text: #25272b;
   --muted: #62666e;
   --line: #dedfe3;
@@ -762,20 +772,22 @@ th,
   --blue: #175db5;
   --hover: #f2f5f9;
   --field: #fff;
-  --control-border: #c4c6cc;
+  --control-border: #858c98;
   --primary: #175db5;
   --primary-hover: #124d96;
   --danger: #a43b31;
   --warning: #815715;
   --active-ui: #e7eef9;
   color: var(--text);
-  background: var(--surface);
+  background: var(--canvas);
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --surface: #25272b;
-  --sidebar: #202226;
-  --toolbar: #282b30;
+  --canvas: #1c2026;
+  --surface: #2c3139;
+  --sidebar: #20252d;
+  --toolbar: #252a32;
+  --inset: #252a32;
   --text: #e7e8eb;
   --muted: #aeb1b9;
   --line: #41444b;
@@ -784,13 +796,13 @@ th,
   --blue: #76afff;
   --hover: #2c3139;
   --field: #2c2f35;
-  --control-border: #565a63;
+  --control-border: #747c89;
   --primary: #306abb;
   --primary-hover: #397bd2;
   --danger: #f0a098;
   --warning: #dfbc73;
   color: var(--text);
-  background: var(--surface);
+  background: var(--canvas);
   --active-ui: #35373b;
 }
 :root[data-theme="light"] .text-button,
@@ -995,12 +1007,6 @@ input:not([type="checkbox"]) {
   color: var(--warning);
   font-size: 12px;
 }
-.review-actions .field:first-child {
-  max-width: 260px;
-}
-.review-actions textarea {
-  min-height: 88px;
-}
 .review-intro {
   padding-bottom: 4px;
 }
@@ -1022,10 +1028,21 @@ input:not([type="checkbox"]) {
   margin: 0;
 }
 
+.notes-intro {
+  margin-bottom: var(--space-4);
+}
+.field-help {
+  line-height: 1.5;
+}
 .notes-toolbar {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 12px;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.notes-toolbar .choice {
+  margin: 0;
 }
 .note-composer {
   max-width: 760px;
@@ -1211,9 +1228,11 @@ input:not([type="checkbox"]) {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --surface: #25272b;
-    --sidebar: #202226;
-    --toolbar: #282b30;
+    --canvas: #1c2026;
+    --surface: #2c3139;
+    --sidebar: #20252d;
+    --toolbar: #252a32;
+    --inset: #252a32;
     --text: #e7e8eb;
     --muted: #a3a6ae;
     --line: #41444b;
@@ -1222,12 +1241,12 @@ input:not([type="checkbox"]) {
     --blue: #76afff;
     --hover: #2c3139;
     --field: #2c2f35;
-    --control-border: #565a63;
+    --control-border: #747c89;
     --primary: #306abb;
     --primary-hover: #397bd2;
     --danger: #f0a098;
     color: var(--text);
-    background: var(--surface);
+    background: var(--canvas);
   }
   :root:not([data-theme="light"]) {
     --warning: #dfbc73;
