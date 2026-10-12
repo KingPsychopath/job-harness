@@ -20,9 +20,9 @@ still needs action; its category alone never makes it safe to archive.
 
 ## Deferred tool discovery
 
-The native MCP defaults to a focused catalog of 11 tools. inspect_tools returns concise descriptions, or exact input/output schemas for up to 10 named tools. Specialized local calls run as steps in query_batch/execute_batch after their schemas are loaded. This avoids sending every specialized definition to every model call. begin_submission stays a separately advertised one-shot tool. Use --tool-profile full for clients needing the complete catalog directly. Compatibility launchers may keep the full catalog; choose a profile explicitly. CLI/Rust always support all tools. Calling a known deferred tool directly in focused MCP returns deferred_tool with a schema-discovery suggestion; it is not an unknown tool. A next suggestion naming a deferred tool must be wrapped as a batch step in this profile.
+The native MCP defaults to a focused catalog of 12 tools. inspect_tools returns concise descriptions, or exact input/output schemas for up to 10 named tools. Specialized local calls run as steps in query_batch/execute_batch after their schemas are loaded. This avoids sending every specialized definition to every model call. begin_submission and begin_mail_archive stay separately advertised one-shot tools. Use --tool-profile full for clients needing the complete catalog directly. Compatibility launchers may keep the full catalog; choose a profile explicitly. CLI/Rust always support all tools. Calling a known deferred tool directly in focused MCP returns deferred_tool with a schema-discovery suggestion; it is not an unknown tool. A next suggestion naming a deferred tool must be wrapped as a batch step in this profile.
 
-Hosts needing per-child authorization must validate the batch's child tools and resolved arguments before execution, or use the full profile with direct tools. A client approval for execute_batch can cover multiple local operations; its name alone does not express child-level permissions. begin_submission is always separate, and batches never execute external actions.
+Hosts needing per-child authorization must validate the batch's child tools and resolved arguments before execution, or use the full profile with direct tools. A client approval for execute_batch can cover multiple local operations; its name alone does not express child-level permissions. begin_submission and begin_mail_archive are always separate, and batches never execute external actions.
 
 ## Start and retrieve
 
@@ -46,7 +46,7 @@ A failed batch forwards its failing child's recovery hints in the outer next lis
 }
 ```
 
-Each local mutation commits separately with its own idempotency key. A batch is **not** one transaction: on first failure it returns completed results, failed_step and skipped IDs. Earlier successes remain durable. Resolve the failure, then replay identical steps with the same keys or continue deliberately; changed input under an existing key is rejected. A crash between steps never authorizes repeating an external action. `query_batch` rejects writes; both batches reject nesting and `begin_submission`. Step arguments are validated after references resolve. Invalid tool names/boundaries are rejected before any step runs; an invalid later value may fail after earlier local steps have committed.
+Each local mutation commits separately with its own idempotency key. A batch is **not** one transaction: on first failure it returns completed results, failed_step and skipped IDs. Earlier successes remain durable. Resolve the failure, then replay identical steps with the same keys or continue deliberately; changed input under an existing key is rejected. A crash between steps never authorizes repeating an external action. `query_batch` rejects writes; both batches reject nesting, `begin_submission`, `begin_mail_archive` and `daily_update` with action `begin_archive`. Step arguments are validated after references resolve. Invalid tool names/boundaries are rejected before any step runs; an invalid later value may fail after earlier local steps have committed.
 
 ## Application boundary
 

@@ -15,6 +15,8 @@ use unicode_normalization::UnicodeNormalization;
 use zip::{CompressionMethod, ZipArchive, ZipWriter, write::SimpleFileOptions};
 
 pub const FORMAT: &str = "job-harness.workspace";
+/// Host-local generation: restoration never revives a previous mail approval.
+pub const MAIL_RESTORE_PATH: &str = "applications/operations/mail-restore.json";
 pub const MAX_FILES: usize = 10_000;
 pub const MAX_FILE_BYTES: u64 = 32 * 1024 * 1024;
 pub const MAX_TOTAL_BYTES: u64 = 256 * 1024 * 1024;
@@ -98,6 +100,9 @@ fn register_aliases(seen: &mut BTreeMap<String, String>, name: &str) -> Result<(
 }
 
 pub fn allowed_path(name: &str) -> bool {
+    if name == MAIL_RESTORE_PATH {
+        return false;
+    }
     if !crate::workspace::portable_relative_path(name) {
         return false;
     }
@@ -245,6 +250,13 @@ pub fn export_bundle_with_options(
     check_portable_state(&root)?;
     if kind == BundleKind::Profile {
         let state = crate::state::load(&root)?;
+        let pending_mail = crate::engine::pending_mail_actions(&state);
+        if !pending_mail.is_empty() {
+            return Err(HarnessError::new(
+                "unresolved_attempts",
+                "A profile transfer would omit unfinished mail archive actions. Export a full workspace; queued, started and uncertain actions must retain their review and recovery history.",
+            ));
+        }
         let unresolved = state["attempts"]
             .as_object()
             .expect("validated state")
@@ -268,6 +280,11 @@ pub fn export_bundle_with_options(
             .as_object()
             .expect("validated state")
             .is_empty()
+            || state["events"]
+                .as_array()
+                .expect("validated state")
+                .iter()
+                .any(|event| event["tool"] == "daily_update")
             || crate::pipeline::build(&root)?.records.iter().any(|record| {
                 !["saved", "prepared"].contains(&record["stage"].as_str().unwrap_or(""))
             });
@@ -744,11 +761,21 @@ pub fn import_bundle(root: &Path, source: &Path) -> Result<Value> {
     fs::create_dir_all(stage.path().join("applications"))?;
     crate::workspace::settings(stage.path())?;
     check_portable_state(stage.path())?;
+    if manifest.kind == BundleKind::Workspace {
+        let marker = stage.path().join(MAIL_RESTORE_PATH);
+        fs::create_dir_all(marker.parent().unwrap())?;
+        crate::storage::atomic_write(
+            &marker,
+            &serde_json::to_vec(
+                &json!({"schema_version":1,"generation":uuid::Uuid::new_v4().to_string(),"restored_at":crate::domain::now()}),
+            )?,
+        )?;
+    }
     crate::pipeline::write(stage.path())?;
     crate::workspace::private_tree(stage.path())?;
     crate::workspace::publish_directory(stage.path(), &root)?;
     Ok(
-        json!({"workspace":root,"kind":manifest.kind,"files":manifest.files.len(),"note":"Imported locally. Provider sessions remain host-owned; no external action was executed."}),
+        json!({"workspace":root,"kind":manifest.kind,"files":manifest.files.len(),"note":"Imported locally. Review mail approvals again after restoration; unfinished actions still require provider readback. Provider sessions remain host-owned; no external action was executed."}),
     )
 }
 
@@ -866,6 +893,121 @@ mod tests {
             export_bundle(t.path(), &out.path().join("profile.jhb"), "profile").unwrap_err();
         assert_eq!(error.code, "unresolved_attempts");
         export_bundle(t.path(), &out.path().join("full.jhb"), "workspace").unwrap();
+    }
+    #[test]
+    fn each_full_restore_gets_a_nontransferable_mail_review_generation() {
+        let original = workspace();
+        let output = tempfile::tempdir().unwrap();
+        let first_bundle = output.path().join("first.jhb");
+        export_bundle(original.path(), &first_bundle, "workspace").unwrap();
+        let restored = output.path().join("restored");
+        import_bundle(&restored, &first_bundle).unwrap();
+        let first_marker = fs::read(restored.join(MAIL_RESTORE_PATH)).unwrap();
+        let value: Value = serde_json::from_slice(&first_marker).unwrap();
+        assert_eq!(value["schema_version"], 1);
+        assert!(uuid::Uuid::parse_str(value["generation"].as_str().unwrap()).is_ok());
+        assert!(!allowed_path(MAIL_RESTORE_PATH));
+        let second_bundle = output.path().join("second.jhb");
+        export_bundle(&restored, &second_bundle, "workspace").unwrap();
+        let mut zip = ZipArchive::new(fs::File::open(&second_bundle).unwrap()).unwrap();
+        assert!(zip.by_name(MAIL_RESTORE_PATH).is_err());
+        let restored_again = output.path().join("restored-again");
+        import_bundle(&restored_again, &second_bundle).unwrap();
+        assert_ne!(
+            first_marker,
+            fs::read(restored_again.join(MAIL_RESTORE_PATH)).unwrap()
+        );
+    }
+    #[test]
+    fn mail_selection_survives_transfer_but_requires_confirmation_in_the_restored_workspace() {
+        let original = workspace();
+        let mut snapshot: Value = serde_json::from_str(include_str!(
+            "../../../examples/daily-review/observations.json"
+        ))
+        .unwrap();
+        snapshot["observed_at"] = json!(crate::domain::now());
+        snapshot["coverage"]["observed_at"] = snapshot["observed_at"].clone();
+        let bytes = serde_json::to_vec(&snapshot).unwrap();
+        let path = "context/mail-review.json";
+        fs::write(original.path().join(path), &bytes).unwrap();
+        let checked_call = |engine: &crate::Engine, tool: &str, args: Value| {
+            let result = engine.call(tool, &args);
+            assert_eq!(result["ok"], true, "{tool}: {result}");
+            result["data"].clone()
+        };
+        let engine = crate::Engine::open(original.path()).unwrap();
+        let run = checked_call(&engine, "start_run", json!({"operation":"daily_update","scope":{},"user_request":"Synthetic local archive selection only","idempotency_key":"mail:run"}))["run_id"].clone();
+        checked_call(
+            &engine,
+            "daily_update",
+            json!({"action":"record_review","run_id":run,"mail_observations_path":path,"expected_source_sha256":digest(&bytes),"idempotency_key":"mail:review"}),
+        );
+        let plan = checked_call(&engine, "daily_check", json!({}))["archive_plan"].clone();
+        let selected = json!([plan["actions"][0]["action_id"]]);
+        let mut approve = json!({"action":"approve_archive","run_id":run,"plan_id":plan["plan_id"],"expected_plan_sha256":plan["plan_sha256"],"selected_action_ids":selected,"approved_by":"Synthetic human","approval_evidence":"Synthetic explicit selection","idempotency_key":"mail:approve"});
+        checked_call(&engine, "daily_update", approve.clone());
+        let output = tempfile::tempdir().unwrap();
+        for allow_drop in [false, true] {
+            assert_eq!(
+                export_bundle_with_options(
+                    original.path(),
+                    &output.path().join("profile.jhb"),
+                    "profile",
+                    allow_drop
+                )
+                .unwrap_err()
+                .code,
+                "unresolved_attempts"
+            );
+        }
+        let backup = output.path().join("full.jhb");
+        export_bundle(original.path(), &backup, "workspace").unwrap();
+        let restored = output.path().join("restored");
+        import_bundle(&restored, &backup).unwrap();
+        assert_eq!(
+            fs::read(original.path().join("applications/operations/state.json")).unwrap(),
+            fs::read(restored.join("applications/operations/state.json")).unwrap()
+        );
+        let engine = crate::Engine::open(&restored).unwrap();
+        let mut begin = json!({"action":"begin_archive","run_id":run,"plan_id":plan["plan_id"],"expected_plan_sha256":plan["plan_sha256"],"selected_action_ids":selected,"mail_observations_path":path,"expected_source_sha256":digest(&bytes),"idempotency_key":"mail:begin"});
+        assert_eq!(
+            engine.call("daily_update", &begin)["error"]["code"],
+            "stale_plan"
+        );
+        approve["idempotency_key"] = json!("mail:restored-approval");
+        checked_call(&engine, "daily_update", approve);
+        begin["idempotency_key"] = json!("mail:restored-begin");
+        begin.as_object_mut().unwrap().remove("action");
+        let before = fs::read(restored.join("applications/operations/state.json")).unwrap();
+        assert_eq!(
+            engine.call(
+                "execute_batch",
+                &json!({"steps":[{"id":"boundary","tool":"begin_mail_archive","arguments":begin}]})
+            )["error"]["code"],
+            "batch_boundary"
+        );
+        assert_eq!(
+            before,
+            fs::read(restored.join("applications/operations/state.json")).unwrap()
+        );
+        assert_eq!(
+            checked_call(&engine, "begin_mail_archive", begin.clone())["ready_for_single_archive"],
+            true
+        );
+        assert_eq!(
+            checked_call(&engine, "begin_mail_archive", begin)["ready_for_single_archive"],
+            false
+        );
+        assert_eq!(
+            export_bundle(
+                &restored,
+                &output.path().join("after-begin-profile.jhb"),
+                "profile"
+            )
+            .unwrap_err()
+            .code,
+            "unresolved_attempts"
+        );
     }
     #[test]
     fn forbidden_paths_are_filtered() {

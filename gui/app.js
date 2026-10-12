@@ -52,7 +52,7 @@ const focuses = {
 const titles = {
   pipeline: ["Applications"],
   attention: [
-    "Attention",
+    "Daily review",
     "Recorded requests, interviews and work awaiting review.",
   ],
   knowledge: [
@@ -219,7 +219,9 @@ async function request(path, data) {
     if (response.status === 401 || response.status === 403)
       $("reload-session").hidden = false;
     throw new Error(
-      response.status === 403 || response.status === 401
+      response.status === 405
+        ? "This session is read only. Refresh to see its current review mode."
+        : response.status === 403 || response.status === 401
         ? "This local review session needs a reload."
         : `Local request rejected (${response.status}).`,
     );
@@ -709,7 +711,11 @@ async function companyDetail(row) {
       "/api/source?" + new URLSearchParams({ path: row.record_path }),
     );
     if (generation !== detailGeneration || !$("detail").open) return;
-    if (writable) row = trackingSnapshot(row, data);
+    try {
+      row = trackingSnapshot(row, data);
+    } catch (error) {
+      if (writable) throw error;
+    }
     body.append(
       node("p", "", roleTitle(row)),
       node(
@@ -727,6 +733,11 @@ async function companyDetail(row) {
     for (const r of related.matches || [])
       links.append(button(r.title, () => companyDetail(r), "citation"));
     body.append(node("h3", "", "Linked applications"), links);
+    await window.JobHarnessDailyReview.renderCompany(body, {
+      read, node, button, safeLink, empty,
+      openDaily: () => openPanel("attention"),
+    }, row.record_path);
+    if (generation !== detailGeneration || !$("detail").open) return;
     const context = await read(
       "/api/company?" +
         new URLSearchParams({
@@ -1001,88 +1012,24 @@ async function pipeline() {
 async function attention(target) {
   const view = target || $("view");
   const token = state.request;
-  const data = await read(
-    "/api/attention?" +
-      new URLSearchParams({ offset: String(state.attentionOffset) }),
-  );
-  if (token !== state.request) return;
-  view.append(
-    section(
-      "Attention queue",
-      "Saved observations and durable coordination, across sessions.",
-    ),
-  );
-  view.append(
-    node(
-      "p",
-      "notice",
-      "This queue uses recorded observations. Use your mail connector to check current email.",
-    ),
-  );
-  const rows = (data.items || []).map((item) => {
-    const actions = node("div", "related");
-    const path = item.record_path || item.record;
-    if (path) actions.append(button("Source", () => source(path), "citation"));
-    if (item.note_id)
-      actions.append(
-        button(
-          "Review note",
-          () => noteReview(item.note_id, item.proposal_id),
-          "citation",
-        ),
-      );
-    if (item.packet_id)
-      actions.append(
-        button("Materials", () => packetPreview(item.packet_id), "citation"),
-      );
-    const action = node("div");
-    action.append(
-      node(
-        "p",
-        "",
-        item.next_action ||
-          item.message ||
-          item.status_detail ||
-          "Inspect the source before acting.",
-      ),
-    );
-    if (item.scheduled_start)
-      action.append(node("small", "metadata", item.scheduled_start));
-    return [
-      node("span", "stage", label(item.kind)),
-      item.company ||
-        item.title ||
-        (item.note_id ? "Note to review" : "Recorded item"),
-      action,
-      actions,
-    ];
+  await window.JobHarnessDailyReview.render(view, {
+    node, button, read, post, safeLink, source, noteReview, packetPreview,
+    companyDetail, empty, message, label, payloadKey,
+  }, {
+    writable,
+    offset: state.attentionOffset,
+    isCurrent: () => token === state.request,
+    onUpdate: updateDailyCount,
+    onPage: (offset) => {
+      state.attentionOffset = offset;
+      openPanel("attention");
+    },
   });
-  for (const row of rows) {
-    const item = node("article", "attention-card");
-    item.append(node("h3", "", row[1]), row[0], row[2], row[3]);
-    view.append(item);
-  }
-  if (!(data.items || []).length)
-    view.append(empty("No recorded items currently need attention."));
-  message(
-    `${data.page?.total ?? data.items?.length ?? 0} recorded attention items · ${(data.items || []).length} shown`,
-  );
-  const paging = node("div", "paging");
-  if (state.attentionOffset)
-    paging.append(
-      button("Previous", () => {
-        state.attentionOffset = Math.max(0, state.attentionOffset - 50);
-        openPanel("attention");
-      }),
-    );
-  if (data.page?.next_offset != null)
-    paging.append(
-      button("Next page", () => {
-        state.attentionOffset = data.page.next_offset;
-        openPanel("attention");
-      }),
-    );
-  view.append(paging);
+}
+function updateDailyCount(data) {
+  const count = data.counts?.review_items ?? data.attention?.page?.total ?? 0;
+  $("attention-button").textContent = "Daily review" + (count ? " · " + count : "");
+  $("attention-button").setAttribute("aria-label", count + " recorded items in Daily review");
 }
 async function knowledge() {
   const token = state.request;
@@ -1858,14 +1805,9 @@ async function load() {
       const count = node("span", "title-count", " " + (health.records ?? ""));
       $("page-title").append(count);
     }
-    const queue = await read("/api/attention?offset=0");
+    const daily = await read("/api/daily?offset=0");
     if (token !== state.request) return;
-    $("attention-button").textContent =
-      "Attention" + (queue.page?.total ? " · " + queue.page.total : "");
-    $("attention-button").setAttribute(
-      "aria-label",
-      String(queue.page?.total || 0) + " recorded items needing attention",
-    );
+    updateDailyCount(daily);
     if (token !== state.request) return;
     await { pipeline, attention, knowledge, sources, activity, connections }[
       state.view

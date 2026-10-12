@@ -185,6 +185,10 @@ impl Engine {
                     json!(counts["pending_note_reviews"].as_u64().unwrap_or(0) + 1);
             }
         }
+        counts["pending_mail_actions"] = json!(pending_mail_actions(state).len());
+        for row in pending_mail_actions(state) {
+            items.push(json!({"kind":"mail_archive_action","action_id":row["action_id"],"plan_id":row["plan_id"],"status":row["status"],"next_action":"Inspect queued host work or reconcile observed mailbox state; never blindly retry"}));
+        }
         items.sort_by(|a, b| {
             let rank = |value: &Value| match value["kind"].as_str().unwrap_or_default() {
                 "unknown_submission" => 0,

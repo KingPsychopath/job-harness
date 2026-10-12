@@ -23,7 +23,7 @@ The second command returns an executable in `data.command` and arguments in `dat
 
 Reload the host if needed, then ask its agent to call `bootstrap`. Read the returned focused skill and your workspace's `AGENTS.md`, inspect unfinished work and batch relevant reads. Confirm that bootstrap succeeds through the actual connection; saving a configuration is only the setup step.
 
-The default focused profile exposes 11 starting tools. `inspect_tools` provides specialized schemas when needed; the full profile exposes all 40. Generic guides and focused skills are embedded in the binary and can be read with `read_record`; installing skills into a particular agent is optional.
+The default focused profile exposes 12 starting tools. `inspect_tools` provides specialized schemas when needed; the full profile exposes the complete catalog. Generic guides and focused skills are embedded in the binary and can be read with `read_record`; installing skills into a particular agent is optional.
 
 ## Use the CLI directly
 

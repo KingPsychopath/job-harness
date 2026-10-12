@@ -62,6 +62,8 @@ pub fn parse(root: &Path, value: &Value) -> Result<Value> {
             return Err(invalid());
         }
     }
+    crate::engine::validate_daily_events(value)
+        .map_err(|error| Error::new("invalid_state", error.to_string()))?;
     let mut normalized = value.clone();
     if let Some(pending) = value.get("pending") {
         if pending.is_null() || pending.as_array().is_some_and(Vec::is_empty) {

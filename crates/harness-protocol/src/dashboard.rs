@@ -27,6 +27,7 @@ const ICON: &str = include_str!("../../../docs/assets/icon.svg");
 const CSS: &str = include_str!("../../../gui/app.css");
 const JS: &str = include_str!("../../../gui/app.js");
 const CONNECTIONS_JS: &str = include_str!("../../../gui/connections.js");
+const DAILY_JS: &str = include_str!("../../../gui/daily.js");
 const COOKIE: &str = "job_harness_session";
 
 #[derive(Clone)]
@@ -246,6 +247,12 @@ async fn connections_js() -> impl IntoResponse {
         CONNECTIONS_JS,
     )
 }
+async fn daily_js() -> impl IntoResponse {
+    (
+        [("content-type", "text/javascript; charset=utf-8")],
+        DAILY_JS,
+    )
+}
 
 async fn overview(State(state): State<DashboardState>) -> Json<Value> {
     let engine = state.engine.clone();
@@ -290,6 +297,117 @@ async fn attention(
     Query(query): Query<HashMap<String, String>>,
 ) -> Json<Value> {
     invoke(state,"review_queue",json!({"offset":query.get("offset").and_then(|s|s.parse::<usize>().ok()).unwrap_or(0),"limit":50})).await
+}
+async fn daily(
+    State(state): State<DashboardState>,
+    Query(query): Query<HashMap<String, String>>,
+) -> Json<Value> {
+    let mut args = json!({
+        "offset": query.get("offset").and_then(|value| value.parse::<usize>().ok()).unwrap_or(0),
+        "limit": 50
+    });
+    for key in ["company", "record"] {
+        if let Some(value) = query.get(key) {
+            args[key] = json!(value);
+        }
+    }
+    invoke(state, "daily_check", args).await
+}
+
+#[cfg(test)]
+fn archive_approval_arguments(args: &Value) -> bool {
+    archive_selection_arguments(args, false)
+}
+fn archive_selection_arguments(args: &Value, withdrawing: bool) -> bool {
+    let Some(object) = args.as_object() else {
+        return false;
+    };
+    const FIELDS: [&str; 6] = [
+        "plan_id",
+        "expected_plan_sha256",
+        "selected_action_ids",
+        "approved_by",
+        "approval_evidence",
+        "idempotency_key",
+    ];
+    object.len() == FIELDS.len() + usize::from(withdrawing)
+        && object
+            .keys()
+            .all(|key| FIELDS.contains(&key.as_str()) || (withdrawing && key == "reason"))
+        && (!withdrawing
+            || args["reason"]
+                .as_str()
+                .is_some_and(|value| !value.trim().is_empty()))
+        && [
+            "plan_id",
+            "approved_by",
+            "approval_evidence",
+            "idempotency_key",
+        ]
+        .iter()
+        .all(|key| {
+            args[key]
+                .as_str()
+                .is_some_and(|value| !value.trim().is_empty())
+        })
+        && args["expected_plan_sha256"].as_str().is_some_and(|value| {
+            value.len() == 64
+                && value
+                    .bytes()
+                    .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte))
+        })
+        && args["selected_action_ids"].as_array().is_some_and(|ids| {
+            !ids.is_empty()
+                && ids.len() <= 1000
+                && ids
+                    .iter()
+                    .all(|id| id.as_str().is_some_and(|value| !value.is_empty()))
+                && ids
+                    .iter()
+                    .filter_map(Value::as_str)
+                    .collect::<std::collections::BTreeSet<_>>()
+                    .len()
+                    == ids.len()
+        })
+}
+
+async fn approve_archive(
+    State(state): State<DashboardState>,
+    Json(args): Json<Value>,
+) -> Json<Value> {
+    archive_selection(state, args, false).await
+}
+async fn withdraw_archive(
+    State(state): State<DashboardState>,
+    Json(args): Json<Value>,
+) -> Json<Value> {
+    archive_selection(state, args, true).await
+}
+async fn archive_selection(state: DashboardState, args: Value, withdrawing: bool) -> Json<Value> {
+    let engine = state.engine.clone();
+    Json(tokio::task::spawn_blocking(move || {
+        if !archive_selection_arguments(&args, withdrawing) { return crate::denied(); }
+        let key = args["idempotency_key"].as_str().unwrap();
+        let intent = if withdrawing { "Withdraw only the selected queued archive approvals. Begun or unknown actions cannot be cancelled here." } else { "Confirm only the selected Daily review archive suggestions. Queue them for an external mail-capable host; perform no mail action here." };
+        let run = engine.call("start_run", &json!({
+            "operation":"tidy_inbox", "scope":{"query":format!("Human-confirmed Daily review archive plan {}", args["plan_id"].as_str().unwrap())},
+            "user_request":format!("The local user chose: {intent}"),
+            "idempotency_key":format!("{key}:start")
+        }));
+        if run["ok"] != true { return run; }
+        let mut update = args.clone();
+        update["action"] = json!(if withdrawing { "withdraw_archive" } else { "approve_archive" });
+        update["run_id"] = run["data"]["run_id"].clone();
+        update["idempotency_key"] = json!(format!("{key}:approve"));
+        let result = engine.call("daily_update", &update);
+        let ok = result["ok"] == true;
+        let finish = engine.call("finish_run", &json!({
+            "run_id":run["data"]["run_id"], "status":if ok { "completed" } else { "blocked" },
+            "summary":if ok { if withdrawing { "Queued archive approval withdrawn; no mailbox action performed" } else { "Human archive selection queued; no mailbox action performed" } } else { "Archive selection refused; no mailbox action performed" },
+            "evidence":[], "idempotency_key":format!("{key}:finish")
+        }));
+        if ok && finish["ok"] != true { finish } else { result }
+    }).await.unwrap_or_else(|_| unavailable()))
 }
 async fn search(
     State(state): State<DashboardState>,
@@ -576,9 +694,11 @@ pub fn router(state: DashboardState) -> Router {
         .route("/app.css", get(css))
         .route("/app.js", get(js))
         .route("/connections.js", get(connections_js))
+        .route("/daily.js", get(daily_js))
         .route("/api/overview", get(overview))
         .route("/api/pipeline", get(pipeline))
         .route("/api/attention", get(attention))
+        .route("/api/daily", get(daily))
         .route("/api/search", get(search))
         .route("/api/source", get(source))
         .route("/api/notes", get(notes))
@@ -597,6 +717,8 @@ pub fn router(state: DashboardState) -> Router {
             .route("/api/notes/propose", post(propose_note))
             .route("/api/notes/accept", post(accept_note))
             .route("/api/notes/archive", post(archive_note))
+            .route("/api/daily/approve-archive", post(approve_archive))
+            .route("/api/daily/withdraw-archive", post(withdraw_archive))
             .route("/api/tracking", post(tracking));
     }
     // Only the native host exposes fixed, explicitly reviewed optional installs.
@@ -679,6 +801,224 @@ mod tests {
     use axum::{body::Body, http::Request};
     use http_body_util::BodyExt;
     use tower::ServiceExt;
+
+    #[test]
+    fn archive_confirmation_accepts_only_the_named_human_selection() {
+        let valid = json!({
+            "plan_id":"fixture-plan", "expected_plan_sha256":"a".repeat(64),
+            "selected_action_ids":["fixture-message-action"], "approved_by":"Fixture reviewer",
+            "approval_evidence":"I reviewed this selected message", "idempotency_key":"fixture-review"
+        });
+        assert!(archive_approval_arguments(&valid));
+        for (key, value) in [
+            ("action", json!("begin_archive")),
+            ("run_id", json!("another-run")),
+            ("tool", json!("daily_update")),
+            ("mail_observations_path", json!("context/other.json")),
+            ("observed_labels", json!([])),
+        ] {
+            let mut invalid = valid.clone();
+            invalid[key] = value;
+            assert!(!archive_approval_arguments(&invalid));
+        }
+        let mut empty = valid.clone();
+        empty["selected_action_ids"] = json!([]);
+        assert!(!archive_approval_arguments(&empty));
+        empty["selected_action_ids"] = json!(["duplicate", "duplicate"]);
+        assert!(!archive_approval_arguments(&empty));
+        let mut malformed = valid;
+        malformed["expected_plan_sha256"] = json!("x".repeat(64));
+        assert!(!archive_approval_arguments(&malformed));
+        let mut withdrawal = empty;
+        withdrawal["selected_action_ids"] = json!(["queued-action"]);
+        assert!(!archive_selection_arguments(&withdrawal, true));
+        withdrawal["reason"] = json!("Keep this queued selection");
+        assert!(archive_selection_arguments(&withdrawal, true));
+        assert!(!archive_selection_arguments(&withdrawal, false));
+    }
+
+    fn mail_review_fixture(state: &DashboardState) -> Value {
+        let observed_at = "2026-10-12T09:00:00Z";
+        let text = "Thank you for applying. We will not proceed with this fictional application.";
+        let snapshot = json!({
+            "schema_version":1, "provider":"fixture-mail", "mailbox_id":"fictional-mailbox", "observed_at":observed_at,
+            "coverage":{"source":"fixture-mail","observed_at":observed_at,"requested_period":"Fictional recruiting inbox", "pages_read":1,"pagination_exhausted":true,"failed_reads":[],"exclusions":[],"checkpoint":null},
+            "items":[{"message_id":"rejection-1","thread_id":"thread-1","source_sha256":harness_core::storage::digest(text.as_bytes()), "text":text,
+                "category":"rejection","thread_message_ids":["rejection-1"],"latest_message_id":"rejection-1",
+                "request_message_ids":[],"replied_to_message_ids":[],"labels":["INBOX","job-search"],"inbox_label":"INBOX",
+                "full_read":true,"thread_complete":true,"supports_message_archive":true,"needs_reply":false,
+                "subject":"Fictional application update","thread_url":"https://example.test/mail/thread-1"}]
+        });
+        let bytes = serde_json::to_vec(&snapshot).unwrap();
+        let path = "context/daily-fixture.json";
+        std::fs::write(state.engine.root().join(path), &bytes).unwrap();
+        let run = state.engine.call("start_run", &json!({
+            "operation":"tidy_inbox","scope":{},"user_request":"Review fictional mail only","idempotency_key":"fixture:mail:start"
+        }));
+        assert_eq!(run["ok"], true, "{run}");
+        let result = state.engine.call("daily_update", &json!({
+            "action":"record_review","run_id":run["data"]["run_id"],"mail_observations_path":path,
+            "expected_source_sha256":harness_core::storage::digest(&bytes),"idempotency_key":"fixture:mail:review"
+        }));
+        assert_eq!(result["ok"], true, "{result}");
+        let finished = state.engine.call("finish_run", &json!({
+            "run_id":run["data"]["run_id"],"status":"completed","summary":"Fictional mail snapshot recorded",
+            "evidence":[path],"idempotency_key":"fixture:mail:finish"
+        }));
+        assert_eq!(finished["ok"], true, "{finished}");
+        let plan = result["data"]["archive_plan"].clone();
+        assert!(
+            plan["plan_id"].is_string() && plan["plan_sha256"].is_string(),
+            "{result}"
+        );
+        plan
+    }
+
+    #[tokio::test]
+    async fn daily_review_queues_only_the_selected_human_approval_and_never_archives() {
+        let temp = tempfile::tempdir().unwrap();
+        harness_core::workspace::initialize(temp.path()).unwrap();
+        let state = DashboardState::with_policy(temp.path(), 3210, true).unwrap();
+        let absent = state.engine.call("daily_check", &json!({}));
+        assert_eq!(absent["ok"], true, "{absent}");
+        assert_eq!(absent["data"]["observations"]["origin"], "none");
+        assert_eq!(absent["data"]["observations"]["live_checked"], false);
+        let plan = mail_review_fixture(&state);
+        let cookie = format!("{}={}", state.cookie_name, state.session);
+        let app = router(state.clone());
+        let approval = json!({
+            "plan_id":plan["plan_id"],"expected_plan_sha256":plan["plan_sha256"],
+            "selected_action_ids":[plan["actions"][0]["action_id"]],"approved_by":"Fixture reviewer",
+            "approval_evidence":"Reviewed this exact fictional message", "idempotency_key":"fixture:gui:archive"
+        });
+        let queued = reviewed_post(
+            app.clone(),
+            &cookie,
+            &state.csrf,
+            "/api/daily/approve-archive",
+            approval.clone(),
+        )
+        .await;
+        assert_eq!(queued["ok"], true, "{queued}");
+        assert_eq!(queued["data"]["status"], "queued");
+        assert_eq!(queued["data"]["ready_for_single_archive"], false);
+        assert_eq!(queued["data"]["external_actions"], false);
+        assert_eq!(queued["data"]["archive_actions"][0]["status"], "queued");
+        let replay = reviewed_post(
+            app.clone(),
+            &cookie,
+            &state.csrf,
+            "/api/daily/approve-archive",
+            approval,
+        )
+        .await;
+        assert_eq!(replay["ok"], true, "{replay}");
+        let saved = state.engine.call("daily_check", &json!({}));
+        assert_eq!(saved["data"]["counts"]["queued"], 1);
+        assert_eq!(saved["data"]["counts"]["archived"], 0);
+        assert_eq!(saved["data"]["observations"]["live_checked"], false);
+        assert_eq!(saved["data"]["archive_actions"][0]["status"], "queued");
+        let reopened = Engine::open(temp.path())
+            .unwrap()
+            .call("daily_check", &json!({}));
+        assert_eq!(reopened["data"]["counts"]["queued"], 1);
+        assert_eq!(reopened["data"]["counts"]["archived"], 0);
+        let wrong = json!({"plan_id":plan["plan_id"],"expected_plan_sha256":"b".repeat(64),
+            "selected_action_ids":[plan["actions"][0]["action_id"]],"approved_by":"Fixture reviewer",
+            "approval_evidence":"Another review","idempotency_key":"fixture:gui:stale"});
+        let stale = reviewed_post(
+            app.clone(),
+            &cookie,
+            &state.csrf,
+            "/api/daily/approve-archive",
+            wrong,
+        )
+        .await;
+        assert_eq!(stale["ok"], false, "{stale}");
+        assert_eq!(stale["error"]["code"], "stale_plan");
+        std::fs::remove_file(temp.path().join("context/daily-fixture.json")).unwrap();
+        let withdrawal = json!({"plan_id":plan["plan_id"],"expected_plan_sha256":plan["plan_sha256"],
+            "selected_action_ids":[plan["actions"][0]["action_id"]],"approved_by":"local-user",
+            "approval_evidence":"Clicked Keep in inbox","reason":"Local user withdrew this queued selection",
+            "idempotency_key":"fixture:gui:withdraw"});
+        let withdrawn = reviewed_post(
+            app,
+            &cookie,
+            &state.csrf,
+            "/api/daily/withdraw-archive",
+            withdrawal,
+        )
+        .await;
+        assert_eq!(withdrawn["ok"], true, "{withdrawn}");
+        assert_eq!(withdrawn["data"]["status"], "withdrawn");
+        assert_eq!(withdrawn["data"]["ready_for_single_archive"], false);
+        let after = Engine::open(temp.path())
+            .unwrap()
+            .call("daily_check", &json!({}));
+        assert_eq!(after["data"]["counts"]["queued"], 0);
+        assert_eq!(after["data"]["archive_actions"][0]["status"], "withdrawn");
+        state.close_notifications();
+    }
+
+    #[tokio::test]
+    async fn daily_review_has_no_import_begin_or_result_http_authority() {
+        let temp = tempfile::tempdir().unwrap();
+        harness_core::workspace::initialize(temp.path()).unwrap();
+        let state = DashboardState::with_policy(temp.path(), 3210, true).unwrap();
+        let cookie = format!("{}={}", state.cookie_name, state.session);
+        let app = router(state.clone());
+        for route in ["/api/daily/approve-archive", "/api/daily/withdraw-archive"] {
+            for action in ["record_review", "begin_archive", "record_archive_result"] {
+                let refused = reviewed_post(app.clone(), &cookie, &state.csrf, route, json!({
+                    "action":action,"plan_id":"a".repeat(64),"expected_plan_sha256":"b".repeat(64),
+                    "selected_action_ids":["c".repeat(64)],"approved_by":"local-user",
+                    "approval_evidence":"Attempted alternate action","idempotency_key":format!("{route}:{action}")
+                })).await;
+                assert_eq!(refused["error"]["code"], "tool_denied");
+            }
+            let response = app
+                .clone()
+                .oneshot(
+                    Request::builder()
+                        .method("POST")
+                        .uri(route)
+                        .header("host", "127.0.0.1:3210")
+                        .header("origin", "http://127.0.0.1:3210")
+                        .header("cookie", &cookie)
+                        .header("content-type", "application/json")
+                        .body(Body::from("{}"))
+                        .unwrap(),
+                )
+                .await
+                .unwrap();
+            assert_eq!(response.status(), StatusCode::FORBIDDEN);
+        }
+        let current = state.engine.call("daily_check", &json!({}));
+        assert_eq!(current["data"]["archive_actions"], json!([]));
+        state.close_notifications();
+
+        let read_only = DashboardState::new(temp.path(), 3210).unwrap();
+        let cookie = format!("{}={}", read_only.cookie_name, read_only.session);
+        for route in ["/api/daily/approve-archive", "/api/daily/withdraw-archive"] {
+            let response = router(read_only.clone())
+                .oneshot(
+                    Request::builder()
+                        .method("POST")
+                        .uri(route)
+                        .header("host", "127.0.0.1:3210")
+                        .header("origin", "http://127.0.0.1:3210")
+                        .header("cookie", &cookie)
+                        .header("x-job-harness-csrf", &read_only.csrf)
+                        .header("content-type", "application/json")
+                        .body(Body::from("{}"))
+                        .unwrap(),
+                )
+                .await
+                .unwrap();
+            assert_eq!(response.status(), StatusCode::METHOD_NOT_ALLOWED);
+        }
+        read_only.close_notifications();
+    }
     async fn reviewed_post(
         app: Router,
         cookie: &str,

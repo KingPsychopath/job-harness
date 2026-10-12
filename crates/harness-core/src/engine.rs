@@ -18,6 +18,8 @@ mod attention;
 mod batch;
 mod configuration;
 mod context;
+mod daily;
+pub use daily::{pending_mail_actions, validate_daily_events};
 mod query;
 mod recovery;
 mod runs;
@@ -85,8 +87,20 @@ impl Engine {
             Err(error) => self.error_envelope(error),
         };
         if let Some(spec) = contracts::specs().get(tool)
-            && contracts::validate(&spec["outputSchema"], &out).is_err()
+            && let Err(validation) = contracts::validate(&spec["outputSchema"], &out)
         {
+            #[cfg(test)]
+            eprintln!("Synthetic output contract failure for {tool}: {validation}");
+            #[cfg(test)]
+            if let Some(branch) = spec["outputSchema"]["properties"]["data"]["anyOf"]
+                .as_array()
+                .and_then(|branches| branches.iter().find(|branch| branch["type"] == "object"))
+                && let Err(detail) = contracts::validate(branch, &out["data"])
+            {
+                eprintln!("Synthetic data contract detail: {detail}");
+            }
+            #[cfg(not(test))]
+            let _ = validation;
             return self.error_envelope(Error::new(
                 "internal_contract_error",
                 if contracts::is_read_only(tool)==Some(false) {"Generated output failed validation after a committed local action. Inspect its idempotency key and source records; do not repeat an external action."} else {"Generated result does not match its declared schema"},
@@ -294,6 +308,15 @@ impl Engine {
                     "Idempotency key reused with different input; inspect the prior action",
                 ));
             }
+            if tool == "begin_mail_archive"
+                || (tool == "daily_update" && args["action"] == "begin_archive")
+            {
+                let mut result = prior["result"].clone();
+                result["replayed"] = json!(true);
+                result["permits"] = json!([]);
+                result["ready_for_single_archive"] = json!(false);
+                return Ok(result);
+            }
             if tool == "begin_submission" {
                 let mut result = prior["result"].clone();
                 result["replayed"] = json!(true);
@@ -378,6 +401,13 @@ impl Engine {
             }
             "get_approved_answer" => self.answers(s(args, "query")?),
             "review_queue" => self.review_queue(args, state),
+            "daily_check" => self.daily_check(args, state),
+            "daily_update" => self.daily_update(args, state),
+            "begin_mail_archive" => {
+                let mut begin = args.clone();
+                begin["action"] = json!("begin_archive");
+                self.daily_update(&begin, state)
+            }
             "context_pack" => self.context_pack(args),
             "workflow_check" => crate::workflow::check(&self.root, args),
             "preview_packet" => self.preview_packet(args, state),
@@ -478,7 +508,8 @@ impl Engine {
         let offset = n(args, "offset", 0);
         let limit = n(args, "limit", 10);
         match tool {
-            "bootstrap" => Ok(raw),
+            "bootstrap" | "daily_check" => Ok(raw),
+            "daily_update" | "begin_mail_archive" => Ok(self.compact_daily_update(raw)),
             "list_operations" => Ok(
                 json!({"operations":raw["workflows"].as_object().unwrap().iter().map(|(k,v)|json!({"operation":k,"skill":v["skill"],"result":v["result"]})).collect::<Vec<_>>(),"shared_reads":raw["shared_reads"]}),
             ),
@@ -533,7 +564,9 @@ impl Engine {
                     .map(domain::attempt)
                     .collect();
                 let (rows, page) = domain::page(&rows, offset, limit);
-                Ok(json!({"run":domain::run(&raw["run"]),"attempts":rows,"page":page}))
+                Ok(
+                    json!({"run":domain::run(&raw["run"]),"attempts":rows,"page":page,"archive_actions":raw["archive_actions"]}),
+                )
             }
             "list_events" => {
                 let events:Vec<_>=raw["events"].as_array().unwrap().iter().map(|e|{let mut event=json!({"idempotency_key":e["idempotency_key"],"tool":e["tool"],"at":e["at"]});if let Some(v)=e.get("run_id"){event["run_id"]=v.clone();}
@@ -553,7 +586,7 @@ if let Some(v)=e["result"].get("record"){event["record_path"]=v.clone();}event})
                     .collect();
                 let (rows, page) = domain::page(&rows, offset, limit);
                 Ok(
-                    json!({"records":raw["records"],"legacy_records":raw["legacy_records"],"needs_review_count":raw["needs_review"].as_array().unwrap().len(),"pipeline_stale":raw["pipeline_stale"],"unfinished_run_count":raw["unfinished_runs"].as_array().unwrap().len(),"unresolved_attempt_count":raw["unresolved_attempts"].as_array().unwrap().len(),"unfinished_runs":raw["unfinished_runs"].as_array().unwrap().iter().take(50).map(domain::run).collect::<Vec<_>>(),"unresolved_attempts":rows,"page":page}),
+                    json!({"records":raw["records"],"legacy_records":raw["legacy_records"],"needs_review_count":raw["needs_review"].as_array().unwrap().len(),"pipeline_stale":raw["pipeline_stale"],"unfinished_run_count":raw["unfinished_runs"].as_array().unwrap().len(),"unresolved_attempt_count":raw["unresolved_attempts"].as_array().unwrap().len(),"unfinished_runs":raw["unfinished_runs"].as_array().unwrap().iter().take(50).map(domain::run).collect::<Vec<_>>(),"unresolved_attempts":rows,"page":page,"pending_mail_action_count":pending_mail_actions(state).len(),"pending_mail_actions":pending_mail_actions(state).into_iter().take(50).map(|row|daily::public_archive_row(&row)).collect::<Vec<_>>()}),
                 )
             }
             "reserve_submission" => {

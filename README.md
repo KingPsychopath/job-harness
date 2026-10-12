@@ -47,9 +47,13 @@ Switch agents or stop using the toolkit while keeping your history. [Back up, di
 
 ## Ask your agent
 
-**Tidy the inbox**
+**Check the day**
 
-> Review my job emails. Archive resolved application confirmations and rejections, bring unanswered requests forward, and update my tracker.
+> Check my job search today. Show recruiting emails needing a reply, upcoming interviews and uncertain outcomes. Keep this read-only. No applications today.
+
+**Update and tidy**
+
+> Update my tracker from recruiting emails. Show resolved application confirmations and rejections for me to select before archiving. Keep unanswered requests visible. No applications today.
 
 **Apply to roles**
 
@@ -57,7 +61,7 @@ Switch agents or stop using the toolkit while keeping your history. [Back up, di
 
 **Prepare for an interview**
 
-> Prepare me for my interview with [company]. Use the vacancy and my recorded project stories.
+> Brief me for [company]. Use the exact role, what I submitted, our correspondence and earlier interview notes.
 
 **Keep useful notes**
 
@@ -67,7 +71,11 @@ Switch agents or stop using the toolkit while keeping your history. [Back up, di
 
 > Find a project story about improving a slow system. Show me the evidence.
 
-Your agent brings its own browser, email and calendar connections. The workspace retains sourced context and checked outcomes across sessions. [Everyday workflows](resources/guides/workflows.md) · [Access and permissions](docs/AUTH.md)
+Your agent brings its own browser, email and calendar connections. A daily review shows when mail was last checked; saved information is distinct from a fresh inbox scan. Archiving uses your reviewed selection and keeps evidence of the verified result. Checking or updating your day never starts applications. [Everyday workflows](resources/guides/workflows.md) · [Access and permissions](docs/AUTH.md)
+
+The first-class daily tools are available in current source builds. The immutable
+v0.2.0 preview predates them; use [source setup](docs/INSTALL.md#build-from-the-toolkit-checkout)
+for this workflow until the next packaged release.
 
 ## See where things stand
 
@@ -81,7 +89,7 @@ The optional desktop app uses the same workspace as your agent. Move a card, rev
 
 | Use your workspace | Build with the toolkit |
 |---|---|
-| [Notes and evidence](docs/INTAKE.md) · [CVs](docs/CV.md) · [Documents](docs/DOCUMENTS.md) | [Architecture](docs/ARCHITECTURE.md) · [Tool contracts](resources/guides/job-harness-contract.md) |
+| [Daily review and mail cleanup](resources/guides/daily-review.md) · [Notes and evidence](docs/INTAKE.md) · [CVs](docs/CV.md) | [Architecture](docs/ARCHITECTURE.md) · [Tool contracts](resources/guides/job-harness-contract.md) |
 | [Backup and restore](docs/BUNDLES.md) · [Optional models](docs/MODELS.md) | [Contributing](CONTRIBUTING.md) · [Development](docs/DEVELOPMENT.md) · [Roadmap](docs/ROADMAP.md) |
 
 The reusable software contains no candidate profile or credentials. Your private data stays in a separate, portable workspace. MIT software; [third-party components](docs/THIRD_PARTY.md) keep their own licenses.

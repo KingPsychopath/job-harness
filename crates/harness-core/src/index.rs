@@ -62,7 +62,9 @@ fn kind(path: &str) -> &'static str {
 }
 /// Intake provenance stays distinguishable from career facts, even after review.
 pub fn source_kind(root: &Path, path: &str) -> String {
-    if let Some(tail) = path.strip_prefix("context/intake/") {
+    if path.starts_with("applications/evidence/communications/") {
+        "host-mail-observations".into()
+    } else if let Some(tail) = path.strip_prefix("context/intake/") {
         let id = tail.split('/').next().unwrap_or_default();
         let metadata_path = format!("context/intake/{id}/metadata.json");
         let metadata = storage::safe_path(root, &metadata_path, &["context"], &[".json"])
@@ -452,6 +454,32 @@ pub fn related_paths(root: &Path, seeds: &[String], limit: usize) -> Result<Vec<
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn retained_recruiting_text_is_searchable_without_becoming_a_career_fact() {
+        let root = tempfile::tempdir().unwrap();
+        let path = "applications/evidence/communications/synthetic.json";
+        let full = root.path().join(path);
+        fs::create_dir_all(full.parent().unwrap()).unwrap();
+        let bytes = br#"{"items":[{"text":"Recruiter asked about observabilityuniquefixture","category":"correspondence"}]}"#;
+        fs::write(&full, bytes).unwrap();
+        fs::create_dir_all(root.path().join("applications/operations")).unwrap();
+        fs::write(
+            root.path().join("applications/operations/state.json"),
+            b"{\"internal\":\"coordinatorsecretfixture\"}",
+        )
+        .unwrap();
+        let result = search(root.path(), "observabilityuniquefixture", 5).unwrap();
+        assert_eq!(result["matches"][0]["path"], path);
+        assert_eq!(result["matches"][0]["kind"], "host-mail-observations");
+        assert_eq!(result["matches"][0]["sha256"], storage::digest(bytes));
+        assert!(
+            search(root.path(), "coordinatorsecretfixture", 5).unwrap()["matches"]
+                .as_array()
+                .unwrap()
+                .is_empty()
+        );
+        assert_eq!(fs::read(full).unwrap(), bytes);
+    }
     #[cfg(unix)]
     #[test]
     fn nonportable_filename_is_reported_without_becoming_another_source() {

@@ -13,12 +13,14 @@ pub const GUIDES: &[&str] = &[
     "job-harness-onboarding.md",
     "host-observations.md",
     "workflows.md",
+    "daily-review.md",
 ];
 pub const SKILLS: &[&str] = &[
     "career-ops",
     "career-apply",
     "career-discover",
     "career-inbox-tidy",
+    "career-daily-review",
     "career-interview-prep",
     "career-knowledge-update",
     "career-reconcile",
@@ -55,6 +57,7 @@ pub fn resource_source_path(alias: &str) -> Option<PathBuf> {
 pub fn resource_text(alias: &str) -> Option<&'static str> {
     match alias {
         "docs/workflows.md" => Some(include_str!("../../../resources/guides/workflows.md")),
+        "docs/daily-review.md" => Some(include_str!("../../../resources/guides/daily-review.md")),
         "docs/host-observations.md" => Some(include_str!(
             "../../../resources/guides/host-observations.md"
         )),
@@ -79,6 +82,9 @@ pub fn resource_text(alias: &str) -> Option<&'static str> {
         )),
         ".agents/skills/career-inbox-tidy/SKILL.md" => Some(include_str!(
             "../../../resources/skills/career-inbox-tidy/SKILL.md"
+        )),
+        ".agents/skills/career-daily-review/SKILL.md" => Some(include_str!(
+            "../../../resources/skills/career-daily-review/SKILL.md"
         )),
         ".agents/skills/career-interview-prep/SKILL.md" => Some(include_str!(
             "../../../resources/skills/career-interview-prep/SKILL.md"

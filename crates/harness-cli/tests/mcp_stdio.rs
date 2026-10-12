@@ -58,7 +58,14 @@ fn native_stdio_handshake_catalog_and_call_are_protocol_only() {
     .unwrap();
     input.flush().unwrap();
     let list = request(&mut input, &mut output, 2, "tools/list", json!({}));
-    assert_eq!(list["result"]["tools"].as_array().unwrap().len(), 11);
+    assert_eq!(list["result"]["tools"].as_array().unwrap().len(), 12);
+    assert!(
+        list["result"]["tools"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|tool| tool["name"] == "begin_mail_archive")
+    );
     let call = request(
         &mut input,
         &mut output,

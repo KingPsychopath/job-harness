@@ -1,0 +1,57 @@
+{
+  "steps": [
+    {
+      "id": "check",
+      "tool": "daily_check",
+      "arguments": {
+        "mail_observations_path": "applications/evidence/daily-demo.json",
+        "limit": 20
+      }
+    },
+    {
+      "id": "run",
+      "tool": "start_run",
+      "arguments": {
+        "operation": "daily_update",
+        "scope": {
+          "sources": [
+            "fictional-mail-host"
+          ],
+          "dry_run": false
+        },
+        "user_request": "Record this fictional daily review only. Do not confirm archive actions, contact employers or create applications.",
+        "idempotency_key": "daily-demo:run"
+      }
+    },
+    {
+      "id": "review",
+      "tool": "daily_update",
+      "arguments": {
+        "action": "record_review",
+        "run_id": {
+          "$ref": "run.data.run_id"
+        },
+        "mail_observations_path": "applications/evidence/daily-demo.json",
+        "expected_source_sha256": {
+          "$ref": "check.data.observations.sha256"
+        },
+        "idempotency_key": "daily-demo:review"
+      }
+    },
+    {
+      "id": "finish",
+      "tool": "finish_run",
+      "arguments": {
+        "run_id": {
+          "$ref": "run.data.run_id"
+        },
+        "status": "completed",
+        "summary": "Preserved the fictional review and general recruiter conversation; no external actions or applications.",
+        "evidence": [
+          "applications/evidence/daily-demo.json"
+        ],
+        "idempotency_key": "daily-demo:finish"
+      }
+    }
+  ]
+}

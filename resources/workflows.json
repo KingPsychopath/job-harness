@@ -4,6 +4,14 @@
     "AGENTS.md"
   ],
   "workflows": {
+    "daily_check": {
+      "skill": ".agents/skills/career-daily-review/SKILL.md",
+      "result": "Read saved progress and supplied fresh recruiting observations; show coverage, reply/action queues and archive candidates without mutations."
+    },
+    "daily_update": {
+      "skill": ".agents/skills/career-daily-review/SKILL.md",
+      "result": "Record reviewed daily evidence and exact role updates, freeze human-confirmed archive selections and retain verified host outcomes; no new applications or unsolicited replies."
+    },
     "review_inbox": {
       "skill": ".agents/skills/application-email-review/SKILL.md",
       "result": "Read full relevant mail, reconcile outcomes, save evidence and checkpoint; show reply queue with email links."

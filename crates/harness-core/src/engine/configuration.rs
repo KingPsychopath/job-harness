@@ -67,7 +67,16 @@ impl Engine {
         } else {
             include_bytes!("../../../../resources/workflows.json").to_vec()
         };
-        let config: Value = serde_json::from_slice(&data)?;
+        let mut config: Value = serde_json::from_slice(&data)?;
+        let defaults: Value =
+            serde_json::from_slice(include_bytes!("../../../../resources/workflows.json"))?;
+        if let Some(workflows) = config["workflows"].as_object_mut() {
+            for name in ["daily_check", "daily_update"] {
+                workflows
+                    .entry(name)
+                    .or_insert_with(|| defaults["workflows"][name].clone());
+            }
+        }
         contracts::validate(&contracts::workflow_schema(), &config)?;
         if config["schema_version"] != 1
             || !config["shared_reads"].is_array()

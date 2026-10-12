@@ -610,7 +610,7 @@ pub async fn verify(binary: &Path) -> Result<Value> {
     for profile in ["focused", "full"] {
         installed.mcp(&root, profile, &specs).await?;
         checks.push(if profile == "focused" {
-            "official MCP client: focused initialize, 11 tools and bootstrap"
+            "official MCP client: focused initialize, advertised tools and bootstrap"
         } else {
             "official MCP client: full initialize, authoritative catalog and bootstrap"
         });

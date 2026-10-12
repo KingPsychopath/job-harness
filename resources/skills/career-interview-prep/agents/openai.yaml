@@ -1,4 +1,4 @@
 interface:
   display_name: "Prepare for interviews"
   short_description: "Explain the company and prepare sourced answer routes"
-  default_prompt: "Use $career-interview-prep to prepare a concise company brief, my relevant stories and useful questions for this hiring stage."
+  default_prompt: "Use $career-interview-prep to brief me for this company and exact role, using retained recruiting messages, the submitted CV/answers and original notes. Explain gaps, relevant stories and useful questions."

@@ -53,3 +53,27 @@ syntax, option combinations and release preflight were checked locally; they hav
 not been executed on GitHub. Default manual CI uses one Linux core job; platform,
 desktop, provider and package work are opt-in. [Verification profiles](DEVELOPMENT.md#choose-a-manual-ci-profile)
 describe the available checks. Existing regression tests remain in the local suite.
+
+## Daily review and recruiting communications
+
+Current source adds read-only daily checks, retained correspondence and reviewed
+mail cleanup. This is separate from the immutable v0.2.0 packages.
+
+| Local check on macOS | Evidence |
+|---|---|
+| Engine, CLI, domain and protocol | 199 tests, formatting, Clippy, repository and generated-contract checks passed |
+| Optional desktop | Five native boundary tests and the native release build passed |
+| Copied CLI outside the checkout | Official MCP client checked the focused 12-tool and full 43-tool profiles, embedded skills, source handling and exact private transfer |
+| Daily command rehearsal | Ten synthetic check/update/search/brief steps passed; no archive approval or provider access |
+| Release-binary mail lifecycle rehearsal | Nine synthetic steps covered withdrawal, the separate one-shot boundary, replay, unknown recovery and hashed readback with disclosed label drift |
+| Live Daily review screen | Not verified: the local browser client refused the isolated loopback preview before loading it; no screenshot or click-through result is claimed |
+
+Restricted, tool-free Claude Opus 5.5 high review identified out-of-order backfill,
+queued-withdrawal and label-drift recovery gaps. Regression checks now cover them.
+Approval attribution remains a trusted-host attestation; a GUI-origin string would
+not authenticate a human and would exclude legitimate CLI/MCP hosts. Partial or
+missing archive targets stay unknown rather than gaining another attempt.
+
+No real mailbox, employer or calendar was used for these tests. No GitHub Actions
+run was dispatched, and no Windows/Linux native execution is claimed for these
+source changes. The host still owns live mail access and modification authority.

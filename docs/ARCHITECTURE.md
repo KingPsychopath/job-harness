@@ -31,6 +31,31 @@ Read helpers do not acquire nested write transactions. Every journal path is che
 
 The submit boundary is separate: prepare/reserve → begin once → host submits once → finish with evidence. A begin replay never returns another submit permit. Begun or unknown attempts never expire. Local transactions cannot prove what an employer, mail provider or calendar did.
 
+Recruiting communications use the same boundary discipline. A daily check reads saved
+tracking and explicitly supplied mail observations. A daily update retains the
+review, proposes exact archive targets, and records human selection separately
+from the host's action. The host rereads those targets before beginning once;
+verified results and unfinished actions remain in the coordinator. A restart
+does not grant another archive attempt. Mail coverage describes the supplied
+search period and exclusions, never the entire inbox by implication.
+
+Original correspondence and readback proofs live in content-addressed evidence
+files; coordinator events reference them rather than maintaining another inbox.
+Search distinguishes these host observations from career facts. Backfills merge
+by observation time, and incomplete later scans retain earlier unanswered
+requests. Coverage remains per mailbox and search window.
+
+Human selection can be withdrawn while queued. Once begun, the action needs
+readback instead. The dedicated `begin_mail_archive` boundary is advertised in
+focused MCP; predictable local steps remain batchable. A label change unrelated
+to archiving can be reconciled explicitly, with before/after differences retained.
+Observed final state does not identify which person or client changed it.
+
+An email's application attribution and archive eligibility are separate decisions.
+A human can select an informational email without assigning it to a vacancy.
+Updating a role's outcome still requires its exact posting identity and sourced
+evidence. A company name alone cannot reject every role at that company.
+
 ## Tool and context flow
 
 Bootstrap gives focused routing, configuration gaps and unfinished-work health. Read metadata first and full relevant records on demand. `query_batch` groups independent reads; `execute_batch` runs ordered local writes with exact `$ref` values. Each child commits separately. Arbitrary expressions, shell commands and whole-workspace dumps are outside these tools.

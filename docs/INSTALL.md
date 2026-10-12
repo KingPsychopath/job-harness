@@ -111,7 +111,7 @@ For a persistent source installation, `./scripts/install.sh` or `./scripts/insta
 
 ## Upgrade or change your agent
 
-Keep the previous executable until your private backup restores and the new binary reads it correctly. Reload the agent host after changing its server command, then call `bootstrap` through that actual connection. Saved configuration does not establish that an old process restarted. The default focused MCP profile starts with 11 tools; use `inspect_tools` to discover specialized schemas. Full mode exposes all 40.
+Keep the previous executable until your private backup restores and the new binary reads it correctly. Reload the agent host after changing its server command, then call `bootstrap` through that actual connection. Saved configuration does not establish that an old process restarted. The default focused MCP profile starts with 12 tools; use `inspect_tools` to discover specialized schemas. Full mode exposes the complete catalog.
 
 The CLI selects `--root` first, then `JOB_HARNESS_WORKSPACE`, then its saved default. [Agent setup](AGENTS.md) explains fixed workspaces and access boundaries. A new agent can use the same private folder without rebuilding your history.
 

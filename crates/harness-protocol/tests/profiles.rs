@@ -8,7 +8,7 @@ fn focused_profile_defers_specialized_tools_with_actionable_next_step() {
     workspace::initialize(temp.path()).unwrap();
     let specs = Value::Object(contracts::specs().clone());
     let server = McpServer::new(temp.path(), "focused", &specs).unwrap();
-    assert_eq!(FOCUSED_TOOLS.len(), 11);
+    assert_eq!(FOCUSED_TOOLS.len(), 12);
     assert!(contracts::specs().len() >= 30);
     assert_eq!(server.invoke("bootstrap", &json!({}))["ok"], true);
     let deferred = server.invoke("find_application", &json!({}));
@@ -22,6 +22,12 @@ fn focused_profile_defers_specialized_tools_with_actionable_next_step() {
     assert_eq!(full.invoke("find_application", &json!({}))["ok"], true);
     let restricted = McpServer::with_policy(temp.path(), "full", &specs, true).unwrap();
     assert!(rmcp::ServerHandler::get_tool(&restricted, "begin_submission").is_none());
+    assert!(rmcp::ServerHandler::get_tool(&server, "begin_mail_archive").is_some());
+    assert_eq!(
+        server.invoke("begin_mail_archive", &json!({}))["error"]["code"],
+        "invalid_arguments"
+    );
+    assert!(rmcp::ServerHandler::get_tool(&restricted, "begin_mail_archive").is_none());
     assert!(rmcp::ServerHandler::get_tool(&restricted, "accept_note").is_none());
     assert!(rmcp::ServerHandler::get_tool(&restricted, "query_batch").is_some());
     assert_eq!(
@@ -30,6 +36,7 @@ fn focused_profile_defers_specialized_tools_with_actionable_next_step() {
     );
     for tool in [
         "begin_submission",
+        "begin_mail_archive",
         "finish_submission",
         "update_application",
         "accept_note",

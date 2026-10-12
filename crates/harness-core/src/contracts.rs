@@ -223,8 +223,11 @@ pub fn is_read_only(name: &str) -> Option<bool> {
         | "review_note"
         | "list_notes"
         | "context_pack"
-        | "workflow_check" => Some(true),
+        | "workflow_check"
+        | "daily_check" => Some(true),
         "start_run"
+        | "begin_mail_archive"
+        | "daily_update"
         | "finish_run"
         | "record_event"
         | "update_application"

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "provider": "fictional-mail-host",
+  "mailbox_id": "fictional-demo-mailbox",
+  "observed_at": "2026-01-02T10:00:00Z",
+  "coverage": {
+    "source": "fictional-mail-host",
+    "observed_at": "2026-01-02T10:00:00Z",
+    "requested_period": "Two fictional messages supplied for a local rehearsal; no inbox was scanned",
+    "pages_read": 1,
+    "pagination_exhausted": true,
+    "failed_reads": [],
+    "exclusions": [],
+    "checkpoint": null
+  },
+  "items": [
+    {
+      "message_id": "confirmation-1",
+      "thread_id": "thread-confirmation",
+      "thread_message_ids": [
+        "confirmation-1"
+      ],
+      "latest_message_id": "confirmation-1",
+      "text": "Fictional confirmation: your supplied application has been received. No action is requested.",
+      "source_sha256": "35b7a5d54302aebf0ab4edede417be460436f14f1825ef2837d782a421d2dcfa",
+      "category": "application_confirmation",
+      "needs_reply": false,
+      "request_message_ids": [],
+      "replied_to_message_ids": [],
+      "full_read": true,
+      "thread_complete": true,
+      "labels": [
+        "INBOX",
+        "UNREAD"
+      ],
+      "inbox_label": "INBOX",
+      "supports_message_archive": true,
+      "subject": "Application received",
+      "company": "Cedar Demo",
+      "thread_url": "https://example.test/mail/thread-confirmation",
+      "summary": "Fictional confirmation: your supplied application has been received. No action is requested."
+    },
+    {
+      "message_id": "recruiter-1",
+      "thread_id": "thread-recruiter",
+      "thread_message_ids": [
+        "recruiter-1"
+      ],
+      "latest_message_id": "recruiter-1",
+      "text": "Fictional recruiter outreach: would you like details about a possible engineering role? There is no known vacancy record yet.",
+      "source_sha256": "ed1b4674e209f37c2c5aa486494e580efbc31dd967e1e347d48c6ecba697eb41",
+      "category": "correspondence",
+      "needs_reply": true,
+      "request_message_ids": [
+        "recruiter-1"
+      ],
+      "replied_to_message_ids": [],
+      "full_read": true,
+      "thread_complete": true,
+      "labels": [
+        "INBOX",
+        "UNREAD"
+      ],
+      "inbox_label": "INBOX",
+      "supports_message_archive": true,
+      "subject": "Would you like to hear about a role?",
+      "company": "Northstar Demo",
+      "thread_url": "https://example.test/mail/thread-recruiter",
+      "summary": "Fictional recruiter outreach: would you like details about a possible engineering role? There is no known vacancy record yet."
+    }
+  ]
+}

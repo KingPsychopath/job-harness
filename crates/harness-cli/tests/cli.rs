@@ -210,6 +210,133 @@ fn native_cli_keeps_compact_contract_and_workspace_outside_code() {
 }
 
 #[test]
+fn daily_check_is_read_only_composable_and_matches_the_engine() {
+    let temp = tempfile::tempdir().unwrap();
+    let root = temp.path().join("career");
+    assert_eq!(output(run(&root, &["init"]))["ok"], true);
+    let state_path = root.join("applications/operations/state.json");
+    let state_before = std::fs::read(&state_path).unwrap();
+    let config_path = root.join("config/career-ledger.json");
+    let config_before = std::fs::read(&config_path).unwrap();
+    let args = json!({"offset":0,"limit":2});
+    let expected = job_harness_core::Engine::open(&root)
+        .unwrap()
+        .call("daily_check", &args);
+    assert_eq!(expected["ok"], true, "{expected}");
+    let input_path = temp.path().join("daily-check.json");
+    std::fs::write(&input_path, args.to_string()).unwrap();
+    let checked = output(run(
+        &root,
+        &[
+            "daily",
+            "check",
+            "--input",
+            input_path.to_str().unwrap(),
+            "--limit",
+            "2",
+        ],
+    ));
+    assert_eq!(checked["ok"], true, "{checked}");
+    assert_eq!(checked["schema_version"], 2);
+    assert_eq!(checked["data"], expected["data"]);
+    assert_eq!(std::fs::read(&state_path).unwrap(), state_before);
+    assert_eq!(std::fs::read(&config_path).unwrap(), config_before);
+    let conflict = run(
+        &root,
+        &[
+            "daily",
+            "check",
+            "--input",
+            input_path.to_str().unwrap(),
+            "--limit",
+            "3",
+        ],
+    );
+    assert!(!conflict.status.success());
+    assert_eq!(output(conflict)["error"]["code"], "invalid_arguments");
+    assert_eq!(std::fs::read(&state_path).unwrap(), state_before);
+}
+
+#[test]
+fn daily_update_requires_explicit_valid_input_and_preserves_state_on_failure() {
+    let temp = tempfile::tempdir().unwrap();
+    let root = temp.path().join("career");
+    assert_eq!(output(run(&root, &["init"]))["ok"], true);
+    let state_path = root.join("applications/operations/state.json");
+    let before = std::fs::read(&state_path).unwrap();
+    let empty = run(&root, &["daily", "update"]);
+    assert!(!empty.status.success());
+    assert_eq!(output(empty)["error"]["code"], "invalid_arguments");
+    let file = temp.path().join("bad-daily.json");
+    std::fs::write(&file, "[]").unwrap();
+    let malformed = run(
+        &root,
+        &["daily", "update", "--input", file.to_str().unwrap()],
+    );
+    assert!(!malformed.status.success());
+    assert_eq!(output(malformed)["error"]["code"], "invalid_arguments");
+    assert_eq!(std::fs::read(&state_path).unwrap(), before);
+}
+
+#[test]
+fn daily_check_accepts_inline_host_observations_without_persisting_them() {
+    let temp = tempfile::tempdir().unwrap();
+    let root = temp.path().join("career");
+    assert_eq!(output(run(&root, &["init"]))["ok"], true);
+    let state_path = root.join("applications/operations/state.json");
+    let before = std::fs::read(&state_path).unwrap();
+    let receipts = root.join("applications/operations/receipts");
+    let receipt_count = receipts.read_dir().unwrap().count();
+    let snapshot: Value = serde_json::from_str(include_str!(
+        "../../../examples/daily-review/observations.json"
+    ))
+    .unwrap();
+    let file = temp.path().join("inline-check.json");
+    let mut args = json!({"mail_observations":snapshot});
+    std::fs::write(&file, args.to_string()).unwrap();
+    let checked = output(run(
+        &root,
+        &["daily", "check", "--input", file.to_str().unwrap()],
+    ));
+    assert_eq!(checked["ok"], true, "{checked}");
+    assert_eq!(
+        checked["data"]["observations"]["source_state"],
+        "supplied_inline"
+    );
+    assert_eq!(checked["data"]["observations"]["live_checked"], false);
+    assert_eq!(
+        checked["data"]["communications"].as_array().unwrap().len(),
+        2
+    );
+    assert_eq!(
+        checked["data"]["archive_plan"]["actions"]
+            .as_array()
+            .unwrap()
+            .len(),
+        1
+    );
+    assert!(
+        checked["data"]["attention"]["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|row| row["message_id"] == "recruiter-1")
+    );
+    assert_eq!(std::fs::read(&state_path).unwrap(), before);
+    assert_eq!(receipts.read_dir().unwrap().count(), receipt_count);
+    args["mail_observations"]["items"][0]["text"] = json!("Changed supplied text");
+    std::fs::write(&file, args.to_string()).unwrap();
+    let corrupted = run(
+        &root,
+        &["daily", "check", "--input", file.to_str().unwrap()],
+    );
+    assert!(!corrupted.status.success());
+    assert_eq!(output(corrupted)["error"]["code"], "artifact_changed");
+    assert_eq!(std::fs::read(&state_path).unwrap(), before);
+    assert_eq!(receipts.read_dir().unwrap().count(), receipt_count);
+}
+
+#[test]
 fn host_default_roundtrip_and_invalid_input_are_json() {
     let temp = tempfile::tempdir().unwrap();
     let root = temp.path().join("workspace");

@@ -21,10 +21,18 @@ impl Engine {
             let _spec = specs
                 .get(tool)
                 .ok_or_else(|| Error::new("unknown_tool", "Unknown batch tool"))?;
-            if ["query_batch", "execute_batch", "begin_submission"].contains(&tool) {
+            if [
+                "query_batch",
+                "execute_batch",
+                "begin_submission",
+                "begin_mail_archive",
+            ]
+            .contains(&tool)
+                || (tool == "daily_update" && step["arguments"]["action"] == "begin_archive")
+            {
                 return Err(Error::new(
                     "batch_boundary",
-                    "Nested batches and begin_submission cannot be batched",
+                    "Nested batches and one-shot external action boundaries cannot be batched",
                 ));
             }
             if readonly && contracts::is_read_only(tool) != Some(true) {
@@ -40,6 +48,11 @@ impl Engine {
             let id = s(step, "id")?;
             let tool = s(step, "tool")?;
             let value = match resolve_refs(&step["arguments"], &values) {
+                Ok(args) if tool == "daily_update" && args["action"] == "begin_archive" => self
+                    .error_envelope(Error::new(
+                        "batch_boundary",
+                        "begin_archive requires a separate one-shot call",
+                    )),
                 Ok(args) => self.call(tool, &args),
                 Err(error) => self.error_envelope(error),
             };

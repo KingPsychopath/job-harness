@@ -2,6 +2,13 @@
 
 The host reads mail, boards and forms. Job Harness checks supplied observations; it does not claim a provider read occurred. Batch related checks through `workflow_check`, then attach the observed artifact/hash and result to an existing run event. There is no second inbox or answer-memory database.
 
+For the day-to-day recruiting workflow, use `daily_check` and `daily_update`.
+They retain reviewed correspondence, coverage and the exact human-selected
+archive plan in the same coordinator. Read the [daily review guide](daily-review.md)
+for the source shape and approval → fresh reread → begin → verified outcome
+sequence. `workflow_check` remains useful for individual observations; its mail
+check never grants archive permission.
+
 ```json
 {"checks":[{"id":"coverage","kind":"coverage","observation":{"source":"mail-connector","observed_at":"2026-01-02T10:00:00Z","requested_period":"2026-01-01 through 2026-01-02; recruiting query","pages_read":2,"pagination_exhausted":false,"failed_reads":["message-17"],"exclusions":["newsletters"],"checkpoint":"page-3"}}]}
 ```

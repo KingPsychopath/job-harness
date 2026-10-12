@@ -1,0 +1,4 @@
+interface:
+  display_name: "Daily career review"
+  short_description: "Review replies, progress and an approved email tidy plan"
+  default_prompt: "Use $career-daily-review to check my recruiting communications and saved progress, show what needs me, and prepare any archive candidates for my review. Do not apply or send replies."

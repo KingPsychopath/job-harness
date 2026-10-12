@@ -154,7 +154,9 @@
             "schedule",
             "prepare_interview",
             "update_knowledge",
-            "reconcile"
+            "reconcile",
+            "daily_check",
+            "daily_update"
           ],
           "minLength": 1,
           "maxLength": 20000
@@ -1277,7 +1279,9 @@
             "schedule",
             "prepare_interview",
             "update_knowledge",
-            "reconcile"
+            "reconcile",
+            "daily_check",
+            "daily_update"
           ],
           "minLength": 1,
           "maxLength": 20000
@@ -1661,6 +1665,14 @@
                     "next_offset"
                   ],
                   "additionalProperties": false
+                },
+                "archive_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  "maxItems": 100
                 }
               },
               "required": [
@@ -4239,6 +4251,17 @@
                     "next_offset"
                   ],
                   "additionalProperties": false
+                },
+                "pending_mail_action_count": {
+                  "type": "integer"
+                },
+                "pending_mail_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  "maxItems": 50
                 }
               },
               "required": [
@@ -4464,7 +4487,9 @@
             "schedule",
             "prepare_interview",
             "update_knowledge",
-            "reconcile"
+            "reconcile",
+            "daily_check",
+            "daily_update"
           ],
           "minLength": 1,
           "maxLength": 20000
@@ -4752,6 +4777,17 @@
                         "next_offset"
                       ],
                       "additionalProperties": false
+                    },
+                    "pending_mail_action_count": {
+                      "type": "integer"
+                    },
+                    "pending_mail_actions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": true
+                      },
+                      "maxItems": 50
                     }
                   },
                   "required": [
@@ -6983,7 +7019,7 @@
                       "kind",
                       "reason"
                     ],
-                    "additionalProperties": false
+                    "additionalProperties": true
                   },
                   "maxItems": 50
                 },
@@ -7013,6 +7049,9 @@
                     "pending_note_reviews": {
                       "type": "integer",
                       "minimum": 0
+                    },
+                    "pending_mail_actions": {
+                      "type": "integer"
                     }
                   },
                   "required": [
@@ -9940,6 +9979,3933 @@
     },
     "annotations": {
       "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  "daily_check": {
+    "description": "Read saved or explicitly supplied bounded mail observations and local attention. No mail connections, canonical writes or applications.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "mail_observations_path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "expected_source_sha256": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        "mail_observations": {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "type": "integer",
+              "enum": [
+                1
+              ]
+            },
+            "provider": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "mailbox_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "observed_at": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "coverage": {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                },
+                "observed_at": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                },
+                "requested_period": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 20000
+                },
+                "pages_read": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                },
+                "pagination_exhausted": {
+                  "type": "boolean"
+                },
+                "failed_reads": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "maxItems": 1000
+                },
+                "exclusions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "maxItems": 1000
+                },
+                "checkpoint": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 20000
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "source",
+                "observed_at",
+                "requested_period",
+                "pages_read",
+                "pagination_exhausted",
+                "failed_reads",
+                "exclusions"
+              ],
+              "additionalProperties": false
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "message_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "thread_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "latest_message_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "inbox_label": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "thread_message_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "maxItems": 1000
+                  },
+                  "request_message_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "maxItems": 1000
+                  },
+                  "replied_to_message_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "maxItems": 1000
+                  },
+                  "labels": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "maxItems": 1000
+                  },
+                  "full_read": {
+                    "type": "boolean"
+                  },
+                  "thread_complete": {
+                    "type": "boolean"
+                  },
+                  "supports_message_archive": {
+                    "type": "boolean"
+                  },
+                  "archive_candidate": {
+                    "type": "boolean"
+                  },
+                  "subject": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20000
+                  },
+                  "company": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20000
+                  },
+                  "record_path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20000
+                  },
+                  "vacancy_url": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20000
+                  },
+                  "posting_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20000
+                  },
+                  "thread_url": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20000
+                  },
+                  "summary": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20000
+                  },
+                  "sender": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20000
+                  },
+                  "received_at": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 20000
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 500000
+                  },
+                  "source_sha256": {
+                    "type": "string",
+                    "minLength": 64,
+                    "maxLength": 64
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "rejection",
+                      "application_confirmation",
+                      "reply_request",
+                      "information",
+                      "correspondence",
+                      "unknown"
+                    ]
+                  },
+                  "needs_reply": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "message_id",
+                  "thread_id",
+                  "thread_message_ids",
+                  "latest_message_id",
+                  "source_sha256",
+                  "text",
+                  "category",
+                  "needs_reply",
+                  "request_message_ids",
+                  "replied_to_message_ids",
+                  "full_read",
+                  "thread_complete",
+                  "labels",
+                  "inbox_label",
+                  "supports_message_archive"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 1000
+            }
+          },
+          "required": [
+            "schema_version",
+            "provider",
+            "mailbox_id",
+            "observed_at",
+            "coverage",
+            "items"
+          ],
+          "additionalProperties": false
+        },
+        "company": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "record": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "as_of": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "thread_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "mailbox_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "integer",
+          "enum": [
+            2
+          ]
+        },
+        "ok": {
+          "type": "boolean"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "observations": {
+                  "type": "object",
+                  "properties": {
+                    "origin": {
+                      "type": "string",
+                      "enum": [
+                        "none",
+                        "supplied",
+                        "saved"
+                      ]
+                    },
+                    "source_state": {
+                      "type": "string",
+                      "enum": [
+                        "none",
+                        "unchanged",
+                        "changed_or_missing",
+                        "supplied_inline"
+                      ]
+                    },
+                    "live_checked": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "provider": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "mailbox_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "observed_at": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "coverage": {
+                      "type": "object",
+                      "properties": {
+                        "complete": {
+                          "type": "boolean"
+                        },
+                        "coverage": {
+                          "type": "object",
+                          "properties": {
+                            "source": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 2000
+                            },
+                            "observed_at": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 2000
+                            },
+                            "requested_period": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 20000
+                            },
+                            "pages_read": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 10000
+                            },
+                            "pagination_exhausted": {
+                              "type": "boolean"
+                            },
+                            "failed_reads": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "maxItems": 1000
+                            },
+                            "exclusions": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "maxItems": 1000
+                            },
+                            "checkpoint": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 20000
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "source",
+                            "observed_at",
+                            "requested_period",
+                            "pages_read",
+                            "pagination_exhausted",
+                            "failed_reads",
+                            "exclusions"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "missing": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "maxItems": 1000
+                        },
+                        "authority": {
+                          "type": "string",
+                          "enum": [
+                            "observed_scope_only"
+                          ]
+                        },
+                        "next": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 20000
+                        }
+                      },
+                      "required": [
+                        "complete"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 20000
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "minLength": 64,
+                      "maxLength": 64
+                    },
+                    "retained_evidence_complete": {
+                      "type": "boolean"
+                    },
+                    "retained_evidence_gaps": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "sha256": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          },
+                          "error": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "sha256",
+                          "error"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 100
+                    },
+                    "retained_evidence_gap_count": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "sources": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "enum": [
+                              "none",
+                              "supplied",
+                              "saved"
+                            ]
+                          },
+                          "source_state": {
+                            "type": "string",
+                            "enum": [
+                              "none",
+                              "unchanged",
+                              "changed_or_missing",
+                              "supplied_inline"
+                            ]
+                          },
+                          "live_checked": {
+                            "type": "boolean",
+                            "enum": [
+                              false
+                            ]
+                          },
+                          "provider": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "mailbox_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "observed_at": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "coverage": {
+                            "type": "object",
+                            "properties": {
+                              "complete": {
+                                "type": "boolean"
+                              },
+                              "coverage": {
+                                "type": "object",
+                                "properties": {
+                                  "source": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  },
+                                  "observed_at": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  },
+                                  "requested_period": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 20000
+                                  },
+                                  "pages_read": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 10000
+                                  },
+                                  "pagination_exhausted": {
+                                    "type": "boolean"
+                                  },
+                                  "failed_reads": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 2000
+                                    },
+                                    "maxItems": 1000
+                                  },
+                                  "exclusions": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 2000
+                                    },
+                                    "maxItems": 1000
+                                  },
+                                  "checkpoint": {
+                                    "anyOf": [
+                                      {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 20000
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "source",
+                                  "observed_at",
+                                  "requested_period",
+                                  "pages_read",
+                                  "pagination_exhausted",
+                                  "failed_reads",
+                                  "exclusions"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "missing": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "maxItems": 1000
+                              },
+                              "authority": {
+                                "type": "string",
+                                "enum": [
+                                  "observed_scope_only"
+                                ]
+                              },
+                              "next": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 20000
+                              }
+                            },
+                            "required": [
+                              "complete"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "path": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "sha256": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          },
+                          "thread_observed_at": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "source_state",
+                          "live_checked"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 1000
+                    },
+                    "all_sources_complete": {
+                      "type": "boolean"
+                    },
+                    "source_count": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "sources_truncated": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "origin",
+                    "source_state",
+                    "live_checked",
+                    "retained_evidence_complete",
+                    "retained_evidence_gaps",
+                    "retained_evidence_gap_count"
+                  ],
+                  "additionalProperties": false
+                },
+                "communications": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "message_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "thread_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "latest_message_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "inbox_label": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "thread_message_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "maxItems": 1000
+                      },
+                      "request_message_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "maxItems": 1000
+                      },
+                      "replied_to_message_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "maxItems": 1000
+                      },
+                      "labels": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "maxItems": 1000
+                      },
+                      "full_read": {
+                        "type": "boolean"
+                      },
+                      "thread_complete": {
+                        "type": "boolean"
+                      },
+                      "supports_message_archive": {
+                        "type": "boolean"
+                      },
+                      "archive_candidate": {
+                        "type": "boolean"
+                      },
+                      "subject": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "company": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "record_path": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "vacancy_url": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "posting_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "thread_url": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "summary": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "sender": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "received_at": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "source_sha256": {
+                        "type": "string",
+                        "minLength": 64,
+                        "maxLength": 64
+                      },
+                      "category": {
+                        "type": "string",
+                        "enum": [
+                          "rejection",
+                          "application_confirmation",
+                          "reply_request",
+                          "information",
+                          "correspondence",
+                          "unknown"
+                        ]
+                      },
+                      "needs_reply": {
+                        "anyOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "provider": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "mailbox_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "observed_at": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "source_path": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "attribution": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "supplied_record_path": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "attribution_gap": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "metadata_truncated": {
+                        "type": "boolean"
+                      },
+                      "thread_observed_at": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "partial_newer_observation": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "message_id",
+                      "thread_id",
+                      "thread_message_ids",
+                      "latest_message_id",
+                      "source_sha256",
+                      "category",
+                      "needs_reply",
+                      "request_message_ids",
+                      "replied_to_message_ids",
+                      "full_read",
+                      "thread_complete",
+                      "labels",
+                      "inbox_label",
+                      "supports_message_archive",
+                      "provider",
+                      "mailbox_id",
+                      "observed_at",
+                      "source_path",
+                      "attribution"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 100
+                },
+                "counts": {
+                  "type": "object",
+                  "properties": {
+                    "rejections": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "application_confirmations": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "reply_requests": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "information": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "correspondence": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "unknown": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "archive_candidates": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "queued": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "started": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "archived": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "failed": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "outcome_unknown": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "interviews": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "upcoming_interviews": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "past_interviews": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "unscheduled_interviews": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "needs_reply": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "review_items": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "withdrawn": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "rejections",
+                    "application_confirmations",
+                    "reply_requests",
+                    "information",
+                    "correspondence",
+                    "unknown",
+                    "archive_candidates",
+                    "queued",
+                    "started",
+                    "archived",
+                    "failed",
+                    "outcome_unknown",
+                    "interviews",
+                    "upcoming_interviews",
+                    "past_interviews",
+                    "unscheduled_interviews",
+                    "needs_reply",
+                    "review_items"
+                  ],
+                  "additionalProperties": false
+                },
+                "archive_plan": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "provider": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "mailbox_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "observed_at": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "coverage": {
+                          "type": "object",
+                          "properties": {
+                            "complete": {
+                              "type": "boolean"
+                            },
+                            "coverage": {
+                              "type": "object",
+                              "properties": {
+                                "source": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "observed_at": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "requested_period": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 20000
+                                },
+                                "pages_read": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 10000
+                                },
+                                "pagination_exhausted": {
+                                  "type": "boolean"
+                                },
+                                "failed_reads": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  },
+                                  "maxItems": 1000
+                                },
+                                "exclusions": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  },
+                                  "maxItems": 1000
+                                },
+                                "checkpoint": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 20000
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "source",
+                                "observed_at",
+                                "requested_period",
+                                "pages_read",
+                                "pagination_exhausted",
+                                "failed_reads",
+                                "exclusions"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "missing": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "maxItems": 1000
+                            },
+                            "authority": {
+                              "type": "string",
+                              "enum": [
+                                "observed_scope_only"
+                              ]
+                            },
+                            "next": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 20000
+                            }
+                          },
+                          "required": [
+                            "complete"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "source": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 20000
+                            },
+                            "sha256": {
+                              "type": "string",
+                              "minLength": 64,
+                              "maxLength": 64
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "sha256"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "frozen_source": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 20000
+                            },
+                            "sha256": {
+                              "type": "string",
+                              "minLength": 64,
+                              "maxLength": 64
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "sha256"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "actions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "action_id": {
+                                "type": "string",
+                                "minLength": 64,
+                                "maxLength": 64
+                              },
+                              "provider": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "mailbox_id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "target_scope": {
+                                "type": "string",
+                                "enum": [
+                                  "message",
+                                  "thread"
+                                ]
+                              },
+                              "thread_id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "message_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "maxItems": 1000
+                              },
+                              "category": {
+                                "type": "string",
+                                "enum": [
+                                  "rejection",
+                                  "application_confirmation",
+                                  "reply_request",
+                                  "information",
+                                  "correspondence",
+                                  "unknown"
+                                ]
+                              },
+                              "reason": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 20000
+                              },
+                              "requires_paged_review": {
+                                "type": "boolean"
+                              },
+                              "archive_state": {
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "action_id": {
+                                        "type": "string",
+                                        "minLength": 64,
+                                        "maxLength": 64
+                                      },
+                                      "plan_id": {
+                                        "type": "string",
+                                        "minLength": 64,
+                                        "maxLength": 64
+                                      },
+                                      "plan_sha256": {
+                                        "anyOf": [
+                                          {
+                                            "type": "string",
+                                            "minLength": 64,
+                                            "maxLength": 64
+                                          },
+                                          {
+                                            "type": "null"
+                                          }
+                                        ]
+                                      },
+                                      "status": {
+                                        "type": "string",
+                                        "enum": [
+                                          "queued",
+                                          "started",
+                                          "archived",
+                                          "failed",
+                                          "outcome_unknown",
+                                          "withdrawn"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "action_id",
+                                      "plan_id",
+                                      "status"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "action_id",
+                              "provider",
+                              "mailbox_id",
+                              "target_scope",
+                              "thread_id",
+                              "message_ids",
+                              "category",
+                              "reason"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "maxItems": 1000
+                        },
+                        "plan_id": {
+                          "type": "string",
+                          "minLength": 64,
+                          "maxLength": 64
+                        },
+                        "plan_sha256": {
+                          "type": "string",
+                          "minLength": 64,
+                          "maxLength": 64
+                        },
+                        "actions_page": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "integer",
+                              "minimum": 0
+                            },
+                            "displayed": {
+                              "type": "integer",
+                              "minimum": 0
+                            },
+                            "has_more": {
+                              "type": "boolean"
+                            },
+                            "selection_scope": {
+                              "type": "string",
+                              "enum": [
+                                "only_targets_fully_displayed_in_communications_page"
+                              ]
+                            },
+                            "next_offset": {
+                              "anyOf": [
+                                {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "total"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "provider",
+                        "mailbox_id",
+                        "observed_at",
+                        "coverage",
+                        "source",
+                        "frozen_source",
+                        "actions",
+                        "plan_id",
+                        "plan_sha256",
+                        "actions_page"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "archive_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "action_id": {
+                        "type": "string",
+                        "minLength": 64,
+                        "maxLength": 64
+                      },
+                      "provider": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "mailbox_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "target_scope": {
+                        "type": "string",
+                        "enum": [
+                          "message",
+                          "thread"
+                        ]
+                      },
+                      "thread_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "message_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "maxItems": 1000
+                      },
+                      "category": {
+                        "type": "string",
+                        "enum": [
+                          "rejection",
+                          "application_confirmation",
+                          "reply_request",
+                          "information",
+                          "correspondence",
+                          "unknown"
+                        ]
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "requires_paged_review": {
+                        "type": "boolean"
+                      },
+                      "plan_id": {
+                        "type": "string",
+                        "minLength": 64,
+                        "maxLength": 64
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "queued",
+                          "started",
+                          "archived",
+                          "failed",
+                          "outcome_unknown",
+                          "withdrawn"
+                        ]
+                      },
+                      "run_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "approved_by": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "approved_at": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "approval_evidence": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "started_at": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "result_sha256": {
+                        "type": "string",
+                        "minLength": 64,
+                        "maxLength": 64
+                      },
+                      "observed_final_state_only": {
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ]
+                      },
+                      "evidence": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "maxItems": 1000
+                      },
+                      "withdrawn_by": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "withdrawal_evidence": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "withdrawal_reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "withdrawn_at": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "label_changes": {
+                        "type": "boolean"
+                      },
+                      "label_differences": {
+                        "type": "object",
+                        "additionalProperties": true,
+                        "description": "Observed unrelated label drift by message ID. This is final-state evidence, not attribution of causation."
+                      },
+                      "readback": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "sha256": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          },
+                          "original_path": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "observed_at": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "sha256",
+                          "original_path",
+                          "observed_at"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "plan_sha256": {
+                        "type": "string",
+                        "minLength": 64,
+                        "maxLength": 64
+                      }
+                    },
+                    "required": [
+                      "action_id",
+                      "provider",
+                      "mailbox_id",
+                      "target_scope",
+                      "thread_id",
+                      "message_ids",
+                      "category",
+                      "reason",
+                      "plan_id",
+                      "status",
+                      "run_id",
+                      "approved_by",
+                      "approved_at",
+                      "approval_evidence"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 100
+                },
+                "archive_actions_page": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "next_offset": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "thread_boundary": {
+                      "type": "boolean"
+                    },
+                    "resume_thread_review": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "total",
+                    "offset",
+                    "limit",
+                    "next_offset"
+                  ],
+                  "additionalProperties": false
+                },
+                "attention": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string"
+                          },
+                          "reason": {
+                            "type": "string"
+                          },
+                          "run_id": {
+                            "type": "string"
+                          },
+                          "attempt_id": {
+                            "type": "string"
+                          },
+                          "company": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 20000
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "record_path": {
+                            "type": "string"
+                          },
+                          "stage": {
+                            "type": "string"
+                          },
+                          "checked": {
+                            "type": "string"
+                          },
+                          "next_action": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "schedule_state": {
+                            "type": "string"
+                          },
+                          "scheduled_start": {
+                            "type": "string"
+                          },
+                          "proposed_time": {
+                            "type": "string"
+                          },
+                          "contact": {
+                            "type": "string"
+                          },
+                          "brief": {
+                            "type": "string"
+                          },
+                          "vacancy_url": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string"
+                          },
+                          "status_detail": {
+                            "type": "string"
+                          },
+                          "tracking_source": {
+                            "type": "string"
+                          },
+                          "source_path": {
+                            "type": "string"
+                          },
+                          "source_sha256": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "subject": {
+                            "type": "string"
+                          },
+                          "thread_url": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 20000
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "summary": {
+                            "type": "string"
+                          },
+                          "observed_at": {
+                            "type": "string"
+                          },
+                          "posting_id": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "note_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "proposal_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "needs_reply": {
+                            "anyOf": [
+                              {
+                                "type": "boolean"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "needs_review": {
+                            "type": "boolean"
+                          },
+                          "attribution": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "latest_message_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "request_message_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 20000
+                            },
+                            "minItems": 0,
+                            "maxItems": 1000
+                          },
+                          "message_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "thread_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "action_id": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          },
+                          "plan_id": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          },
+                          "temporal_state": {
+                            "type": "string",
+                            "enum": [
+                              "past",
+                              "upcoming",
+                              "unscheduled"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "kind"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 100
+                    },
+                    "counts": {
+                      "type": "object",
+                      "properties": {
+                        "unknown_submissions": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "reserved_attempts": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "prepared_applications": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "interviews": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "supplied_mail": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "pending_note_reviews": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "pending_mail_actions": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "unknown_submissions",
+                        "reserved_attempts",
+                        "prepared_applications",
+                        "interviews",
+                        "supplied_mail",
+                        "pending_note_reviews"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "page": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "offset": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "limit": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "next_offset": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 0
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "thread_boundary": {
+                          "type": "boolean"
+                        },
+                        "resume_thread_review": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "total",
+                        "offset",
+                        "limit",
+                        "next_offset"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mail_source": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string"
+                            },
+                            "sha256": {
+                              "type": "string"
+                            },
+                            "observed_at": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "sha256",
+                            "observed_at"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "authority": {
+                      "type": "string",
+                      "enum": [
+                        "recorded_local_state"
+                      ]
+                    },
+                    "live_mail_checked": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "note_reviews_complete": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "counts",
+                    "page",
+                    "mail_source",
+                    "authority",
+                    "live_mail_checked",
+                    "note_reviews_complete"
+                  ],
+                  "additionalProperties": false
+                },
+                "as_of": {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 10
+                },
+                "page": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "next_offset": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "thread_boundary": {
+                      "type": "boolean"
+                    },
+                    "resume_thread_review": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "total",
+                    "offset",
+                    "limit",
+                    "next_offset"
+                  ],
+                  "additionalProperties": false
+                },
+                "external_actions": {
+                  "type": "boolean",
+                  "enum": [
+                    false
+                  ]
+                },
+                "applications": {
+                  "type": "boolean",
+                  "enum": [
+                    false
+                  ]
+                },
+                "canonical_changes": {
+                  "type": "boolean",
+                  "enum": [
+                    false
+                  ]
+                }
+              },
+              "required": [
+                "observations",
+                "communications",
+                "counts",
+                "archive_plan",
+                "archive_actions",
+                "archive_actions_page",
+                "attention",
+                "as_of",
+                "page",
+                "external_actions",
+                "applications",
+                "canonical_changes"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "retryable": {
+                  "type": "boolean"
+                },
+                "recovery": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message",
+                "retryable",
+                "recovery"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "next": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tool": {
+                "type": "string"
+              },
+              "arguments": {
+                "type": "object"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "tool",
+              "arguments",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 5
+        }
+      },
+      "required": [
+        "schema_version",
+        "ok",
+        "data",
+        "error",
+        "next"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "daily_update": {
+    "description": "Record a sourced daily review or explicit selected archive lifecycle. Approval queues only; begin is a separate fresh one-shot host boundary; unresolved outcomes never retry automatically. Does not apply to jobs or call mail connectors.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "mail_observations_path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "expected_source_sha256": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "record_review",
+            "approve_archive",
+            "begin_archive",
+            "record_archive_outcome",
+            "reconcile_archive",
+            "withdraw_archive"
+          ]
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "plan_id": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        "expected_plan_sha256": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        "selected_action_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "minItems": 1,
+          "maxItems": 50
+        },
+        "approved_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "approval_evidence": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "results": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 50,
+          "items": {
+            "type": "object",
+            "properties": {
+              "action_id": {
+                "type": "string",
+                "minLength": 64,
+                "maxLength": 64
+              },
+              "outcome": {
+                "type": "string",
+                "enum": [
+                  "archived",
+                  "failed",
+                  "outcome_unknown"
+                ]
+              },
+              "observed_message_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                },
+                "maxItems": 1000
+              },
+              "observed_labels": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                },
+                "maxItems": 1000
+              },
+              "label_changes": {
+                "type": "boolean"
+              },
+              "readback_source_path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "readback_source_sha256": {
+                "type": "string",
+                "minLength": 64,
+                "maxLength": 64
+              }
+            },
+            "required": [
+              "action_id",
+              "outcome"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        }
+      },
+      "required": [
+        "action",
+        "run_id",
+        "idempotency_key"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "integer",
+          "enum": [
+            2
+          ]
+        },
+        "ok": {
+          "type": "boolean"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "run_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "action": {
+                      "type": "string",
+                      "enum": [
+                        "record_review"
+                      ]
+                    },
+                    "plan_id": {
+                      "type": "string",
+                      "minLength": 64,
+                      "maxLength": 64
+                    },
+                    "archive_actions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "action_id": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          },
+                          "provider": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "mailbox_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "target_scope": {
+                            "type": "string",
+                            "enum": [
+                              "message",
+                              "thread"
+                            ]
+                          },
+                          "thread_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "message_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 2000
+                            },
+                            "maxItems": 1000
+                          },
+                          "category": {
+                            "type": "string",
+                            "enum": [
+                              "rejection",
+                              "application_confirmation",
+                              "reply_request",
+                              "information",
+                              "correspondence",
+                              "unknown"
+                            ]
+                          },
+                          "reason": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "requires_paged_review": {
+                            "type": "boolean"
+                          },
+                          "plan_id": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "queued",
+                              "started",
+                              "archived",
+                              "failed",
+                              "outcome_unknown",
+                              "withdrawn"
+                            ]
+                          },
+                          "run_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "approved_by": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "approved_at": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "approval_evidence": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "started_at": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "result_sha256": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          },
+                          "observed_final_state_only": {
+                            "type": "boolean",
+                            "enum": [
+                              true
+                            ]
+                          },
+                          "evidence": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 2000
+                            },
+                            "maxItems": 1000
+                          },
+                          "withdrawn_by": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "withdrawal_evidence": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "withdrawal_reason": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "withdrawn_at": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "label_changes": {
+                            "type": "boolean"
+                          },
+                          "label_differences": {
+                            "type": "object",
+                            "additionalProperties": true,
+                            "description": "Observed unrelated label drift by message ID. This is final-state evidence, not attribution of causation."
+                          },
+                          "readback": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 20000
+                              },
+                              "sha256": {
+                                "type": "string",
+                                "minLength": 64,
+                                "maxLength": 64
+                              },
+                              "original_path": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 20000
+                              },
+                              "observed_at": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "sha256",
+                              "original_path",
+                              "observed_at"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "plan_sha256": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          }
+                        },
+                        "required": [
+                          "action_id",
+                          "provider",
+                          "mailbox_id",
+                          "target_scope",
+                          "thread_id",
+                          "message_ids",
+                          "category",
+                          "reason",
+                          "plan_id",
+                          "status",
+                          "run_id",
+                          "approved_by",
+                          "approved_at",
+                          "approval_evidence"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 50
+                    },
+                    "external_actions": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "applications": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "plan_sha256": {
+                      "type": "string",
+                      "minLength": 64,
+                      "maxLength": 64
+                    },
+                    "archive_plan": {
+                      "type": "object",
+                      "properties": {
+                        "provider": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "mailbox_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "observed_at": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "coverage": {
+                          "type": "object",
+                          "properties": {
+                            "complete": {
+                              "type": "boolean"
+                            },
+                            "coverage": {
+                              "type": "object",
+                              "properties": {
+                                "source": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "observed_at": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "requested_period": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 20000
+                                },
+                                "pages_read": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 10000
+                                },
+                                "pagination_exhausted": {
+                                  "type": "boolean"
+                                },
+                                "failed_reads": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  },
+                                  "maxItems": 1000
+                                },
+                                "exclusions": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 2000
+                                  },
+                                  "maxItems": 1000
+                                },
+                                "checkpoint": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 20000
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "source",
+                                "observed_at",
+                                "requested_period",
+                                "pages_read",
+                                "pagination_exhausted",
+                                "failed_reads",
+                                "exclusions"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "missing": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "maxItems": 1000
+                            },
+                            "authority": {
+                              "type": "string",
+                              "enum": [
+                                "observed_scope_only"
+                              ]
+                            },
+                            "next": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 20000
+                            }
+                          },
+                          "required": [
+                            "complete"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "source": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 20000
+                            },
+                            "sha256": {
+                              "type": "string",
+                              "minLength": 64,
+                              "maxLength": 64
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "sha256"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "frozen_source": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 20000
+                            },
+                            "sha256": {
+                              "type": "string",
+                              "minLength": 64,
+                              "maxLength": 64
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "sha256"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "actions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "action_id": {
+                                "type": "string",
+                                "minLength": 64,
+                                "maxLength": 64
+                              },
+                              "provider": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "mailbox_id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "target_scope": {
+                                "type": "string",
+                                "enum": [
+                                  "message",
+                                  "thread"
+                                ]
+                              },
+                              "thread_id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "message_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "maxItems": 1000
+                              },
+                              "category": {
+                                "type": "string",
+                                "enum": [
+                                  "rejection",
+                                  "application_confirmation",
+                                  "reply_request",
+                                  "information",
+                                  "correspondence",
+                                  "unknown"
+                                ]
+                              },
+                              "reason": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 20000
+                              },
+                              "requires_paged_review": {
+                                "type": "boolean"
+                              },
+                              "archive_state": {
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "action_id": {
+                                        "type": "string",
+                                        "minLength": 64,
+                                        "maxLength": 64
+                                      },
+                                      "plan_id": {
+                                        "type": "string",
+                                        "minLength": 64,
+                                        "maxLength": 64
+                                      },
+                                      "plan_sha256": {
+                                        "anyOf": [
+                                          {
+                                            "type": "string",
+                                            "minLength": 64,
+                                            "maxLength": 64
+                                          },
+                                          {
+                                            "type": "null"
+                                          }
+                                        ]
+                                      },
+                                      "status": {
+                                        "type": "string",
+                                        "enum": [
+                                          "queued",
+                                          "started",
+                                          "archived",
+                                          "failed",
+                                          "outcome_unknown",
+                                          "withdrawn"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "action_id",
+                                      "plan_id",
+                                      "status"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "action_id",
+                              "provider",
+                              "mailbox_id",
+                              "target_scope",
+                              "thread_id",
+                              "message_ids",
+                              "category",
+                              "reason"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "maxItems": 1000
+                        },
+                        "plan_id": {
+                          "type": "string",
+                          "minLength": 64,
+                          "maxLength": 64
+                        },
+                        "plan_sha256": {
+                          "type": "string",
+                          "minLength": 64,
+                          "maxLength": 64
+                        },
+                        "actions_page": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "integer",
+                              "minimum": 0
+                            },
+                            "displayed": {
+                              "type": "integer",
+                              "minimum": 0
+                            },
+                            "has_more": {
+                              "type": "boolean"
+                            },
+                            "selection_scope": {
+                              "type": "string",
+                              "enum": [
+                                "only_targets_fully_displayed_in_communications_page"
+                              ]
+                            },
+                            "next_offset": {
+                              "anyOf": [
+                                {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "total"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "provider",
+                        "mailbox_id",
+                        "observed_at",
+                        "coverage",
+                        "source",
+                        "frozen_source",
+                        "actions",
+                        "plan_id",
+                        "plan_sha256",
+                        "actions_page"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "run_id",
+                    "action",
+                    "plan_id",
+                    "archive_actions",
+                    "external_actions",
+                    "applications",
+                    "plan_sha256",
+                    "archive_plan"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "run_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "action": {
+                      "type": "string",
+                      "enum": [
+                        "approve_archive",
+                        "withdraw_archive",
+                        "begin_archive",
+                        "record_archive_outcome",
+                        "reconcile_archive"
+                      ]
+                    },
+                    "plan_id": {
+                      "type": "string",
+                      "minLength": 64,
+                      "maxLength": 64
+                    },
+                    "archive_actions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "action_id": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          },
+                          "provider": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "mailbox_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "target_scope": {
+                            "type": "string",
+                            "enum": [
+                              "message",
+                              "thread"
+                            ]
+                          },
+                          "thread_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "message_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 2000
+                            },
+                            "maxItems": 1000
+                          },
+                          "category": {
+                            "type": "string",
+                            "enum": [
+                              "rejection",
+                              "application_confirmation",
+                              "reply_request",
+                              "information",
+                              "correspondence",
+                              "unknown"
+                            ]
+                          },
+                          "reason": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "requires_paged_review": {
+                            "type": "boolean"
+                          },
+                          "plan_id": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "queued",
+                              "started",
+                              "archived",
+                              "failed",
+                              "outcome_unknown",
+                              "withdrawn"
+                            ]
+                          },
+                          "run_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "approved_by": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "approved_at": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "approval_evidence": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "started_at": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "result_sha256": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          },
+                          "observed_final_state_only": {
+                            "type": "boolean",
+                            "enum": [
+                              true
+                            ]
+                          },
+                          "evidence": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 2000
+                            },
+                            "maxItems": 1000
+                          },
+                          "withdrawn_by": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "withdrawal_evidence": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "withdrawal_reason": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "withdrawn_at": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "label_changes": {
+                            "type": "boolean"
+                          },
+                          "label_differences": {
+                            "type": "object",
+                            "additionalProperties": true,
+                            "description": "Observed unrelated label drift by message ID. This is final-state evidence, not attribution of causation."
+                          },
+                          "readback": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 20000
+                              },
+                              "sha256": {
+                                "type": "string",
+                                "minLength": 64,
+                                "maxLength": 64
+                              },
+                              "original_path": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 20000
+                              },
+                              "observed_at": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "sha256",
+                              "original_path",
+                              "observed_at"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "plan_sha256": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          }
+                        },
+                        "required": [
+                          "action_id",
+                          "provider",
+                          "mailbox_id",
+                          "target_scope",
+                          "thread_id",
+                          "message_ids",
+                          "category",
+                          "reason",
+                          "plan_id",
+                          "status",
+                          "run_id",
+                          "approved_by",
+                          "approved_at",
+                          "approval_evidence"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 50
+                    },
+                    "external_actions": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "applications": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "approved_action_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 64,
+                        "maxLength": 64
+                      },
+                      "maxItems": 50
+                    },
+                    "withdrawn_action_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 64,
+                        "maxLength": 64
+                      },
+                      "maxItems": 50
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "queued",
+                        "started",
+                        "recorded",
+                        "withdrawn"
+                      ]
+                    },
+                    "permits": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "action_id": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          },
+                          "definition": {
+                            "type": "object",
+                            "properties": {
+                              "action_id": {
+                                "type": "string",
+                                "minLength": 64,
+                                "maxLength": 64
+                              },
+                              "provider": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "mailbox_id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "target_scope": {
+                                "type": "string",
+                                "enum": [
+                                  "message",
+                                  "thread"
+                                ]
+                              },
+                              "thread_id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "message_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "maxItems": 1000
+                              },
+                              "category": {
+                                "type": "string",
+                                "enum": [
+                                  "rejection",
+                                  "application_confirmation",
+                                  "reply_request",
+                                  "information",
+                                  "correspondence",
+                                  "unknown"
+                                ]
+                              },
+                              "reason": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 20000
+                              },
+                              "thread_message_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "maxItems": 1000
+                              },
+                              "latest_message_id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              },
+                              "request_message_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "maxItems": 1000
+                              },
+                              "replied_to_message_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 2000
+                                },
+                                "maxItems": 1000
+                              },
+                              "message_hashes": {
+                                "type": "object",
+                                "additionalProperties": true,
+                                "description": "Exact observed member ID to SHA256 mapping; validated against the frozen plan by the engine."
+                              },
+                              "before_labels": {
+                                "type": "object",
+                                "additionalProperties": true,
+                                "description": "Exact member ID to original label-array mapping, validated by the engine."
+                              },
+                              "inbox_label": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 2000
+                              }
+                            },
+                            "required": [
+                              "action_id",
+                              "provider",
+                              "mailbox_id",
+                              "target_scope",
+                              "thread_id",
+                              "message_ids",
+                              "category",
+                              "reason",
+                              "thread_message_ids",
+                              "latest_message_id",
+                              "request_message_ids",
+                              "replied_to_message_ids",
+                              "message_hashes",
+                              "before_labels",
+                              "inbox_label"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "ready_for_single_archive": {
+                            "type": "boolean",
+                            "enum": [
+                              true
+                            ]
+                          }
+                        },
+                        "required": [
+                          "action_id",
+                          "definition",
+                          "ready_for_single_archive"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 50
+                    },
+                    "ready_for_single_archive": {
+                      "type": "boolean"
+                    },
+                    "replayed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "run_id",
+                    "action",
+                    "plan_id",
+                    "archive_actions",
+                    "external_actions",
+                    "applications",
+                    "approved_action_ids",
+                    "status",
+                    "permits",
+                    "ready_for_single_archive"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "retryable": {
+                  "type": "boolean"
+                },
+                "recovery": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message",
+                "retryable",
+                "recovery"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "next": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tool": {
+                "type": "string"
+              },
+              "arguments": {
+                "type": "object"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "tool",
+              "arguments",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 5
+        }
+      },
+      "required": [
+        "schema_version",
+        "ok",
+        "data",
+        "error",
+        "next"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "begin_mail_archive": {
+    "description": "Begin an explicitly human-confirmed mail archive once after fresh host readback. Returns a one-shot permit only for the selected unchanged targets; the host performs the mail action and records its outcome through daily_update. Never batch or blindly retry this boundary.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "plan_id": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        "expected_plan_sha256": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        "selected_action_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "minItems": 1,
+          "maxItems": 50
+        },
+        "mail_observations_path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+        },
+        "expected_source_sha256": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "run_id",
+        "idempotency_key",
+        "plan_id",
+        "expected_plan_sha256",
+        "selected_action_ids",
+        "mail_observations_path",
+        "expected_source_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "outputSchema": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "integer",
+          "enum": [
+            2
+          ]
+        },
+        "ok": {
+          "type": "boolean"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "run_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                },
+                "action": {
+                  "type": "string",
+                  "enum": [
+                    "begin_archive"
+                  ]
+                },
+                "plan_id": {
+                  "type": "string",
+                  "minLength": 64,
+                  "maxLength": 64
+                },
+                "approved_action_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 64,
+                    "maxLength": 64
+                  },
+                  "maxItems": 50
+                },
+                "archive_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "action_id": {
+                        "type": "string",
+                        "minLength": 64,
+                        "maxLength": 64
+                      },
+                      "plan_id": {
+                        "type": "string",
+                        "minLength": 64,
+                        "maxLength": 64
+                      },
+                      "plan_sha256": {
+                        "type": "string",
+                        "minLength": 64,
+                        "maxLength": 64
+                      },
+                      "provider": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "mailbox_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "target_scope": {
+                        "type": "string",
+                        "enum": [
+                          "message",
+                          "thread"
+                        ]
+                      },
+                      "thread_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "message_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "maxItems": 1000
+                      },
+                      "category": {
+                        "type": "string",
+                        "enum": [
+                          "rejection",
+                          "application_confirmation",
+                          "reply_request",
+                          "information",
+                          "correspondence",
+                          "unknown"
+                        ]
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "queued",
+                          "started",
+                          "archived",
+                          "failed",
+                          "outcome_unknown",
+                          "withdrawn"
+                        ]
+                      },
+                      "run_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "approved_by": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "approved_at": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      "approval_evidence": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20000
+                      },
+                      "started_at": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      }
+                    },
+                    "required": [
+                      "action_id",
+                      "provider",
+                      "mailbox_id",
+                      "target_scope",
+                      "thread_id",
+                      "message_ids",
+                      "category",
+                      "reason",
+                      "plan_id",
+                      "status",
+                      "run_id",
+                      "approved_by",
+                      "approved_at",
+                      "approval_evidence"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 50
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "started"
+                  ]
+                },
+                "permits": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "action_id": {
+                        "type": "string",
+                        "minLength": 64,
+                        "maxLength": 64
+                      },
+                      "definition": {
+                        "type": "object",
+                        "properties": {
+                          "action_id": {
+                            "type": "string",
+                            "minLength": 64,
+                            "maxLength": 64
+                          },
+                          "provider": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "mailbox_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "target_scope": {
+                            "type": "string",
+                            "enum": [
+                              "message",
+                              "thread"
+                            ]
+                          },
+                          "thread_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "message_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 2000
+                            },
+                            "maxItems": 1000
+                          },
+                          "category": {
+                            "type": "string",
+                            "enum": [
+                              "rejection",
+                              "application_confirmation",
+                              "reply_request",
+                              "information",
+                              "correspondence",
+                              "unknown"
+                            ]
+                          },
+                          "reason": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20000
+                          },
+                          "thread_message_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 2000
+                            },
+                            "maxItems": 1000
+                          },
+                          "latest_message_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          },
+                          "request_message_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 2000
+                            },
+                            "maxItems": 1000
+                          },
+                          "replied_to_message_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 2000
+                            },
+                            "maxItems": 1000
+                          },
+                          "message_hashes": {
+                            "type": "object",
+                            "additionalProperties": true,
+                            "description": "Exact observed member ID to SHA256 mapping; validated against the frozen plan by the engine."
+                          },
+                          "before_labels": {
+                            "type": "object",
+                            "additionalProperties": true,
+                            "description": "Exact member ID to original label-array mapping, validated by the engine."
+                          },
+                          "inbox_label": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          }
+                        },
+                        "required": [
+                          "action_id",
+                          "provider",
+                          "mailbox_id",
+                          "target_scope",
+                          "thread_id",
+                          "message_ids",
+                          "category",
+                          "reason",
+                          "thread_message_ids",
+                          "latest_message_id",
+                          "request_message_ids",
+                          "replied_to_message_ids",
+                          "message_hashes",
+                          "before_labels",
+                          "inbox_label"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "ready_for_single_archive": {
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ]
+                      }
+                    },
+                    "required": [
+                      "action_id",
+                      "definition",
+                      "ready_for_single_archive"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 50
+                },
+                "ready_for_single_archive": {
+                  "type": "boolean"
+                },
+                "external_actions": {
+                  "type": "boolean",
+                  "enum": [
+                    false
+                  ]
+                },
+                "applications": {
+                  "type": "boolean",
+                  "enum": [
+                    false
+                  ]
+                },
+                "replayed": {
+                  "type": "boolean"
+                },
+                "withdrawn_action_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 64,
+                    "maxLength": 64
+                  },
+                  "maxItems": 0
+                }
+              },
+              "required": [
+                "run_id",
+                "action",
+                "plan_id",
+                "archive_actions",
+                "external_actions",
+                "applications",
+                "approved_action_ids",
+                "status",
+                "permits",
+                "ready_for_single_archive"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "retryable": {
+                  "type": "boolean"
+                },
+                "recovery": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message",
+                "retryable",
+                "recovery"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "next": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tool": {
+                "type": "string"
+              },
+              "arguments": {
+                "type": "object"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "tool",
+              "arguments",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 5
+        }
+      },
+      "required": [
+        "schema_version",
+        "ok",
+        "data",
+        "error",
+        "next"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
       "destructiveHint": false,
       "idempotentHint": true,
       "openWorldHint": false

@@ -44,7 +44,9 @@ impl Engine {
             .filter(|a| a["run_id"] == id)
             .cloned()
             .collect();
-        Ok(json!({"run":run,"attempts":attempts}))
+        Ok(
+            json!({"run":run,"attempts":attempts,"archive_actions":pending_mail_actions(state).into_iter().filter(|row|row["run_id"]==id).take(100).map(|row|daily::public_archive_row(&row)).collect::<Vec<_>>()}),
+        )
     }
     pub(super) fn events(&self, args: &Value, state: &Value) -> Result<Value> {
         let rows: Vec<Value> = state["events"]
@@ -74,10 +76,13 @@ impl Engine {
             a["run_id"] == id
                 && SubmissionState::parse(&a["status"]).is_ok_and(SubmissionState::unresolved)
         });
-        if args["status"] == "completed" && active {
+        let unresolved_mail = pending_mail_actions(state)
+            .iter()
+            .any(|row| row["run_id"] == id && row["status"] != "queued");
+        if args["status"] == "completed" && (active || unresolved_mail) {
             return Err(Error::new(
                 "invalid_state",
-                "Cannot complete a run with unresolved submission attempts",
+                "Cannot complete a run with unresolved external action attempts",
             ));
         }
         for key in ["status", "summary", "evidence"] {

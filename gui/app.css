@@ -478,6 +478,75 @@ tbody tr:hover {
   display: inline-block;
   margin-bottom: 5px;
 }
+.daily-overview {
+  padding: 0 0 var(--space-4);
+  border-bottom: 1px solid var(--line);
+}
+.daily-overview h3,
+.daily-group h3 {
+  margin: 0 0 var(--space-2);
+  font-size: 13px;
+  font-weight: 600;
+}
+.daily-overview p,
+.daily-item p {
+  margin: 5px 0;
+  line-height: 1.5;
+}
+.daily-source + .daily-source {
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--soft-line);
+}
+.daily-group {
+  margin-top: 22px;
+}
+.daily-group-count {
+  margin-left: 8px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.daily-item {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--soft-line);
+}
+.daily-item-title {
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.daily-item .related {
+  margin: 8px 0 0;
+  gap: 10px;
+}
+.daily-item .related button,
+.daily-item .external {
+  font-size: 12px;
+}
+.daily-archive-choice {
+  display: grid;
+  grid-template-columns: 15px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+.daily-archive-choice input {
+  margin-top: 2px;
+}
+.daily-approval {
+  padding: var(--space-3);
+  margin-top: var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--inset);
+}
+.daily-request {
+  width: 100%;
+  min-height: 106px;
+  resize: vertical;
+  line-height: 1.5;
+}
+.daily-mail-state {
+  color: var(--text);
+}
 .search-results {
   margin: 0 0 16px;
 }

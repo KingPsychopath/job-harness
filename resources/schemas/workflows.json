@@ -178,6 +178,46 @@
             "result"
           ],
           "additionalProperties": false
+        },
+        "daily_check": {
+          "type": "object",
+          "properties": {
+            "skill": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "result": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "skill",
+            "result"
+          ],
+          "additionalProperties": false
+        },
+        "daily_update": {
+          "type": "object",
+          "properties": {
+            "skill": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "result": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "skill",
+            "result"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [

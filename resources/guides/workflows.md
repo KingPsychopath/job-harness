@@ -7,6 +7,7 @@ Choose the work you need now. An agent bootstraps the closest operation, inspect
 | Building experience | Recent work, project links, learning and feedback | “Save this rough note and connect it to my project.” |
 | Exploring a move | Preferences, evidence gaps and selected opportunities | “Help me prepare for a move using what I have already recorded.” |
 | Searching | Applications, replies, interviews and next actions | “Review what needs me, then handle these suitable roles.” |
+| Daily recruiting review | Replies, general recruiter conversations and progress | “Check what needs me and prepare archive candidates for my review; do not apply.” |
 | Starting somewhere | New responsibilities, goals, milestones and learning | “Review my first month and help me capture useful examples.” |
 
 These views can overlap. They never infer employment status or change facts. A selected presentation belongs to the current request, not an identity label.
@@ -26,6 +27,10 @@ Read current preferences and answer sources. Retrieve relevant projects, prior i
 ## Prepare an application
 
 Bootstrap `apply`, check duplicates and read the exact vacancy. Use `workflow_check` for scoped answers and current form readback; `preview_packet` shows exact artifacts and changes. `prepare_application` freezes/reserves once. After a fresh check, begin once, submit once through the host, and finish with actual confirmation or `outcome_unknown`. A repeated begin cannot grant another submit. Saved authorization carries through ordinary preparation; tools do not grant new authority.
+
+## Review the day
+
+Use `daily_check` or `jh daily check` for saved state, or supply fresh host mail observations for an actual scanned period. Bring general recruiter conversations forward even without a vacancy record. `daily_update` records reviewed evidence and exact role changes; it does not apply or send replies. Archive work needs a frozen human-confirmed selection, fresh readback, a one-shot host action and verified outcomes. [Daily guide and task prompts](daily-review.md)
 
 ## Prepare for or debrief an interview
 

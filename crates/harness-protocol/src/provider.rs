@@ -45,10 +45,12 @@ fn model_tool(name: &str) -> bool {
     !matches!(
         name,
         "begin_submission"
+            | "begin_mail_archive"
             | "finish_submission"
             | "update_application"
             | "accept_note"
             | "archive_note"
+            | "daily_update"
     )
 }
 fn model_call(name: &str, args: &Value) -> bool {
@@ -400,6 +402,28 @@ mod tests {
         assert!(endpoint("https://user:password@example.test/v1").is_err());
         assert!(endpoint("https://example.test/v1?key=value").is_err());
         assert!(endpoint("http://127.0.0.1:11434/v1").is_ok());
+    }
+    #[test]
+    fn model_sessions_cannot_approve_or_report_mail_actions_even_inside_batches() {
+        assert!(!model_tool("daily_update"));
+        for action in [
+            "approve_archive",
+            "begin_archive",
+            "record_review",
+            "record_archive_outcome",
+            "reconcile_archive",
+            "withdraw_archive",
+        ] {
+            let args = json!({"action":action});
+            assert!(!model_call("daily_update", &args));
+            assert!(!model_call(
+                "execute_batch",
+                &json!({"steps":[{
+                    "id":"hidden", "tool":"daily_update", "arguments":args
+                }]})
+            ));
+        }
+        assert!(model_call("daily_check", &json!({})));
     }
     async fn fake_write(
         State(count): State<Arc<AtomicUsize>>,

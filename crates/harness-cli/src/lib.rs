@@ -1,5 +1,6 @@
 //! Native CLI: compact JSON for piping; help and progress never contaminate MCP.
 mod context;
+mod daily;
 pub mod host;
 mod onboarding;
 mod presentation;
@@ -70,6 +71,11 @@ enum Command {
     Status {
         #[arg(long)]
         json: bool,
+    },
+    /// Check daily recruiting progress or record reviewed local updates; no applications or implicit mail actions.
+    Daily {
+        #[command(subcommand)]
+        action: daily::DailyCommand,
     },
     /// Explicit supplied-file preservation; never imports career facts automatically.
     Source {
@@ -451,6 +457,7 @@ async fn execute(cli: Cli) -> anyhow::Result<Option<Value>> {
             return Ok(None);
         }
         Command::Source { action } => presentation::source(&root, action)?,
+        Command::Daily { action } => return Ok(Some(daily::execute(&root, action)?)),
         Command::Document { action } => presentation::document(&root, action)?,
         Command::Init => job_harness_core::workspace::initialize(&root)?,
         Command::Pipeline { check } => {
