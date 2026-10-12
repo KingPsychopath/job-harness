@@ -3,6 +3,7 @@ use crate::{HarnessError, Result};
 use serde_json::{Value, json};
 use std::{
     fs,
+    io::Read,
     path::{Component, Path, PathBuf},
 };
 
@@ -320,7 +321,7 @@ pub fn validate_settings(value: &Value) -> Result<()> {
         }
     }
     if let Some(cv) = value["primary_cv"].as_str() {
-        validate_relative_data(cv, &["output", "applications", "content"], Some("pdf"))?;
+        validate_cv_path(cv)?;
     }
     if let Some(answers) = object.get("answer_sources") {
         let answers = answers
@@ -359,6 +360,74 @@ pub fn validate_relative_data(path: &str, roots: &[&str], extension: Option<&str
     Ok(())
 }
 
+/// Only exact PDF paths emitted by source import may extend the CV namespace.
+/// This does not select the PDF or approve any claims in it.
+pub(crate) fn imported_cv_sha256(path: &str) -> Option<&str> {
+    let parts = path.split('/').collect::<Vec<_>>();
+    let ["sources", "imports", sha256, filename] = parts.as_slice() else {
+        return None;
+    };
+    if sha256.len() != 64
+        || !sha256
+            .bytes()
+            .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+        || filename.starts_with('.')
+        || filename.len() > 200
+        || !Path::new(filename)
+            .extension()
+            .and_then(|s| s.to_str())
+            .is_some_and(|ext| ext.eq_ignore_ascii_case("pdf"))
+        || !crate::bundle::allowed_path(path)
+    {
+        return None;
+    }
+    Some(sha256)
+}
+
+fn validate_cv_path(path: &str) -> Result<()> {
+    if imported_cv_sha256(path).is_some() {
+        Ok(())
+    } else {
+        validate_relative_data(path, &["output", "applications", "content"], Some("pdf"))
+    }
+}
+
+pub(crate) fn cv_path(root: &Path, relative: &str) -> Result<PathBuf> {
+    validate_cv_path(relative)?;
+    let imported_sha256 = imported_cv_sha256(relative);
+    let roots = if imported_sha256.is_some() {
+        &["sources"][..]
+    } else {
+        &["output", "applications", "content"][..]
+    };
+    let extension = format!(
+        ".{}",
+        Path::new(relative)
+            .extension()
+            .and_then(|s| s.to_str())
+            .unwrap_or("pdf")
+    );
+    let path = crate::storage::safe_path(root, relative, roots, &[&extension])?;
+    if let Some(expected) = imported_sha256
+        && path.is_file()
+    {
+        let mut bytes = Vec::new();
+        fs::File::open(&path)?
+            .take(30_000_001)
+            .read_to_end(&mut bytes)?;
+        if bytes.len() > 30_000_000 {
+            return Err(HarnessError::validation("CV artifact exceeds 30 MB"));
+        }
+        if !bytes.starts_with(b"%PDF-") || crate::storage::digest(&bytes) != expected {
+            return Err(HarnessError::new(
+                "artifact_changed",
+                "This saved CV has changed since import. Keep the original record and import the reviewed replacement as a new file.",
+            ));
+        }
+    }
+    Ok(path)
+}
+
 pub fn validate(root: &Path) -> Result<Value> {
     let settings = settings(root)?;
     let mut missing = Vec::new();
@@ -368,7 +437,7 @@ pub fn validate(root: &Path) -> Result<Value> {
         }
     }
     let cv_present = match settings["primary_cv"].as_str() {
-        Some(cv) => safe_path(root, cv)?.is_file(),
+        Some(cv) => cv_path(root, cv)?.is_file(),
         None => false,
     };
     Ok(
@@ -548,6 +617,34 @@ mod tests {
         assert!(safe_path(t.path(), "/etc/passwd").is_err());
         assert!(validate_settings(&json!({"schema_version":1,"primary_cv":"../cv.pdf"})).is_err());
         assert!(validate_settings(&json!({"schema_version":1,"answer_sources":[17]})).is_err());
+    }
+    #[test]
+    fn retained_cv_namespace_does_not_open_other_sources_or_path_aliases() {
+        let sha256 = "a".repeat(64);
+        for filename in ["cv.pdf", "Fictional résumé.PDF"] {
+            let path = format!("sources/imports/{sha256}/{filename}");
+            assert_eq!(imported_cv_sha256(&path), Some(sha256.as_str()));
+            assert!(validate_settings(&json!({"schema_version":1,"primary_cv":path})).is_ok());
+        }
+        for path in [
+            "sources/cv.pdf".to_owned(),
+            format!("sources/other/{sha256}/cv.pdf"),
+            format!("sources/imports/{sha256}/nested/cv.pdf"),
+            format!("sources/imports/{sha256}/cv.pdf.provenance.json"),
+            format!("sources/imports/{sha256}/answers.md"),
+            format!("sources/imports/{sha256}/.hidden.pdf"),
+            format!("sources/imports/{sha256}/id_private.pdf"),
+            format!("sources/imports/{sha256}/CON.pdf"),
+            format!("sources/imports/{sha256}/cv.pdf:stream"),
+            format!("sources/imports/{sha256}/../cv.pdf"),
+            format!("sources/imports/{}/cv.pdf", "g".repeat(64)),
+            format!("sources/imports/{}/cv.pdf", "A".repeat(64)),
+            format!("sources\\imports\\{sha256}\\cv.pdf"),
+            format!("//server/share/sources/imports/{sha256}/cv.pdf"),
+        ] {
+            assert!(imported_cv_sha256(&path).is_none(), "{path}");
+            assert!(validate_settings(&json!({"schema_version":1,"primary_cv":path})).is_err());
+        }
     }
     #[test]
     fn generic_resources_are_embedded() {

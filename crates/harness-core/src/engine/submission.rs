@@ -3,20 +3,23 @@ use super::*;
 
 impl Engine {
     pub(super) fn copy_artifact(&self, source: &str, folder: &str) -> Result<Value> {
-        let path = self.safe_path(
-            source,
-            ARTIFACT_ROOTS,
-            &["pdf", "md", "txt", "json", "jpg", "png"],
-        )?;
+        let path = self.artifact_path(source, &["pdf", "md", "txt", "json", "jpg", "png"])?;
         let bytes = fs::read(&path)?;
         if bytes.len() > 30_000_000 {
             return Err(Error::new("invalid_arguments", "Artifact exceeds 30 MB"));
         }
         let sha = domain::digest(&bytes);
+        if workspace::imported_cv_sha256(source).is_some_and(|expected| expected != sha) {
+            return Err(Error::new(
+                "artifact_changed",
+                "The saved CV changed while preparing application materials. Review and import the intended CV again.",
+            ));
+        }
         let ext = path
             .extension()
             .and_then(|x| x.to_str())
-            .unwrap_or_default();
+            .unwrap_or_default()
+            .to_ascii_lowercase();
         let rel = format!("applications/operations/{folder}/{sha}.{ext}");
         let target = self.safe_path(
             &rel,
@@ -80,7 +83,7 @@ impl Engine {
         if Path::new(s(args, "cv_path")?)
             .extension()
             .and_then(|x| x.to_str())
-            != Some("pdf")
+            .is_none_or(|ext| !ext.eq_ignore_ascii_case("pdf"))
             || !["md", "txt", "json"].contains(
                 &Path::new(s(args, "answers_path")?)
                     .extension()

@@ -25,7 +25,7 @@ impl Engine {
             .parse::<chrono_tz::Tz>()
             .map_err(|_| Error::new("invalid_arguments", "Configure an IANA timezone"))?;
         if !settings["primary_cv"].is_null() {
-            self.safe_path(s(&settings, "primary_cv")?, ARTIFACT_ROOTS, &["pdf"])?;
+            self.artifact_path(s(&settings, "primary_cv")?, &["pdf"])?;
         }
         if !settings["preferred_browser"].is_null() {
             s(&settings, "preferred_browser")?;
@@ -168,7 +168,7 @@ impl Engine {
         if args["operation"] == "apply" {
             let cv = &settings["primary_cv"];
             if cv.as_str().is_none_or(|s| {
-                self.safe_path(s, ARTIFACT_ROOTS, &["pdf"])
+                self.artifact_path(s, &["pdf"])
                     .map_or(true, |p| !p.is_file())
             }) {
                 issues.push(json!({"code":"missing_primary_cv","path":cv,"message":"Configure primary_cv and supply the approved PDF before preparing an application."}));

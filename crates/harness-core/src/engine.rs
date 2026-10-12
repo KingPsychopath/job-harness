@@ -169,6 +169,13 @@ impl Engine {
     fn text_path(&self, rel: &str) -> Result<PathBuf> {
         self.safe_path(rel, READ_ROOTS, &["md", "json"])
     }
+    fn artifact_path(&self, rel: &str, extensions: &[&str]) -> Result<PathBuf> {
+        if workspace::imported_cv_sha256(rel).is_some() && extensions.contains(&"pdf") {
+            workspace::cv_path(&self.root, rel)
+        } else {
+            self.safe_path(rel, ARTIFACT_ROOTS, extensions)
+        }
+    }
     fn record_path(&self, rel: &str, exists: bool) -> Result<PathBuf> {
         let path = self.safe_path(rel, &["applications"], &["md"])?;
         storage::reject_symlink_ancestors(&path)?;
@@ -300,11 +307,9 @@ impl Engine {
             if tool == "prepare_packet" {
                 self.validate_answer_sources(&prior["result"]["packet"], "artifact_changed")?;
                 for (field, path) in [("cv", "cv_path"), ("answers", "answers_path")] {
-                    let bytes = fs::read(self.safe_path(
-                        s(args, path)?,
-                        ARTIFACT_ROOTS,
-                        &["pdf", "md", "txt", "json"],
-                    )?)?;
+                    let bytes = fs::read(
+                        self.artifact_path(s(args, path)?, &["pdf", "md", "txt", "json"])?,
+                    )?;
                     if json!(domain::digest(&bytes)) != prior["result"]["packet"][field]["sha256"] {
                         return Err(Error::new(
                             "artifact_changed",
