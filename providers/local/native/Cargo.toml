@@ -1,0 +1,23 @@
+[package]
+name = "job-harness-local"
+version = "0.2.0"
+edition = "2024"
+rust-version = "1.88"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order", "float_roundtrip"] }
+libloading = "0.8"
+libc = "0.2"
+sha2 = "0.10"
+hex = "0.4"
+zip = { version = "4", default-features = false, features = ["deflate"] }
+tokenizers = { version = "0.22", default-features = false, features = ["onig"] }
+tempfile = "3"
+ureq = { version = "3", default-features = false, features = ["rustls"] }
+regex = "1"
+ctrlc = { version = "3", features = ["termination"] }

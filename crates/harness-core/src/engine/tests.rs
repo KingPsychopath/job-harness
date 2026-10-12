@@ -1192,3 +1192,50 @@ fn workflow_child_schemas_are_discoverable_and_validate_before_execution() {
             .exists()
     );
 }
+
+#[test]
+fn reviewed_tracking_move_refuses_manual_edit_and_keeps_canonical_state() {
+    let directory = fixture();
+    let engine = Engine::open(directory.path()).unwrap();
+    let run = start(&engine, 1);
+    let record = "applications/acme-engineer-123.md";
+    let original = call(&engine, "read_record", json!({"path":record}));
+    let path = directory.path().join(record);
+    fs::write(
+        &path,
+        format!(
+            "{}\nA newer manual note must survive.\n",
+            original["text"].as_str().unwrap()
+        ),
+    )
+    .unwrap();
+    let before_record = fs::read(&path).unwrap();
+    let before_state =
+        fs::read(directory.path().join("applications/operations/state.json")).unwrap();
+    let arguments = json!({"run_id":run,"record":record,"tracking":{"stage":"screening","checked":"2026-10-12","next_action":"Prepare confirmed screening"},"summary":"Explicit synthetic reviewed move","evidence":["https://example.test/reviewed-instruction"],"expected_record_sha256":original["sha256"],"idempotency_key":"reviewed-move"});
+    let stale = engine.call("update_application", &arguments);
+    assert_eq!(stale["error"]["code"], "stale_record");
+    assert_eq!(fs::read(&path).unwrap(), before_record);
+    assert_eq!(
+        fs::read(directory.path().join("applications/operations/state.json")).unwrap(),
+        before_state
+    );
+    let fresh = call(&engine, "read_record", json!({"path":record}));
+    let mut current = arguments.clone();
+    current["expected_record_sha256"] = fresh["sha256"].clone();
+    assert_eq!(
+        call(&engine, "update_application", current.clone())["tracking"]["stage"],
+        "screening"
+    );
+    let committed = fs::read(&path).unwrap();
+    call(&engine, "update_application", current);
+    assert_eq!(fs::read(&path).unwrap(), committed);
+    let mut invalid = arguments;
+    invalid["expected_record_sha256"] = json!("g".repeat(64));
+    invalid["idempotency_key"] = json!("invalid-hash");
+    assert_eq!(
+        engine.call("update_application", &invalid)["error"]["code"],
+        "invalid_arguments"
+    );
+    assert_eq!(fs::read(&path).unwrap(), committed);
+}

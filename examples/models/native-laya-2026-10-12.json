@@ -1,0 +1,1627 @@
+{
+  "measurement_date": "2026-10-12",
+  "scope": "Real native HTTP/Rust feasibility smoke: six fictional cases and two option orders; no private facts, quality ranking, actions or downloads.",
+  "fixture_sha256": "b9b1b90236a175c897644f4a68f7bf82b9645fe7050ec29e740a71a4130513e1",
+  "model": "laya-s256",
+  "revision": "gcs-1791231584156797",
+  "health": {
+    "ok": true,
+    "native": true,
+    "python_runtime": false,
+    "worker": {
+      "ok": true,
+      "load_ms": {
+        "embeddinggemma2-text": 150.299292,
+        "laya-s256": 916.6036250000001
+      },
+      "worker_peak_rss_bytes": 1918369792,
+      "native": true,
+      "python_runtime": false,
+      "core_dump_limit_bytes": 0,
+      "host_credentials_inherited": false,
+      "isolation": "fresh environment, temporary working directory, bounded JSON IPC; native process retains same UID filesystem and network rights"
+    }
+  },
+  "raw_cases": [
+    {
+      "id": "receipt",
+      "order": "original",
+      "truth": {
+        "label": "receipt",
+        "needs_reply": false
+      },
+      "raw_decision": {
+        "model": "laya-s256",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "receipt",
+            "probabilities": {
+              "receipt": 0.8434708714485168,
+              "rejection": 0.15204989910125732,
+              "other": 0.00162769656162709,
+              "scheduling": 0.0017289682291448116,
+              "assessment": 0.0011225712951272726
+            },
+            "confidence": 0.7147767543792725
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.42136350274086,
+            "confidence": 0.15727299451828003,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.42136350274086,
+            "confidence": 0.15727299451828003,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "urgent",
+            "probabilities": {
+              "urgent": 0.7822585105895996,
+              "review": 0.05435975641012192,
+              "normal": 0.16338175535202026
+            },
+            "confidence": 0.41162583231925964
+          },
+          "priority": {
+            "type": "score",
+            "value": 1.179019808769226,
+            "level": "2",
+            "probabilities": [
+              0.27412936091423035,
+              0.2727214992046356,
+              0.4531491696834564
+            ],
+            "confidence": 0.028049252927303314,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "model_revision": "gcs-1791231584156797",
+        "metrics": {
+          "elapsed_ms": 364.6045,
+          "worker_peak_rss_bytes": 1918418944
+        }
+      },
+      "first_shape_http_ms": 483.533667,
+      "warm_repeat_http_ms": 365.589667
+    },
+    {
+      "id": "receipt",
+      "order": "reversed",
+      "truth": {
+        "label": "receipt",
+        "needs_reply": false
+      },
+      "raw_decision": {
+        "model": "laya-s256",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "receipt",
+            "probabilities": {
+              "rejection": 0.0021427420433610678,
+              "assessment": 0.0002466019941493869,
+              "receipt": 0.997096061706543,
+              "scheduling": 0.00024784167180769145,
+              "other": 0.00026674868422560394
+            },
+            "confidence": 0.9861007928848267
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.42136350274086,
+            "confidence": 0.15727299451828003,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.42136350274086,
+            "confidence": 0.15727299451828003,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "urgent",
+            "probabilities": {
+              "review": 0.07132227718830109,
+              "urgent": 0.7784352898597717,
+              "normal": 0.15024244785308838
+            },
+            "confidence": 0.3918788731098175
+          },
+          "priority": {
+            "type": "score",
+            "value": 1.179019808769226,
+            "level": "2",
+            "probabilities": [
+              0.27412936091423035,
+              0.2727214992046356,
+              0.4531491696834564
+            ],
+            "confidence": 0.028049252927303314,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "model_revision": "gcs-1791231584156797",
+        "metrics": {
+          "elapsed_ms": 337.383084,
+          "worker_peak_rss_bytes": 1918418944
+        }
+      },
+      "first_shape_http_ms": 360.268875,
+      "warm_repeat_http_ms": 338.346917
+    },
+    {
+      "id": "rejection",
+      "order": "original",
+      "truth": {
+        "label": "rejection",
+        "needs_reply": false
+      },
+      "raw_decision": {
+        "model": "laya-s256",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "rejection",
+            "probabilities": {
+              "receipt": 0.00045549526112154126,
+              "assessment": 0.00017628923524171114,
+              "other": 0.00021003135771024972,
+              "rejection": 0.9989709854125977,
+              "scheduling": 0.0001872241700766608
+            },
+            "confidence": 0.9941330552101135
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.2472425401210785,
+            "confidence": 0.505514919757843,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.2472425401210785,
+            "confidence": 0.505514919757843,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "urgent",
+            "probabilities": {
+              "review": 0.07543803006410599,
+              "urgent": 0.5158128142356873,
+              "normal": 0.40874916315078735
+            },
+            "confidence": 0.1788475215435028
+          },
+          "priority": {
+            "type": "score",
+            "value": 0.9049569368362427,
+            "level": "0",
+            "probabilities": [
+              0.41126641631126404,
+              0.27251020073890686,
+              0.3162233829498291
+            ],
+            "confidence": 0.013509267941117287,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "model_revision": "gcs-1791231584156797",
+        "metrics": {
+          "elapsed_ms": 292.736667,
+          "worker_peak_rss_bytes": 1918418944
+        }
+      },
+      "first_shape_http_ms": 289.911042,
+      "warm_repeat_http_ms": 293.654958
+    },
+    {
+      "id": "rejection",
+      "order": "reversed",
+      "truth": {
+        "label": "rejection",
+        "needs_reply": false
+      },
+      "raw_decision": {
+        "model": "laya-s256",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "rejection",
+            "probabilities": {
+              "receipt": 0.011969152837991714,
+              "rejection": 0.9867599606513977,
+              "other": 0.0004910600837320089,
+              "scheduling": 0.0004388689121697098,
+              "assessment": 0.00034097133902832866
+            },
+            "confidence": 0.9527927041053772
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.2472425401210785,
+            "confidence": 0.505514919757843,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.2472425401210785,
+            "confidence": 0.505514919757843,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "urgent",
+            "probabilities": {
+              "normal": 0.23963913321495056,
+              "urgent": 0.7027397155761719,
+              "review": 0.05762115865945816
+            },
+            "confidence": 0.31304144859313965
+          },
+          "priority": {
+            "type": "score",
+            "value": 0.9049569368362427,
+            "level": "0",
+            "probabilities": [
+              0.41126641631126404,
+              0.27251020073890686,
+              0.3162233829498291
+            ],
+            "confidence": 0.013509267941117287,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "model_revision": "gcs-1791231584156797",
+        "metrics": {
+          "elapsed_ms": 322.3335,
+          "worker_peak_rss_bytes": 1918418944
+        }
+      },
+      "first_shape_http_ms": 286.88075000000003,
+      "warm_repeat_http_ms": 323.495708
+    },
+    {
+      "id": "scheduling",
+      "order": "original",
+      "truth": {
+        "label": "scheduling",
+        "needs_reply": true
+      },
+      "raw_decision": {
+        "model": "laya-s256",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "scheduling",
+            "probabilities": {
+              "rejection": 0.06598690152168274,
+              "assessment": 0.009274695999920368,
+              "scheduling": 0.8576719164848328,
+              "other": 0.042883411049842834,
+              "receipt": 0.024183062836527824
+            },
+            "confidence": 0.6399197578430176
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.5039452314376831,
+            "confidence": 0.007890462875366211,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": true,
+            "probability_true": 0.5039452314376831,
+            "confidence": 0.007890462875366211,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "urgent": 0.33025509119033813,
+              "review": 0.30270084738731384,
+              "normal": 0.367044061422348
+            },
+            "confidence": 0.0028371389489620924
+          },
+          "priority": {
+            "type": "score",
+            "value": 1.0019338130950928,
+            "level": "1",
+            "probabilities": [
+              0.27671879529953003,
+              0.44462865591049194,
+              0.278652548789978
+            ],
+            "confidence": 0.024266060441732407,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "model_revision": "gcs-1791231584156797",
+        "metrics": {
+          "elapsed_ms": 290.03420800000004,
+          "worker_peak_rss_bytes": 1918418944
+        }
+      },
+      "first_shape_http_ms": 289.65941699999996,
+      "warm_repeat_http_ms": 291.10975
+    },
+    {
+      "id": "scheduling",
+      "order": "reversed",
+      "truth": {
+        "label": "scheduling",
+        "needs_reply": true
+      },
+      "raw_decision": {
+        "model": "laya-s256",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "scheduling",
+            "probabilities": {
+              "scheduling": 0.8706591725349426,
+              "assessment": 0.009700301103293896,
+              "rejection": 0.029445622116327286,
+              "other": 0.04365403950214386,
+              "receipt": 0.046540867537260056
+            },
+            "confidence": 0.6589986085891724
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.5039452314376831,
+            "confidence": 0.007890462875366211,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": true,
+            "probability_true": 0.5039452314376831,
+            "confidence": 0.007890462875366211,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "normal": 0.4355752170085907,
+              "review": 0.3479773998260498,
+              "urgent": 0.2164473980665207
+            },
+            "confidence": 0.03461385518312454
+          },
+          "priority": {
+            "type": "score",
+            "value": 1.0019338130950928,
+            "level": "1",
+            "probabilities": [
+              0.27671879529953003,
+              0.44462865591049194,
+              0.278652548789978
+            ],
+            "confidence": 0.024266060441732407,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "model_revision": "gcs-1791231584156797",
+        "metrics": {
+          "elapsed_ms": 291.420458,
+          "worker_peak_rss_bytes": 1918418944
+        }
+      },
+      "first_shape_http_ms": 291.95675,
+      "warm_repeat_http_ms": 292.510334
+    },
+    {
+      "id": "assessment",
+      "order": "original",
+      "truth": {
+        "label": "assessment",
+        "needs_reply": true
+      },
+      "raw_decision": {
+        "model": "laya-s256",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "assessment",
+            "probabilities": {
+              "rejection": 0.018103649839758873,
+              "assessment": 0.9393036365509033,
+              "receipt": 0.0023237757850438356,
+              "other": 0.009186618961393833,
+              "scheduling": 0.03108229488134384
+            },
+            "confidence": 0.8157682418823242
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.40295523405075073,
+            "confidence": 0.19408953189849854,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.40295523405075073,
+            "confidence": 0.19408953189849854,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "urgent",
+            "probabilities": {
+              "review": 0.26252439618110657,
+              "urgent": 0.4881936311721802,
+              "normal": 0.24928198754787445
+            },
+            "confidence": 0.04656611755490303
+          },
+          "priority": {
+            "type": "score",
+            "value": 1.0698188543319702,
+            "level": "1",
+            "probabilities": [
+              0.27521342039108276,
+              0.37975430488586426,
+              0.345032274723053
+            ],
+            "confidence": 0.007905403152108192,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "model_revision": "gcs-1791231584156797",
+        "metrics": {
+          "elapsed_ms": 337.33574999999996,
+          "worker_peak_rss_bytes": 1918418944
+        }
+      },
+      "first_shape_http_ms": 298.957917,
+      "warm_repeat_http_ms": 338.529542
+    },
+    {
+      "id": "assessment",
+      "order": "reversed",
+      "truth": {
+        "label": "assessment",
+        "needs_reply": true
+      },
+      "raw_decision": {
+        "model": "laya-s256",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "assessment",
+            "probabilities": {
+              "rejection": 0.14539074897766113,
+              "other": 0.03267771378159523,
+              "receipt": 0.02497161366045475,
+              "assessment": 0.7410189509391785,
+              "scheduling": 0.05594096705317497
+            },
+            "confidence": 0.46086278557777405
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.40295523405075073,
+            "confidence": 0.19408953189849854,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.40295523405075073,
+            "confidence": 0.19408953189849854,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "review",
+            "probabilities": {
+              "urgent": 0.3457167446613312,
+              "review": 0.41603317856788635,
+              "normal": 0.23825007677078247
+            },
+            "confidence": 0.022576766088604927
+          },
+          "priority": {
+            "type": "score",
+            "value": 1.0698188543319702,
+            "level": "1",
+            "probabilities": [
+              0.27521342039108276,
+              0.37975430488586426,
+              0.345032274723053
+            ],
+            "confidence": 0.007905403152108192,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "model_revision": "gcs-1791231584156797",
+        "metrics": {
+          "elapsed_ms": 521.2501659999999,
+          "worker_peak_rss_bytes": 1918418944
+        }
+      },
+      "first_shape_http_ms": 444.916917,
+      "warm_repeat_http_ms": 522.249375
+    },
+    {
+      "id": "mixed_receipt_request",
+      "order": "original",
+      "truth": {
+        "label": "scheduling",
+        "needs_reply": true
+      },
+      "raw_decision": {
+        "model": "laya-s256",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "receipt",
+            "probabilities": {
+              "rejection": 0.026440948247909546,
+              "other": 0.006145069841295481,
+              "receipt": 0.9101858735084534,
+              "assessment": 0.0021945354528725147,
+              "scheduling": 0.05503359064459801
+            },
+            "confidence": 0.7601504325866699
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.40150949358940125,
+            "confidence": 0.1969810128211975,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.40150949358940125,
+            "confidence": 0.1969810128211975,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "review": 0.20996502041816711,
+              "urgent": 0.3266240060329437,
+              "normal": 0.46341097354888916
+            },
+            "confidence": 0.0445953793823719
+          },
+          "priority": {
+            "type": "score",
+            "value": 1.0535149574279785,
+            "level": "1",
+            "probabilities": [
+              0.29760846495628357,
+              0.3512681722640991,
+              0.3511233627796173
+            ],
+            "confidence": 0.0026645553298294544,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "model_revision": "gcs-1791231584156797",
+        "metrics": {
+          "elapsed_ms": 395.208,
+          "worker_peak_rss_bytes": 1918418944
+        }
+      },
+      "first_shape_http_ms": 418.76725,
+      "warm_repeat_http_ms": 396.122625
+    },
+    {
+      "id": "mixed_receipt_request",
+      "order": "reversed",
+      "truth": {
+        "label": "scheduling",
+        "needs_reply": true
+      },
+      "raw_decision": {
+        "model": "laya-s256",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "receipt",
+            "probabilities": {
+              "rejection": 0.01109999231994152,
+              "other": 0.003860736032947898,
+              "receipt": 0.9682971239089966,
+              "assessment": 0.0016781303565949202,
+              "scheduling": 0.015064040198922157
+            },
+            "confidence": 0.8903148770332336
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.40150949358940125,
+            "confidence": 0.1969810128211975,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.40150949358940125,
+            "confidence": 0.1969810128211975,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "review": 0.33107414841651917,
+              "urgent": 0.26874467730522156,
+              "normal": 0.4001811742782593
+            },
+            "confidence": 0.011841105297207832
+          },
+          "priority": {
+            "type": "score",
+            "value": 1.0535149574279785,
+            "level": "1",
+            "probabilities": [
+              0.29760846495628357,
+              0.3512681722640991,
+              0.3511233627796173
+            ],
+            "confidence": 0.0026645553298294544,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "model_revision": "gcs-1791231584156797",
+        "metrics": {
+          "elapsed_ms": 397.188125,
+          "worker_peak_rss_bytes": 1918418944
+        }
+      },
+      "first_shape_http_ms": 419.483875,
+      "warm_repeat_http_ms": 398.066125
+    },
+    {
+      "id": "missing_content",
+      "order": "original",
+      "truth": {
+        "label": "other",
+        "needs_reply": null
+      },
+      "raw_decision": {
+        "model": "laya-s256",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "rejection",
+            "probabilities": {
+              "other": 0.05065196380019188,
+              "rejection": 0.9076033234596252,
+              "receipt": 0.02513870783150196,
+              "assessment": 0.0035251504741609097,
+              "scheduling": 0.013080846518278122
+            },
+            "confidence": 0.746306300163269
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.2904004752635956,
+            "confidence": 0.41919904947280884,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.2904004752635956,
+            "confidence": 0.41919904947280884,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "normal": 0.4954528510570526,
+              "urgent": 0.3126499652862549,
+              "review": 0.1918971985578537
+            },
+            "confidence": 0.06405537575483322
+          },
+          "priority": {
+            "type": "score",
+            "value": 1.0608662366867065,
+            "level": "1",
+            "probabilities": [
+              0.2698012590408325,
+              0.39953118562698364,
+              0.33066752552986145
+            ],
+            "confidence": 0.01153095904737711,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "model_revision": "gcs-1791231584156797",
+        "metrics": {
+          "elapsed_ms": 415.02729100000005,
+          "worker_peak_rss_bytes": 1918418944
+        }
+      },
+      "first_shape_http_ms": 410.294667,
+      "warm_repeat_http_ms": 415.839791
+    },
+    {
+      "id": "missing_content",
+      "order": "reversed",
+      "truth": {
+        "label": "other",
+        "needs_reply": null
+      },
+      "raw_decision": {
+        "model": "laya-s256",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "rejection",
+            "probabilities": {
+              "rejection": 0.513603150844574,
+              "assessment": 0.019022595137357712,
+              "scheduling": 0.04128001630306244,
+              "other": 0.19490498304367065,
+              "receipt": 0.23118923604488373
+            },
+            "confidence": 0.2503848969936371
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.2904004752635956,
+            "confidence": 0.41919904947280884,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.2904004752635956,
+            "confidence": 0.41919904947280884,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "review",
+            "probabilities": {
+              "urgent": 0.30475297570228577,
+              "review": 0.3767610788345337,
+              "normal": 0.31848594546318054
+            },
+            "confidence": 0.003924073185771704
+          },
+          "priority": {
+            "type": "score",
+            "value": 1.0608662366867065,
+            "level": "1",
+            "probabilities": [
+              0.2698012590408325,
+              0.39953118562698364,
+              0.33066752552986145
+            ],
+            "confidence": 0.01153095904737711,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "model_revision": "gcs-1791231584156797",
+        "metrics": {
+          "elapsed_ms": 370.104292,
+          "worker_peak_rss_bytes": 1918418944
+        }
+      },
+      "first_shape_http_ms": 391.933083,
+      "warm_repeat_http_ms": 370.941875
+    }
+  ],
+  "guarded_triage": [
+    {
+      "id": "receipt",
+      "decision": {
+        "label": "receipt",
+        "needs_reply": null,
+        "urgency": "urgent",
+        "uncertain": true,
+        "rationale": "Typed model proposal; inspect the source before acting.",
+        "probabilities": {
+          "label": {
+            "type": "choice",
+            "value": "receipt",
+            "probabilities": {
+              "rejection": 0.009777930565178394,
+              "other": 0.001223405241034925,
+              "receipt": 0.9874296188354492,
+              "assessment": 0.0006082814070396125,
+              "scheduling": 0.0009607435204088688
+            },
+            "confidence": 0.9520806074142456
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.5952892899513245,
+            "confidence": 0.19057857990264893,
+            "abstained": true
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "urgent",
+            "probabilities": {
+              "normal": 0.1478596329689026,
+              "urgent": 0.7498355507850647,
+              "review": 0.1023048385977745
+            },
+            "confidence": 0.333936482667923
+          }
+        },
+        "request_guard": false
+      },
+      "http_elapsed_ms": 221.984083
+    },
+    {
+      "id": "rejection",
+      "decision": {
+        "label": "rejection",
+        "needs_reply": null,
+        "urgency": "normal",
+        "uncertain": true,
+        "rationale": "Typed model proposal; inspect the source before acting.",
+        "probabilities": {
+          "label": {
+            "type": "choice",
+            "value": "rejection",
+            "probabilities": {
+              "rejection": 0.9957392811775208,
+              "other": 0.0005049188621342182,
+              "receipt": 0.002972410526126623,
+              "assessment": 0.000357356941094622,
+              "scheduling": 0.00042601412860676646
+            },
+            "confidence": 0.9804144501686096
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.46914583444595337,
+            "confidence": 0.06170833110809326,
+            "abstained": true
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "review": 0.16208180785179138,
+              "urgent": 0.34567317366600037,
+              "normal": 0.49224501848220825
+            },
+            "confidence": 0.0797290951013565
+          }
+        },
+        "request_guard": false
+      },
+      "http_elapsed_ms": 231.895917
+    },
+    {
+      "id": "scheduling",
+      "decision": {
+        "label": "scheduling",
+        "needs_reply": true,
+        "urgency": "review",
+        "uncertain": true,
+        "rationale": "Typed model proposal; inspect the source before acting.",
+        "probabilities": {
+          "label": {
+            "type": "choice",
+            "value": "scheduling",
+            "probabilities": {
+              "scheduling": 0.9673473238945007,
+              "assessment": 0.004585950635373592,
+              "receipt": 0.012931839562952518,
+              "rejection": 0.004616106860339642,
+              "other": 0.010518781840801239
+            },
+            "confidence": 0.8845736980438232
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.6546854376792908,
+            "confidence": 0.30937087535858154,
+            "abstained": true
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "review",
+            "probabilities": {
+              "urgent": 0.2811948359012604,
+              "review": 0.45124250650405884,
+              "normal": 0.2675626873970032
+            },
+            "confidence": 0.027331627905368805
+          }
+        },
+        "request_guard": true
+      },
+      "http_elapsed_ms": 220.10116599999998
+    },
+    {
+      "id": "assessment",
+      "decision": {
+        "label": "assessment",
+        "needs_reply": true,
+        "urgency": "urgent",
+        "uncertain": true,
+        "rationale": "Typed model proposal; inspect the source before acting.",
+        "probabilities": {
+          "label": {
+            "type": "choice",
+            "value": "assessment",
+            "probabilities": {
+              "receipt": 0.004877064377069473,
+              "rejection": 0.0014272751286625862,
+              "other": 0.0017418557545170188,
+              "scheduling": 0.017205219715833664,
+              "assessment": 0.9747486114501953
+            },
+            "confidence": 0.9122640490531921
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.51971834897995,
+            "confidence": 0.0394366979598999,
+            "abstained": true
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "urgent",
+            "probabilities": {
+              "review": 0.1476074457168579,
+              "urgent": 0.5707883238792419,
+              "normal": 0.28160420060157776
+            },
+            "confidence": 0.12678192555904388
+          }
+        },
+        "request_guard": false
+      },
+      "http_elapsed_ms": 235.611416
+    },
+    {
+      "id": "mixed_receipt_request",
+      "decision": {
+        "label": "receipt",
+        "needs_reply": true,
+        "urgency": "review",
+        "uncertain": true,
+        "rationale": "Typed model proposal; inspect the source before acting.",
+        "probabilities": {
+          "label": {
+            "type": "choice",
+            "value": "receipt",
+            "probabilities": {
+              "rejection": 0.002709123305976391,
+              "other": 0.0026426389813423157,
+              "receipt": 0.9838701486587524,
+              "assessment": 0.0012406061869114637,
+              "scheduling": 0.009537487290799618
+            },
+            "confidence": 0.9376332759857178
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.75481778383255,
+            "confidence": 0.5096355676651001,
+            "abstained": true
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "review",
+            "probabilities": {
+              "normal": 0.32658645510673523,
+              "urgent": 0.32370349764823914,
+              "review": 0.34971001744270325
+            },
+            "confidence": 0.0005507734604179859
+          }
+        },
+        "request_guard": true
+      },
+      "http_elapsed_ms": 235.404916
+    },
+    {
+      "id": "missing_content",
+      "decision": {
+        "label": "receipt",
+        "needs_reply": null,
+        "urgency": "normal",
+        "uncertain": true,
+        "rationale": "Typed model proposal; inspect the source before acting.",
+        "probabilities": {
+          "label": {
+            "type": "choice",
+            "value": "receipt",
+            "probabilities": {
+              "rejection": 0.056848250329494476,
+              "other": 0.029394108802080154,
+              "receipt": 0.8840213418006897,
+              "assessment": 0.006993270944803953,
+              "scheduling": 0.022743038833141327
+            },
+            "confidence": 0.6915642619132996
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.6796084642410278,
+            "confidence": 0.35921692848205566,
+            "abstained": true
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "urgent": 0.3280739188194275,
+              "review": 0.16279004514217377,
+              "normal": 0.5091360211372375
+            },
+            "confidence": 0.08535270392894745
+          }
+        },
+        "request_guard": false
+      },
+      "http_elapsed_ms": 233.936791
+    }
+  ],
+  "rust_cli_triage": [
+    {
+      "id": "receipt",
+      "elapsed_ms": 301.51633300000003,
+      "response": {
+        "schema_version": 2,
+        "ok": true,
+        "data": {
+          "decision": {
+            "label": "receipt",
+            "needs_reply": null,
+            "urgency": "urgent",
+            "uncertain": true,
+            "rationale": "Typed model proposal; inspect the source before acting.",
+            "probabilities": {
+              "label": {
+                "type": "choice",
+                "value": "receipt",
+                "probabilities": {
+                  "rejection": 0.009777930565178394,
+                  "assessment": 0.0006082814070396125,
+                  "scheduling": 0.0009607435204088688,
+                  "other": 0.001223405241034925,
+                  "receipt": 0.9874296188354492
+                },
+                "confidence": 0.9520806074142456
+              },
+              "needs_reply": {
+                "type": "nullable_boolean",
+                "value": null,
+                "probability_true": 0.5952892899513245,
+                "confidence": 0.19057857990264893,
+                "abstained": true
+              },
+              "urgency": {
+                "type": "choice",
+                "value": "urgent",
+                "probabilities": {
+                  "normal": 0.1478596329689026,
+                  "review": 0.1023048385977745,
+                  "urgent": 0.7498355507850647
+                },
+                "confidence": 0.333936482667923
+              }
+            },
+            "request_guard": false
+          },
+          "baseline": {
+            "label": "receipt",
+            "needs_reply": false,
+            "urgency": "normal",
+            "method": "bounded-keyword-baseline",
+            "uncertain": false,
+            "action": "suggestion_only",
+            "text_sha256": "bb0ddb5add5016b7eeaf8b8b0d0647ed7f8fb22d9537f58ea862b5d0418d1d4d",
+            "archive_permitted": false
+          },
+          "method": "optional-model-proposal",
+          "model": {
+            "id": "laya-s256",
+            "revision": "gcs-1791231584156797"
+          },
+          "text_sha256": "bb0ddb5add5016b7eeaf8b8b0d0647ed7f8fb22d9537f58ea862b5d0418d1d4d",
+          "action": "suggestion_only",
+          "archive_permitted": false
+        },
+        "error": null,
+        "next": [
+
+        ]
+      }
+    },
+    {
+      "id": "rejection",
+      "elapsed_ms": 268.408084,
+      "response": {
+        "schema_version": 2,
+        "ok": true,
+        "data": {
+          "decision": {
+            "label": "rejection",
+            "needs_reply": null,
+            "urgency": "normal",
+            "uncertain": true,
+            "rationale": "Typed model proposal; inspect the source before acting.",
+            "probabilities": {
+              "label": {
+                "type": "choice",
+                "value": "rejection",
+                "probabilities": {
+                  "assessment": 0.000357356941094622,
+                  "rejection": 0.9957392811775208,
+                  "scheduling": 0.00042601412860676646,
+                  "receipt": 0.002972410526126623,
+                  "other": 0.0005049188621342182
+                },
+                "confidence": 0.9804144501686096
+              },
+              "needs_reply": {
+                "type": "nullable_boolean",
+                "value": null,
+                "probability_true": 0.46914583444595337,
+                "confidence": 0.06170833110809326,
+                "abstained": true
+              },
+              "urgency": {
+                "type": "choice",
+                "value": "normal",
+                "probabilities": {
+                  "urgent": 0.34567317366600037,
+                  "review": 0.16208180785179138,
+                  "normal": 0.49224501848220825
+                },
+                "confidence": 0.0797290951013565
+              }
+            },
+            "request_guard": false
+          },
+          "baseline": {
+            "label": "rejection",
+            "needs_reply": false,
+            "urgency": "normal",
+            "method": "bounded-keyword-baseline",
+            "uncertain": false,
+            "action": "suggestion_only",
+            "text_sha256": "9c7874df463fd9308079f34edbdde084e44e8abc4cf16bd5532fe439dfe8cd91",
+            "archive_permitted": false
+          },
+          "method": "optional-model-proposal",
+          "model": {
+            "id": "laya-s256",
+            "revision": "gcs-1791231584156797"
+          },
+          "text_sha256": "9c7874df463fd9308079f34edbdde084e44e8abc4cf16bd5532fe439dfe8cd91",
+          "action": "suggestion_only",
+          "archive_permitted": false
+        },
+        "error": null,
+        "next": [
+
+        ]
+      }
+    },
+    {
+      "id": "scheduling",
+      "elapsed_ms": 249.70425,
+      "response": {
+        "schema_version": 2,
+        "ok": true,
+        "data": {
+          "decision": {
+            "label": "scheduling",
+            "needs_reply": true,
+            "urgency": "review",
+            "uncertain": true,
+            "rationale": "Typed model proposal; inspect the source before acting.",
+            "probabilities": {
+              "label": {
+                "type": "choice",
+                "value": "scheduling",
+                "probabilities": {
+                  "assessment": 0.004585950635373592,
+                  "receipt": 0.012931839562952518,
+                  "scheduling": 0.9673473238945007,
+                  "rejection": 0.004616106860339642,
+                  "other": 0.010518781840801239
+                },
+                "confidence": 0.8845736980438232
+              },
+              "needs_reply": {
+                "type": "nullable_boolean",
+                "value": null,
+                "probability_true": 0.6546854376792908,
+                "confidence": 0.30937087535858154,
+                "abstained": true
+              },
+              "urgency": {
+                "type": "choice",
+                "value": "review",
+                "probabilities": {
+                  "normal": 0.2675626873970032,
+                  "urgent": 0.2811948359012604,
+                  "review": 0.45124250650405884
+                },
+                "confidence": 0.027331627905368805
+              }
+            },
+            "request_guard": true
+          },
+          "baseline": {
+            "label": "scheduling",
+            "needs_reply": true,
+            "urgency": "review",
+            "method": "bounded-keyword-baseline",
+            "uncertain": false,
+            "action": "suggestion_only",
+            "text_sha256": "28671e499e06f0ce926419b65234c3711f2fc639cba4c0e897f0543c8708ecd6",
+            "archive_permitted": false
+          },
+          "method": "optional-model-proposal",
+          "model": {
+            "id": "laya-s256",
+            "revision": "gcs-1791231584156797"
+          },
+          "text_sha256": "28671e499e06f0ce926419b65234c3711f2fc639cba4c0e897f0543c8708ecd6",
+          "action": "suggestion_only",
+          "archive_permitted": false
+        },
+        "error": null,
+        "next": [
+
+        ]
+      }
+    },
+    {
+      "id": "assessment",
+      "elapsed_ms": 231.844333,
+      "response": {
+        "schema_version": 2,
+        "ok": true,
+        "data": {
+          "decision": {
+            "label": "assessment",
+            "needs_reply": true,
+            "urgency": "urgent",
+            "uncertain": true,
+            "rationale": "Typed model proposal; inspect the source before acting.",
+            "probabilities": {
+              "label": {
+                "type": "choice",
+                "value": "assessment",
+                "probabilities": {
+                  "rejection": 0.0014272751286625862,
+                  "assessment": 0.9747486114501953,
+                  "receipt": 0.004877064377069473,
+                  "other": 0.0017418557545170188,
+                  "scheduling": 0.017205219715833664
+                },
+                "confidence": 0.9122640490531921
+              },
+              "needs_reply": {
+                "type": "nullable_boolean",
+                "value": null,
+                "probability_true": 0.51971834897995,
+                "confidence": 0.0394366979598999,
+                "abstained": true
+              },
+              "urgency": {
+                "type": "choice",
+                "value": "urgent",
+                "probabilities": {
+                  "normal": 0.28160420060157776,
+                  "review": 0.1476074457168579,
+                  "urgent": 0.5707883238792419
+                },
+                "confidence": 0.12678192555904388
+              }
+            },
+            "request_guard": false
+          },
+          "baseline": {
+            "label": "assessment",
+            "needs_reply": true,
+            "urgency": "review",
+            "method": "bounded-keyword-baseline",
+            "uncertain": false,
+            "action": "suggestion_only",
+            "text_sha256": "62b7fc473c4ec9f6b9272fd065c5741978c1d98fa618d523ae80cbaf0dd7797b",
+            "archive_permitted": false
+          },
+          "method": "optional-model-proposal",
+          "model": {
+            "id": "laya-s256",
+            "revision": "gcs-1791231584156797"
+          },
+          "text_sha256": "62b7fc473c4ec9f6b9272fd065c5741978c1d98fa618d523ae80cbaf0dd7797b",
+          "action": "suggestion_only",
+          "archive_permitted": false
+        },
+        "error": null,
+        "next": [
+
+        ]
+      }
+    },
+    {
+      "id": "mixed_receipt_request",
+      "elapsed_ms": 241.299458,
+      "response": {
+        "schema_version": 2,
+        "ok": true,
+        "data": {
+          "decision": {
+            "label": "receipt",
+            "needs_reply": true,
+            "urgency": "review",
+            "uncertain": true,
+            "rationale": "Typed model proposal; inspect the source before acting.",
+            "probabilities": {
+              "label": {
+                "type": "choice",
+                "value": "receipt",
+                "probabilities": {
+                  "rejection": 0.002709123305976391,
+                  "assessment": 0.0012406061869114637,
+                  "other": 0.0026426389813423157,
+                  "receipt": 0.9838701486587524,
+                  "scheduling": 0.009537487290799618
+                },
+                "confidence": 0.9376332759857178
+              },
+              "needs_reply": {
+                "type": "nullable_boolean",
+                "value": null,
+                "probability_true": 0.75481778383255,
+                "confidence": 0.5096355676651001,
+                "abstained": true
+              },
+              "urgency": {
+                "type": "choice",
+                "value": "review",
+                "probabilities": {
+                  "normal": 0.32658645510673523,
+                  "review": 0.34971001744270325,
+                  "urgent": 0.32370349764823914
+                },
+                "confidence": 0.0005507734604179859
+              }
+            },
+            "request_guard": true
+          },
+          "baseline": {
+            "label": "scheduling",
+            "needs_reply": true,
+            "urgency": "review",
+            "method": "bounded-keyword-baseline",
+            "uncertain": false,
+            "action": "suggestion_only",
+            "text_sha256": "b0cd382c93d8019029af08284e07250c1de624beafdad422fafac34e865d6967",
+            "archive_permitted": false
+          },
+          "method": "optional-model-proposal",
+          "model": {
+            "id": "laya-s256",
+            "revision": "gcs-1791231584156797"
+          },
+          "text_sha256": "b0cd382c93d8019029af08284e07250c1de624beafdad422fafac34e865d6967",
+          "action": "suggestion_only",
+          "archive_permitted": false
+        },
+        "error": null,
+        "next": [
+
+        ]
+      }
+    },
+    {
+      "id": "missing_content",
+      "elapsed_ms": 244.93462499999998,
+      "response": {
+        "schema_version": 2,
+        "ok": true,
+        "data": {
+          "decision": {
+            "label": "receipt",
+            "needs_reply": null,
+            "urgency": "normal",
+            "uncertain": true,
+            "rationale": "Typed model proposal; inspect the source before acting.",
+            "probabilities": {
+              "label": {
+                "type": "choice",
+                "value": "receipt",
+                "probabilities": {
+                  "receipt": 0.8840213418006897,
+                  "other": 0.029394108802080154,
+                  "rejection": 0.056848250329494476,
+                  "scheduling": 0.022743038833141327,
+                  "assessment": 0.006993270944803953
+                },
+                "confidence": 0.6915642619132996
+              },
+              "needs_reply": {
+                "type": "nullable_boolean",
+                "value": null,
+                "probability_true": 0.6796084642410278,
+                "confidence": 0.35921692848205566,
+                "abstained": true
+              },
+              "urgency": {
+                "type": "choice",
+                "value": "normal",
+                "probabilities": {
+                  "normal": 0.5091360211372375,
+                  "urgent": 0.3280739188194275,
+                  "review": 0.16279004514217377
+                },
+                "confidence": 0.08535270392894745
+              }
+            },
+            "request_guard": false
+          },
+          "baseline": {
+            "label": "other",
+            "needs_reply": null,
+            "urgency": "normal",
+            "method": "bounded-keyword-baseline",
+            "uncertain": true,
+            "action": "suggestion_only",
+            "text_sha256": "eeff8ea6bfbfb5c97506f5ca82f8b4ac8059263c2846ab4197848646f089b6fe",
+            "archive_permitted": false
+          },
+          "method": "optional-model-proposal",
+          "model": {
+            "id": "laya-s256",
+            "revision": "gcs-1791231584156797"
+          },
+          "text_sha256": "eeff8ea6bfbfb5c97506f5ca82f8b4ac8059263c2846ab4197848646f089b6fe",
+          "action": "suggestion_only",
+          "archive_permitted": false
+        },
+        "error": null,
+        "next": [
+
+        ]
+      }
+    }
+  ],
+  "observed_option_order_label_flips": [
+
+  ],
+  "warm_repeat_http_ms": {
+    "values": [
+      365.589667,
+      338.346917,
+      293.654958,
+      323.495708,
+      291.10975,
+      292.510334,
+      338.529542,
+      522.249375,
+      396.122625,
+      398.066125,
+      415.839791,
+      370.941875
+    ],
+    "median": 352.0596045,
+    "maximum": 522.249375
+  },
+  "quality_claim": "No general accuracy or calibration claim; inspect raw errors and abstentions.",
+  "observed_option_order_choice_flips": [
+    {
+      "id": "assessment",
+      "question": "urgency",
+      "original": "urgent",
+      "reversed": "review"
+    },
+    {
+      "id": "missing_content",
+      "question": "urgency",
+      "original": "normal",
+      "reversed": "review"
+    }
+  ]
+}

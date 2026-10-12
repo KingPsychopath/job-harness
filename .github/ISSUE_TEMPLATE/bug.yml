@@ -1,17 +1,22 @@
 name: Bug report
-description: Report a reproducible tooling problem using synthetic data.
+description: Report a reproducible workflow or tooling problem using synthetic data.
 body:
   - type: textarea
     id: behavior
     attributes:
       label: Expected and actual behavior
-      description: Do not include candidate data, bundle files or credentials.
+      description: Include the intended user outcome. Do not attach candidate data, private bundles or credentials.
     validations:
       required: true
   - type: textarea
     id: reproduce
     attributes:
       label: Reproduction and versions
-      description: Include OS, Python/package version and a synthetic example.
+      description: Include jh --version, OS/CPU, the exact command or tool and a minimal fictional fixture. Add the error code and recovery state when relevant.
     validations:
       required: true
+  - type: textarea
+    id: component
+    attributes:
+      label: Optional component or host
+      description: Name the agent/protocol/model component only if relevant. Do not include keys or live account information.

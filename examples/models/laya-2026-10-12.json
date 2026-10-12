@@ -1239,7 +1239,9 @@
           "archive_permitted": false
         },
         "error": null,
-        "next": []
+        "next": [
+
+        ]
       }
     },
     {
@@ -1308,7 +1310,9 @@
           "archive_permitted": false
         },
         "error": null,
-        "next": []
+        "next": [
+
+        ]
       }
     },
     {
@@ -1377,7 +1381,9 @@
           "archive_permitted": false
         },
         "error": null,
-        "next": []
+        "next": [
+
+        ]
       }
     },
     {
@@ -1446,7 +1452,9 @@
           "archive_permitted": false
         },
         "error": null,
-        "next": []
+        "next": [
+
+        ]
       }
     },
     {
@@ -1515,7 +1523,9 @@
           "archive_permitted": false
         },
         "error": null,
-        "next": []
+        "next": [
+
+        ]
       }
     },
     {
@@ -1584,11 +1594,15 @@
           "archive_permitted": false
         },
         "error": null,
-        "next": []
+        "next": [
+
+        ]
       }
     }
   ],
-  "observed_option_order_label_flips": [],
+  "observed_option_order_label_flips": [
+
+  ],
   "warm_repeat_http_ms": {
     "values": [
       327.384,
@@ -1607,5 +1621,8 @@
     "median": 533.881,
     "maximum": 670.097
   },
-  "quality_claim": "No general accuracy or calibration claim; inspect every raw error and abstention."
+  "quality_claim": "No general accuracy or calibration claim; inspect every raw error and abstention.",
+  "historical_reference_limitations": [
+    "Prototype cached choice questions by a sort_keys schema key, so reversed probes reused original option ordering. Use native-laya-2026-10-12.json for genuine option-order evidence."
+  ]
 }

@@ -1,4 +1,10 @@
+# Keep source, scripts and generated contracts portable across checkout hosts.
 * text=auto eol=lf
-*.svg text
+
+# These are verbatim publisher evidence; their pinned bytes must not normalize.
+resources/licenses/text/** -text -whitespace
+
 *.png binary
 *.pdf binary
+*.ico binary
+*.icns binary

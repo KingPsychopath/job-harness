@@ -126,6 +126,18 @@ fn validate_at(schema: &Value, value: &Value, path: &str) -> Result<()> {
         }
         Some("string") => {
             let text = value.as_str().unwrap();
+            if let Some(pattern) = schema.get("pattern").and_then(Value::as_str)
+                && !regex::Regex::new(pattern)
+                    .map_err(|_| {
+                        HarnessError::new(
+                            "internal_contract_error",
+                            "Invalid published string pattern",
+                        )
+                    })?
+                    .is_match(text)
+            {
+                return Err(invalid(path, "does not match the published string pattern"));
+            }
             let length = text.chars().count() as u64;
             let min = schema.get("minLength").and_then(Value::as_u64).unwrap_or(0);
             if min > 0 && text.trim().is_empty() {
@@ -316,6 +328,17 @@ fn supported_schema(schema: &Value) -> Result<()> {
                     ));
                 }
             }
+            "pattern" => {
+                regex::Regex::new(value.as_str().ok_or_else(|| {
+                    HarnessError::new("internal_contract_error", "String pattern must be text")
+                })?)
+                .map_err(|_| {
+                    HarnessError::new(
+                        "internal_contract_error",
+                        "Invalid published string pattern",
+                    )
+                })?;
+            }
             "required" | "enum" | "minItems" | "maxItems" | "minLength" | "maxLength"
             | "minimum" | "maximum" | "description" | "title" | "$schema" => {}
             _ => {
@@ -340,7 +363,7 @@ mod authority_tests {
     fn unsupported_validation_keywords_and_union_types_are_refused() {
         for schema in [
             json!({"type":["string","null"]}),
-            json!({"type":"string","pattern":"x"}),
+            json!({"type":"string","format":"uri"}),
             json!({"oneOf":[]}),
             json!({"$ref":"other"}),
         ] {

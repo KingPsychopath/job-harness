@@ -1,20 +1,56 @@
 # Develop and verify
 
-Use the pinned Rust toolchain. The declared Rust 1.88 minimum is checked separately; native development/release uses 1.97.1. Core runtime commands are native; Python is used by development checks, graphics generation, the frozen compatibility oracle and a separate optional provider for released model SDKs.
+The reusable code and development gates are native. Use pinned Rust 1.97.1 and a platform C compiler. Core MSRV is 1.88; the optional Tauri application declares its own minimum. Model runtimes and weights are not needed by the normal suite.
+
+## Portable commands
+
+These work without Make on Windows, macOS and Linux:
 
 ```sh
-make check          # formatting, Clippy, Rust behavior/protocol/CLI tests and repository gate
-make check-parity   # historical Python reference against Rust, synthetic data only
-make check-package  # release binary copied outside checkout, CLI/MCP/bundle smoke checks
-make assets         # original SVG graphics
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets --locked -- -D warnings
+cargo test --workspace --all-targets --locked
+cargo run -p job-harness-dev --locked -- repository
+cargo run -p job-harness-dev --locked -- contracts --check
+cargo build --release --bins --locked
+cargo run -p job-harness-dev --locked -- package --binary target/release/job-harness
 ```
 
-Crates divide pure vocabulary, native workspace operations, host/protocol adapters and CLI. Engine capabilities are focused modules. Generic resources have one source at `resources/`; include macros embed them. Schema/envelope/on-disk versions are compatibility contracts. [Architecture](ARCHITECTURE.md)
+On Windows append `.exe` to the package verifier's binary path. `make check`, `make check-package` and `make demo` are convenience aliases. `make check-parity` runs the retained native compatibility/invariant suites; it invokes no historical runtime.
 
-Tests exercise one-submit replay, perpetual unknown blocking, caps, concurrent reservations, journal recovery/conflicts, source changes, typed errors, partial batches, bundle corruption/traversal, derived search, actual MCP frames, ACP handoff and fake model HTTP. They use disposable synthetic workspaces, never real job sites or mailboxes.
+The repository gate inventories Git-tracked/non-ignored source, checks data/resource/link boundaries and rejects Python source, runtime libraries, weights and private files. TypeScript declarations are generated from authoritative JSON schemas with `cargo run -p job-harness-dev -- contracts`.
 
-Historical Python code under `tests/oracle/` is a frozen test reference, excluded from installation and release artifacts. It is not invoked by the Rust runtime. Keep migration vectors for Unicode identities, numeric encoding, dates and old transfer formats.
+SVG graphics are editable source in `docs/assets/`. `make assets` optionally previews them with `rsvg-convert`; the generated preview is not another authority. Screenshots contain fictional data. The native `jh demo --workspace PATH` reproduces a searchable workspace without any external action.
 
-CI has read-only repository permissions and pinned actions. Native checks run on Windows/Linux/macOS, plus a pure-domain WASM build. Private release automation produces checksummed archives; it does not publish Cargo/npm packages or change repository visibility. Review exact-head CI results before claiming remote success.
+## Meaningful behavior checks
 
-Local checks, remote CI, installed-client execution and live provider actions are separate evidence. The local dashboard defaults to read-only; named local review routes require an explicit host flag. Remote tenancy, Windows behavior and live model/provider correctness require their own verification.
+Tests cover one-submit replay, perpetual unknown blocking, caps, concurrent reservations, journal conflicts/recovery, source changes, partial batches, bundle corruption/traversal, derived indexes, source-preserving intake, selective review, documents, actual MCP frames, ACP handoff and fake model HTTP.
+
+The completed migration was checked against 49 historical cross-language traces before retiring the old runtime source. Native golden vectors retain Unicode/numeric encoding, identity, URL and pipeline compatibility. The legacy code remains in Git history, not in the product or test dependency graph.
+
+`xtask package` copies the binary outside the source tree with a clean environment, checks CLI, embedded resources, supplied-file/document flow, exact backup/restore and an official SDK MCP client in focused/full modes. It does not inspect a real candidate workspace.
+
+## Optional components
+
+The desktop and native provider use separate manifests/locks and do not enlarge the default CLI installation:
+
+```sh
+cargo test --manifest-path providers/local/native/Cargo.toml --locked
+cargo test --manifest-path apps/desktop/Cargo.toml --locked
+```
+
+Use [model lifecycle and real probes](MODELS.md) and [desktop requirements](../apps/desktop/README.md). An SDK-free contract test is not proof a model ran; a compiled desktop binary is not proof of each operating system's window behavior.
+
+## Release one source identity
+
+Commit a clean source tree, verify exact-head CI, create a version tag matching workspace package version, then run the private native release workflow. `xtask release-stage` checks native CPU/OS headers and stages only selected software with source metadata and SHA256. Local experiments require `--allow-dirty` and are marked accordingly; they are not release proof.
+
+```sh
+cargo run -p job-harness-dev -- release-stage \
+  --tag v0.2.0 --target aarch64-apple-darwin \
+  --binary target/release/job-harness --output dist
+```
+
+CI actions are pinned and normal jobs have read-only repository access. Publication receives only the permission needed for private release assets. No candidate bundle, model weight, secret or private profile enters an artifact. Public Cargo/npm/Homebrew publication and repository visibility changes remain owner decisions.
+
+Keep local tests, remote CI, installed-client execution and live provider evidence distinct in the handoff.

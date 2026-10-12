@@ -2,18 +2,18 @@
   "schema_version": 1,
   "required": false,
   "automatic_downloads": false,
-  "metadata_verified": "2026-10-12",
+  "native": true,
   "profiles": [
     {
       "id": "embeddinggemma2-text",
-      "status": "local_sdk_verified",
+      "status": "native_verified_optional",
       "capabilities": [
         "text_embeddings"
       ],
       "download_bytes": 164626432,
       "working_memory_bytes": null,
-      "hardware": "CPU; LiteRT-LM 0.18.0 wheels support macOS 12 arm64 and Linux x86_64/aarch64. This adapter selects CPU only.",
-      "runtime": "litert_lm.EmbeddingEngine",
+      "hardware": "CPU. Vendor native archives: macOS arm64, Linux glibc2.27 x86_64/aarch64, Windows x86_64. Actual inference verified on macOS arm64; other platforms have portable contract coverage but native model execution remains unverified.",
+      "runtime": "Rust + LiteRT-LM0.18.0 C EmbeddingEngine",
       "revision": "9be6e8b90982095dc05c2bd162e4b954ee4dbac7",
       "model_card": "https://huggingface.co/litert-community/embeddinggemma-2-text-270m-litert-lm",
       "license": "apache-2.0",
@@ -23,13 +23,23 @@
         "CPU threads explicitly selected through LiteRT-LM; GPU/NPU paths untested"
       ],
       "measured": {
-        "scope": "fictional native HTTP fixture; combined worker peak about 1.88 GiB, not a per-model RAM requirement",
-        "report": "examples/models/benchmark-2026-10-12.json"
+        "scope": "Local macOS arm64 native C API, fictional32passages and five queries; feasibility only",
+        "report": "examples/models/native-gemma-2026-10-12.json",
+        "batch_32_http_ms": 1277.261708,
+        "warm_query_http_ms": [
+          41.258208999999994,
+          42.791916,
+          44.921,
+          45.567375,
+          41.950375
+        ],
+        "worker_peak_rss_bytes": 1951924224,
+        "memory_scope": "combined Gemma+Laya native worker RSS; not a model-only minimum"
       }
     },
     {
       "id": "laya-s256",
-      "status": "local_sdk_verified",
+      "status": "native_verified_optional",
       "capabilities": [
         "choice",
         "boolean",
@@ -39,8 +49,8 @@
       ],
       "download_bytes": 678477844,
       "working_memory_bytes": null,
-      "hardware": "CPU; MediaPipe 1.1.0 wheels support macOS arm64 and Linux glibc 2.28 x86_64/aarch64. No GPU or accelerator required.",
-      "runtime": "mediapipe.tasks.python.decision.decision_maker.DecisionMaker",
+      "hardware": "CPU. Vendor native archives: macOS arm64, Linux glibc2.28 x86_64/aarch64, Windows x86_64/aarch64. Actual inference verified on macOS arm64; other native model execution unverified. CPU thread count is advisory; SDK exposes no thread field.",
+      "runtime": "Rust + MediaPipe1.1.0 version-pinned experimental DecisionMaker C ABI",
       "revision": "gcs-1791231584156797",
       "model_card": "https://huggingface.co/litert-community/laya-LiteRT",
       "license": "apache-2.0",
@@ -51,13 +61,29 @@
         "SHA256 verified locally against the pinned GCS generation and MD5"
       ],
       "measured": {
-        "scope": "fictional native HTTP fixture; combined worker peak about 1.88 GiB, not a per-model RAM requirement",
-        "report": "examples/models/benchmark-2026-10-12.json"
+        "scope": "Local macOS arm64 native C API, six fictional cases and two option orders; feasibility only",
+        "report": "examples/models/native-laya-2026-10-12.json",
+        "warm_http_median_ms": 352.0596045,
+        "worker_peak_rss_bytes": 1918418944,
+        "order_sensitive_choices": [
+          {
+            "id": "assessment",
+            "question": "urgency",
+            "original": "urgent",
+            "reversed": "review"
+          },
+          {
+            "id": "missing_content",
+            "question": "urgency",
+            "original": "normal",
+            "reversed": "review"
+          }
+        ]
       }
     },
     {
       "id": "kev-0.8b",
-      "status": "local_sdk_verified_optional",
+      "status": "native_verified_optional",
       "capabilities": [
         "choice",
         "boolean_probability",
@@ -66,80 +92,133 @@
       ],
       "download_bytes": 1835370519,
       "working_memory_bytes": null,
-      "hardware": "Apple Silicon macOS, Python3.12, author MLX bf16 backbone with Torch float32 pointer head; no quantized profile verified",
-      "runtime": "author Kev MLX bf16 via pinned kev/checkpoint.py",
-      "component_revisions": {
-        "adapter": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
-        "base": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68"
-      },
-      "model_card": "https://huggingface.co/jaredpalmer/kev-0.8b",
-      "license": "apache-2.0",
+      "hardware": "Apple Silicon macOS26+ for the exact verified Metal kernel profile. Swift6.2+ required to build the separate sidecar. No native Linux/Windows Kev inference adapter verified; compatible remote providers work across core platforms.",
+      "runtime": "Rust typed gateway + separately compiled pinned Swift/MLX Qwen3.5 backbone and native float32 pointer head",
+      "revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+      "runtime_code_revision": "2ecafc49fe1e8945cd600443e6c04c1cf0b3a78f",
       "unknowns": [
         "Published benchmark values are not local measurements",
         "Task-specific quality, peak memory and latency require approved local evaluation",
         "No unattended consequential decisions or tool-call routing approval"
       ],
+      "native_components": {
+        "architecture_repository": "https://github.com/ml-explore/mlx-swift-lm",
+        "architecture_revision": "3b339ad6e3b3f44c8121ecff5131c7fd55e075e6",
+        "tensor_repository": "https://github.com/ml-explore/mlx-swift",
+        "tensor_revision": "19601207e9a0de51e03ee6ec0c3c5f3784275075",
+        "kernel_runtime_id": "kev-metal-0.32.3-macos-arm64",
+        "separate_sidecar": true,
+        "python_runtime": false
+      },
       "measured": {
-        "scope": "six fictional short cases and two option orders, local macOS arm64 MLX bf16; feasibility only",
-        "report": "examples/models/kev-0.8b-2026-10-12.json",
-        "gateway_worker_startup_ms": 2794.196,
-        "first_sdk_load_ms": 8685.842,
-        "first_sdk_query_ms": 2618.115,
-        "worker_peak_rss_bytes": 3226746880,
-        "warm_http_median_ms": 26.2445,
-        "fixture_sha256": "b9b1b90236a175c897644f4a68f7bf82b9645fe7050ec29e740a71a4130513e1"
-      }
+        "scope": "Local macOS arm64 native Swift/MLX, six fictional cases and two option orders; feasibility only",
+        "report": "examples/models/native-kev-0.8b-2026-10-12.json",
+        "native_worker_startup_ms": 1295.409583,
+        "warm_http_median_ms": 294.2172915,
+        "swift_process_peak_rss_bytes": 1893466112,
+        "rust_worker_peak_rss_bytes": 176848896,
+        "mlx_process_peak_bytes": 2440600164,
+        "maximum_probability_drift_from_sdk_reference": 0.021676603610382095,
+        "changed_fixture_choice_or_boolean_values": 0,
+        "fixture_sha256": "b9b1b90236a175c897644f4a68f7bf82b9645fe7050ec29e740a71a4130513e1",
+        "memory_scope": "Swift scorer RSS and Rust host RSS are separate; MLX allocation counter has a different scope"
+      },
+      "components": [
+        {
+          "repository": "jaredpalmer/kev-0.8b",
+          "revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+          "role": "adapter",
+          "license": "apache-2.0"
+        },
+        {
+          "repository": "Qwen/Qwen3.5-0.8B-Base",
+          "revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+          "role": "base",
+          "license": "apache-2.0"
+        }
+      ]
+    }
+  ],
+  "runtimes": [
+    {
+      "id": "litert-lm-0.18.0-macos-arm64",
+      "sdk": "litert-lm",
+      "version": "0.18.0",
+      "download_bytes": 21430649,
+      "license": "apache-2.0",
+      "execution_verified": true
     },
     {
-      "id": "kev-4b",
-      "status": "metadata_only_not_downloaded",
-      "capabilities": [
-        "choice",
-        "boolean_probability",
-        "score",
-        "nullable_boolean_via_host_abstention"
-      ],
-      "download_bytes": 9502461619,
-      "working_memory_bytes": null,
-      "hardware": "Kev author-supported MLX on Apple Silicon; task RAM/latency unmeasured here",
-      "runtime": "author Kev MLX bf16 via pinned kev/checkpoint.py",
-      "component_revisions": {
-        "adapter": "6cfce5c2fa4b4bd64026336ab649c5ca78857d52",
-        "base": "1001bb4d826a52d1f399e183466143f4da7b741b"
-      },
-      "model_card": "https://huggingface.co/jaredpalmer/kev-4b",
+      "id": "litert-lm-0.18.0-linux-aarch64",
+      "sdk": "litert-lm",
+      "version": "0.18.0",
+      "download_bytes": 46425934,
       "license": "apache-2.0",
-      "unknowns": [
-        "Published benchmark values are not local measurements",
-        "Task-specific quality, peak memory and latency require approved local evaluation",
-        "No unattended consequential decisions or tool-call routing approval"
-      ],
-      "measured": null
+      "execution_verified": false
     },
     {
-      "id": "clef-flash",
-      "status": "metadata_only_not_downloaded",
-      "capabilities": [
-        "choice",
-        "boolean_probability",
-        "score",
-        "nullable_boolean_via_host_abstention"
-      ],
-      "download_bytes": 19083367679,
-      "working_memory_bytes": null,
-      "hardware": "9B local compatible inference or separately selected hosted API; not trialled",
-      "runtime": "publisher JointSchemaModel or compatible systemone runtime; 9B model not trialled",
-      "component_revisions": {
-        "complete_model": "8b2e5fd17c09fd49bc2880b805d5323ec7ff4ff3"
-      },
-      "model_card": "https://huggingface.co/Cloudflare/clef-flash",
+      "id": "litert-lm-0.18.0-linux-x86_64",
+      "sdk": "litert-lm",
+      "version": "0.18.0",
+      "download_bytes": 47051760,
       "license": "apache-2.0",
-      "unknowns": [
-        "Published benchmark values are not local measurements",
-        "Task-specific quality, peak memory and latency require approved local evaluation",
-        "No unattended consequential decisions or tool-call routing approval"
-      ],
-      "measured": null
+      "execution_verified": false
+    },
+    {
+      "id": "litert-lm-0.18.0-windows-x86_64",
+      "sdk": "litert-lm",
+      "version": "0.18.0",
+      "download_bytes": 26403380,
+      "license": "apache-2.0",
+      "execution_verified": false
+    },
+    {
+      "id": "mediapipe-1.1.0-macos-arm64",
+      "sdk": "mediapipe",
+      "version": "1.1.0",
+      "download_bytes": 42559246,
+      "license": "apache-2.0",
+      "execution_verified": true
+    },
+    {
+      "id": "mediapipe-1.1.0-linux-aarch64",
+      "sdk": "mediapipe",
+      "version": "1.1.0",
+      "download_bytes": 38486302,
+      "license": "apache-2.0",
+      "execution_verified": false
+    },
+    {
+      "id": "mediapipe-1.1.0-linux-x86_64",
+      "sdk": "mediapipe",
+      "version": "1.1.0",
+      "download_bytes": 40649000,
+      "license": "apache-2.0",
+      "execution_verified": false
+    },
+    {
+      "id": "mediapipe-1.1.0-windows-x86_64",
+      "sdk": "mediapipe",
+      "version": "1.1.0",
+      "download_bytes": 22448355,
+      "license": "apache-2.0",
+      "execution_verified": false
+    },
+    {
+      "id": "mediapipe-1.1.0-windows-aarch64",
+      "sdk": "mediapipe",
+      "version": "1.1.0",
+      "download_bytes": 19860109,
+      "license": "apache-2.0",
+      "execution_verified": false
+    },
+    {
+      "id": "kev-metal-0.32.3-macos-arm64",
+      "sdk": "kev-metal",
+      "version": "0.32.3",
+      "download_bytes": 67661845,
+      "license": "mit",
+      "execution_verified": true
     }
   ]
 }

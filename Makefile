@@ -1,29 +1,42 @@
-PYTHON ?= python3
-.PHONY: check test check-parity check-package assets build demo
+CARGO ?= cargo
+.PHONY: check test check-parity check-package check-models check-desktop assets build demo
 
 test:
-	cargo test --workspace --locked
+	$(CARGO) test --workspace --all-targets --locked
 
 check: test
-	cargo fmt --all -- --check
-	cargo clippy --workspace --all-targets --locked -- -D warnings
-	$(PYTHON) scripts/check_repository.py
-	$(PYTHON) scripts/generate_contracts.py --check
-	PYTHONPATH=providers/local $(PYTHON) -m unittest discover -s providers/local/tests -v
+	$(CARGO) fmt --all -- --check
+	$(CARGO) clippy --workspace --all-targets --locked -- -D warnings
+	$(CARGO) run -p job-harness-dev --locked -- repository
+	$(CARGO) run -p job-harness-dev --locked -- contracts --check
 
+# Native compatibility vectors are retained after the completed cross-language migration.
 check-parity:
-	cargo build --locked
-	$(PYTHON) scripts/check_parity.py
+	$(CARGO) test -p job-harness-domain --locked
+	$(CARGO) test -p job-harness-core --locked
 
 build:
-	cargo build --release --locked
+	$(CARGO) build --release --bins --locked
 
 check-package: build
-	$(PYTHON) scripts/verify_native.py --binary target/release/job-harness
+	$(CARGO) run -p job-harness-dev --locked -- package --binary target/release/job-harness
 
+check-models:
+	$(CARGO) fmt --manifest-path providers/local/native/Cargo.toml -- --check
+	$(CARGO) clippy --manifest-path providers/local/native/Cargo.toml --all-targets --locked -- -D warnings
+	$(CARGO) test --manifest-path providers/local/native/Cargo.toml --locked
+
+check-desktop:
+	$(CARGO) fmt --manifest-path apps/desktop/Cargo.toml -- --check
+	$(CARGO) clippy --manifest-path apps/desktop/Cargo.toml --all-targets --locked -- -D warnings
+	$(CARGO) test --manifest-path apps/desktop/Cargo.toml --locked
+
+# SVG source is edited directly. Rendering is an optional local preview.
 assets:
-	$(PYTHON) scripts/render_assets.py
+	mkdir -p .scratch
+	rsvg-convert docs/assets/hero.svg -o .scratch/hero.png
+	rsvg-convert docs/assets/architecture.svg -o .scratch/architecture.png
 
 demo:
-	cargo build --locked
+	$(CARGO) build --locked
 	JOB_HARNESS_BINARY="$$(pwd)/target/debug/job-harness" ./scripts/demo.sh

@@ -1,4 +1,2 @@
-.venv/
-*.task
-*.litertlm
-*.part
+/native/target/
+/kev-native/.build/

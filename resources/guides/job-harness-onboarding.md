@@ -1,6 +1,6 @@
 # Job Harness — onboarding
 
-Job Harness is reusable tooling for a private job-search ledger. It provides workflows, typed tools, bounded batches, submission coordination and evidence-backed tracking. An agent or GUI supplies the external mail, browser and calendar capabilities. The native Rust binary on Windows/macOS/Linux is the supported local runtime; Shared cross-machine storage needs a separate coordinator.
+Job Harness gives people and agents one private career workspace and dependable tools to use it. It provides sourced context, bounded batches, application coordination and evidence-backed tracking. The agent host supplies external mail, browser and calendar access. Native CLI and optional GUI actions share the same engine. The core targets Windows/macOS/Linux; cross-machine storage needs a separate coordinator.
 
 ## How it runs
 
@@ -25,14 +25,15 @@ The agent supplies decisions; Job Harness runs predictable local steps and keeps
 | Each ledger's `context/`, `content/`, `applications/`, `output/` | Facts, approved CV, preferences, vacancies, history, exact packets and receipts | No; private candidate data |
 | Agent/GUI host | Model choice, connector bindings, credentials, user permissions and scheduling | No; host-owned runtime/access |
 
-Configuration selects data; it is not evidence for a career claim. Each candidate has a separate ledger/root and coordinator. Switching root is a trusted host startup choice, never an argument available to an agent tool. Agents sharing one candidate must share the same checkout/coordinator. Copies on different machines have independent locks.
+Configuration selects data; it is not evidence for a career claim. Each candidate has a separate ledger/root and coordinator. Switching root is a trusted host startup choice, never an argument available to an agent tool. Agents sharing one candidate use the same private workspace/coordinator. Copies on different machines have independent locks.
 
 ## Try it without personal information
 
-From the toolkit directory, create an empty private ledger outside it:
+Try a fictional workspace first, or set up your own private workspace outside the toolkit:
 
 ```sh
-job-harness --root /path/to/private-ledger init
+jh demo --workspace /path/to/fictional-demo
+jh setup --workspace /path/to/private-ledger --json
 job-harness --root /path/to/private-ledger call bootstrap <<'JSON'
 {"operation":"reconcile","capabilities":[]}
 JSON
@@ -41,6 +42,8 @@ job-harness config-schema ledger
 ```
 
 Initialization builds a temporary sibling directory and moves it into place only after success. It refuses to replace a nonempty directory. It creates blank answer/evidence records and neutral configuration; it copies no salary, contact details, CV, demographic answer or career history. Set primary_cv to a repository-relative PDF path, set the IANA timezone, and supply attributed career records/approved answers. Missing personal facts remain missing. Generic skills, operating guides and workflow defaults stay in the toolkit; read_record resolves them there and returns origin=toolkit. They are not copied into each candidate ledger. A private file at the same allowed path is an explicit owner override.
+
+Terminal setup can ask which optional capabilities you want. Agents use `--json` and repeated `--capability ID`; `--plan` writes nothing. Selection never downloads a model or grants access. `jh capabilities` lists requirements and next steps. Existing valid workspaces are selected without resetting their evidence or state.
 
 Wire a stdio MCP client to this command, using absolute paths. Embedded resources work outside the checkout:
 

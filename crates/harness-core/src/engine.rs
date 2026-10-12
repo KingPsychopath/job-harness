@@ -677,6 +677,9 @@ fn recovery(code: &str) -> &'static str {
         "invalid_arguments" => "Correct arguments using the tool input schema.",
         "unknown_tool" => "Discover tools/list or CLI schemas; use a listed tool.",
         "path_denied" => "Use a workspace-relative path returned by a record tool.",
+        "stale_record" => {
+            "Read the current canonical record, review the intended change and use its new source hash; no record update was committed."
+        }
         "missing_resource" => {
             "Configure or create the missing ledger file; do not substitute another identity."
         }

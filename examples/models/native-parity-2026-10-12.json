@@ -1,0 +1,53 @@
+{
+  "measurement_date": "2026-10-12",
+  "scope": "Actual official SDK references vs native implementations, fictional inputs only; no general accuracy or calibration claim",
+  "gemma": {
+    "scope": "Same pinned C library/model and five synthetic prefixed texts; original official SDK wrapper vs actual Rust C API",
+    "max_absolute_difference": 0.0,
+    "minimum_cosine": 1.0
+  },
+  "laya": {
+    "scope": "Official MediaPipe1.1 C bindings on same model, every caller order respected; old prototype schema cache bypassed",
+    "max_absolute_probability_difference": 0.0,
+    "changed_typed_values": [
+
+    ],
+    "historical_report_caveat": "Old Python cache sorted criterion keys and did not actually reverse cached choice order."
+  },
+  "kev": {
+    "encoding": {
+      "cases": 12,
+      "token_ids_identical": true,
+      "pointer_positions_identical": true,
+      "reference_source": "jaredpalmer/kev@2ecafc49fe1e8945cd600443e6c04c1cf0b3a78f official encoder; fictional fixtures",
+      "model_revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f"
+    },
+    "maximum_probability_difference_from_prior_cached_sdk_reference": 0.021676603610382095,
+    "changed_fixture_choice_boolean_nullable_values": 0,
+    "execution_difference": "Native pinned Swift/MLX kernels, batched full causal rows; original reference used cached Python/MLX branches"
+  },
+  "review": {
+    "model": "claude-opus-5-5",
+    "effort": "high",
+    "tools": "disabled",
+    "no_p1": true,
+    "fixed_p2": [
+      "Group cleanup occurs before PID reaping; shared once-only death state",
+      "Fatal Swift IPC failure stops worker and health reflects death",
+      "Absolute five-second HTTP input deadline",
+      "Startup send/signal-handler failures kill and reap worker",
+      "Private worker IPC descriptor closes on child exec; TEMP/TMP set on Windows"
+    ],
+    "confirmed_existing_checks": [
+      "Finite normalized vectors and probability schema validation",
+      "SDK calibrated temperature sentinel0, reject overflow strategy2",
+      "CtrlC termination feature enabled"
+    ],
+    "limitations": [
+      "Native inference verified on macOS arm64 only; other platform binary contracts compile separately",
+      "SameUID filesystem/network rights; local callers can stop the bounded worker",
+      "Hardened/notarized macOS library policy remains unverified",
+      "Native SDK internal cache size unverified"
+    ]
+  }
+}

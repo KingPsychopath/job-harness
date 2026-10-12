@@ -1,5 +1,6 @@
 [workspace]
-members = ["crates/harness-domain", "crates/harness-core", "crates/harness-protocol", "crates/harness-cli"]
+members = ["crates/harness-domain", "crates/harness-core", "crates/harness-protocol", "crates/harness-cli", "xtask"]
+default-members = ["crates/harness-cli"]
 resolver = "3"
 
 [workspace.package]

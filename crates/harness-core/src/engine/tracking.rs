@@ -8,6 +8,7 @@ pub(super) struct TrackingUpdate<'a> {
     pub evidence: &'a Value,
     pub key: &'a str,
     pub correction: Option<&'a str>,
+    pub expected_record_sha256: Option<&'a str>,
 }
 
 impl Engine {
@@ -45,9 +46,18 @@ impl Engine {
             evidence,
             key,
             correction,
+            expected_record_sha256,
         } = update;
         let path = self.record_path(record, true)?;
         let mut text = fs::read_to_string(&path)?;
+        if let Some(expected) = expected_record_sha256
+            && domain::digest(text.as_bytes()) != expected
+        {
+            return Err(Error::new(
+                "stale_record",
+                "The canonical record changed since review; read its current bytes before proposing this move again",
+            ));
+        }
         let pattern = tracking_pattern();
         let captures = pattern.captures(&text);
         let old = if let Some(c) = &captures {
@@ -182,6 +192,17 @@ impl Engine {
             &domain::digest(key.as_bytes())[..16]
         ));
         self.change(&path, text, changes)?;
+        if expected_record_sha256.is_some_and(|expected| {
+            changes
+                .last()
+                .and_then(|change| change["before_sha256"].as_str())
+                != Some(expected)
+        }) {
+            return Err(Error::new(
+                "stale_record",
+                "The record changed while this move was being prepared; preserve the current record and review it again",
+            ));
+        }
         Ok(merged)
     }
     pub(super) fn record_event(
@@ -212,6 +233,9 @@ impl Engine {
                         evidence: &args["evidence"],
                         key: s(args, "idempotency_key")?,
                         correction: args.get("correction_reason").and_then(Value::as_str),
+                        expected_record_sha256: args
+                            .get("expected_record_sha256")
+                            .and_then(Value::as_str),
                     },
                     changes,
                 )?;

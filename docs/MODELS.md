@@ -1,163 +1,123 @@
-# Optional local retrieval and typed decisions
+# Optional native local models
 
-The Rust core, CLI, MCP and ACP work without Python, model weights or a model account. Exact-word search and inbox rules remain available offline. This separate provider is useful when a question needs related passages rather than exact words, or a selected message needs a bounded decision for review. An agent handles writing and external actions.
+The core Rust binary needs no models, Python, SDKs or GPU libraries. Local retrieval and typed decisions are opt-in capabilities supplied by the separate `job-harness-local` native provider. Writing stays with the user's agent or an explicitly selected compatible generative endpoint. No model proposal authorizes sending, archiving or changing career facts.
 
-The implementation calls Google's released SDKs: [LiteRT-LM `EmbeddingEngine`](https://github.com/google-ai-edge/LiteRT-LM/blob/main/python/litert_lm/embedding_engine.py) for text-only EmbeddingGemma 2 retrieval, and [MediaPipe `DecisionMaker`](https://developers.google.com/edge/mediapipe/solutions/decision/decision_maker/python) for Laya choice, boolean and rubric scores. Nullable booleans abstain between explicit probability thresholds. It does not reimplement a model, generate text, read a workspace or capture audio.
+The standard Rust provider archive contains the gateway and metadata. It contains **no weights, Google libraries, Kev Swift scorer, Metal kernels or Python**. A full installation means explicitly adding the capabilities needed on that machine, with their requirements visible first.
 
-## Review before downloading
+## Direct sources and download scope
 
-Metadata was checked on 12 October 2026. `list` and `info` use the standard library and never load SDKs, contact a provider or download weights.
+The sole weight catalog is [models.json](../providers/local/models.json); native library distributions are [runtimes.json](../providers/local/runtimes.json). [summary.json](../providers/local/summary.json) is a generated compact view. Weights come directly from pinned public publisher URLs. We do not host another copy or publish weights to GitHub. SDK archives use the publishers' wheel ZIP format; the native installer extracts only the named library or kernel and never runs pip or an interpreter.
 
-| Selected model | Reviewed weight file | Source identity | Working memory |
+| Profile | Reviewed weight download | Runtime | Native model execution verified |
 |---|---:|---|---|
-| `embeddinggemma2-text` | 164,626,432 bytes / 157 MiB | [Text-only 270M card](https://huggingface.co/litert-community/embeddinggemma-2-text-270m-litert-lm), revision `9be6e8b90982095dc05c2bd162e4b954ee4dbac7`, SHA256 pinned | Unknown before loading; measure locally |
-| `laya-s256` | 678,477,844 bytes / 647 MiB | Official MediaPipe bundle, GCS generation `1791231584156797`, SHA256 and MD5 pinned | Unknown before loading; measure locally |
+| EmbeddingGemma2 text 270M |164,626,432 bytes (157 MiB) |LiteRT-LM 0.18 C EmbeddingEngine, CPU |macOS arm64 |
+| Laya s256 |678,477,844 bytes (647 MiB) |MediaPipe 1.1 DecisionMaker C ABI, CPU |macOS arm64 |
+| Kev 0.8B |1,835,370,519 bytes (1.71 GiB), complete base/LoRA/head/tokenizer |separate native Swift/MLX scorer |Apple Silicon macOS 26+ for the exact verified kernel profile |
 
-Both linked model repositories declare Apache-2.0. Review their cards and license evidence in `info`; the Laya GCS object has no separate license metadata. The MediaPipe overview's parameter count differs from its [linked Laya conversion card](https://huggingface.co/litert-community/laya-LiteRT), so this catalog leaves the bundle's parameter count unknown. No terms or authentication are accepted automatically.
+These are the only selectable model profiles. Larger candidates inspected during development were removed from setup and the catalog because their resource requirements exceeded the requested scope; they were never downloaded or run. The retained profiles still require the weight and runtime downloads shown above.
 
-This adapter selects CPU and supports macOS arm64 and Linux with compatible published wheels. Metadata commands and the synthetic HTTP/rules tests are portable on Windows; the optional hardened native worker currently uses POSIX descriptors and reports unsupported there. The Windows Rust core can still use an independently selected compatible external model endpoint. The combined pinned SDKs require macOS 12 or a compatible Linux wheel platform (MediaPipe's Linux wheels target glibc 2.28). GPU/NPU acceleration is untested. Package downloads are additional to model weights; the optional environment contains MediaPipe's published dependencies, including unused vision/audio packages.
+Google vendors publish native archives for macOS arm64, Linux x86_64/aarch64 and Windows x86_64. MediaPipe also publishes Windows arm64. Linux needs glibc 2.27 for LiteRT-LM and 2.28 for MediaPipe. Portable Rust contracts need none of these libraries; actual model execution on Linux/Windows remains unverified. There is no reviewed Gemma archive for macOS x86_64 or Windows arm64. The core's compatible HTTP endpoints remain available across its supported platforms.
 
-## Explicit lifecycle
+Runtime downloads are separate from weights. The macOS LiteRT-LM archive is 21,430,649 bytes; MediaPipe is 42,559,246 bytes. Other platform sizes/hashes appear in `info --runtime ID`. Kev's exact verified macOS 26 Metal archive is 67,661,845 bytes. The separately compiled Swift scorer needs Swift 6.2+ and source dependencies fetched during an explicit build; their source/compile size is not a promised fixed download size. Older MLX targets exist upstream but require separately reviewed kernels.
 
-From the repository, create a separate optional environment:
+RAM depends on hardware and input length. `working_memory_bytes:null` means unknown, not zero. `info` reports CPU/platform and physical RAM where available. The local trials ran on a 64 GiB Mac. Published model-card memory/latency claims are separate from local measurements.
 
-```sh
-uv venv --python 3.12 providers/local/.venv
-uv pip install --python providers/local/.venv/bin/python \
-  -r providers/local/requirements-runtime.txt -e providers/local
+Exact source and license evidence:
 
-providers/local/.venv/bin/job-harness-local list
-providers/local/.venv/bin/job-harness-local info embeddinggemma2-text
-providers/local/.venv/bin/job-harness-local info laya-s256
-```
+- **Gemma:** [converted model card](https://huggingface.co/litert-community/embeddinggemma-2-text-270m-litert-lm), revision `9be6e8b90982095dc05c2bd162e4b954ee4dbac7`; [exact artifact](https://huggingface.co/litert-community/embeddinggemma-2-text-270m-litert-lm/resolve/9be6e8b90982095dc05c2bd162e4b954ee4dbac7/embeddinggemma-2-text-270m.litertlm). Apache 2.0. Text only, 768 dimensions, 2,048 tokens. Uses the public [LiteRT-LM embedding C API](https://github.com/google-ai-edge/LiteRT-LM/blob/v0.18.0/c/embedding_engine.h).
+- **Laya:** [official guide](https://ai.google.dev/edge/mediapipe/solutions/decision_maker), [exact GCS generation 1791231584156797](https://storage.googleapis.com/mediapipe-models/decision_maker/laya/float32/laya_s256/latest/laya_s256.task?generation=1791231584156797), [linked card](https://huggingface.co/litert-community/laya-LiteRT). The linked card declares Apache 2.0; GCS supplies no separate artifact license metadata, so that exact mapping remains an explicit uncertainty. The guide's 149M claim differs from the card's 421M/322M checkpoints; the artifact's parameter count is unverified. The [official 1.1 SDK](https://pypi.org/project/mediapipe/1.1.0/) contains the standalone library. [Official binding layouts](https://github.com/google-ai-edge/mediapipe/blob/master/mediapipe/tasks/python/decision/decision_maker.py) expose the actual typed C functions. No separate published DecisionMaker C header was located: this adapter therefore pins the exact archive/library hash and ABI sizes/offsets as an experimental interface.
+- **Kev:** [0.8B card](https://huggingface.co/jaredpalmer/kev-0.8b), revision `bf75a6a8848ea6960ff2ed108d9ed44c2941174f`; [Qwen 3.5 base](https://huggingface.co/Qwen/Qwen3.5-0.8B-Base), revision `dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68`; both Apache 2.0. The [pinned author source](https://github.com/jaredpalmer/kev/tree/2ecafc49fe1e8945cd600443e6c04c1cf0b3a78f) defines branch encoding and pointer semantics. Native architecture reuse comes from MIT-licensed [mlx-swift-lm 3.32.3](https://github.com/ml-explore/mlx-swift-lm/tree/3b339ad6e3b3f44c8121ecff5131c7fd55e075e6) and [mlx-swift 0.32.3](https://github.com/ml-explore/mlx-swift/tree/19601207e9a0de51e03ee6ec0c3c5f3784275075). The complete catalog pins every component's size and SHA256.
 
-The same installation works with `python3.12 -m venv providers/local/.venv` and that environment's `python -m pip install -r ... -e ...`. Never install into global Python. Without the optional SDKs, metadata also works with `PYTHONPATH=providers/local python3 -m job_harness_local list`.
+## Explicit installation
 
-After reviewing the displayed size, source, license and hardware unknowns, pass the corresponding `approval_token` explicitly:
+Build or install the separate Rust provider, then inspect the selected model and its native runtime:
 
 ```sh
-providers/local/.venv/bin/job-harness-local download embeddinggemma2-text --approve TOKEN_FROM_INFO
-providers/local/.venv/bin/job-harness-local download laya-s256 --approve TOKEN_FROM_INFO
-providers/local/.venv/bin/job-harness-local serve \
-  --embedding-model embeddinggemma2-text --decision-model laya-s256 \
-  --port 18081 --threads 2 --timeout 30
+cargo build --release --locked --manifest-path providers/local/native/Cargo.toml
+providers/local/native/target/release/job-harness-local --help
+job-harness-local list
+job-harness-local info --model laya-s256
+job-harness-local info --runtime mediapipe-1.1.0-macos-arm64
 ```
 
-Models go to `$XDG_CACHE_HOME/job-harness/models` or `~/.cache/job-harness/models`. `--cache-dir /chosen/path` before the command selects another local cache. Download sizes and digests must match before installation completes; `serve` verifies the pinned bytes again and never fetches missing files. Ctrl-C stops the service and releases its worker; removing the selected cache directory removes those weights.
-
-The service binds `127.0.0.1` only, rejects browser origins and mismatched Host headers, and does not log input or native diagnostic text. Requests have a one-MiB bound; inference is serialized in one separate worker with a hard deadline. The worker starts with a fresh minimal environment, a temporary working directory, isolated Python imports, bounded JSON IPC and disabled core dumps. It remains a process with the same user, filesystem and network rights; this is crash isolation, not an execution sandbox. Timeout kills that worker, returns unavailable and requires an explicit restart. No automatic retry occurs. `/health` reports SDK versions, startup time, peak worker RSS and CPU controls; `/v1/models` reports loaded revisions. Successful responses also advertise `model_revision` for compatible hosts that verify provider identity.
-
-`--threads` sets LiteRT-LM's actual embedding CPU thread count. MediaPipe's Python DecisionMaker exposes no thread-count field: Laya receives thread environment hints. Linux additionally bounds the worker's CPU affinity; macOS has no affinity control here. **A two-thread Laya limit is not claimed on macOS.**
-
-## Connect retrieval to the Rust harness
-
-Choose sources explicitly. The provider embeds the supplied strings without adding another task prefix. Use the same prefixes, endpoint, revision and chunk size when indexing and searching:
+CLI results use the core's version 2 `schema_version/ok/data/error/next` envelope. `info` supplies an approval token for the exact pinned scope. Review license, bytes, RAM unknowns and platform requirements, then substitute that token:
 
 ```sh
-job-harness context index --endpoint http://127.0.0.1:18081/v1 \
-  --model embeddinggemma2-text --revision 9be6e8b90982095dc05c2bd162e4b954ee4dbac7 \
-  --source context/projects/example.md --chunk-lines 20 \
-  --document-prefix 'title: none | text: ' \
-  --query-prefix 'task: search result | query: ' --timeout-seconds 30
-
-job-harness context search --endpoint http://127.0.0.1:18081/v1 \
-  --model embeddinggemma2-text --revision 9be6e8b90982095dc05c2bd162e4b954ee4dbac7 \
-  --query 'Where did I work on database performance?' --chunk-lines 20 \
-  --document-prefix 'title: none | text: ' \
-  --query-prefix 'task: search result | query: ' --timeout-seconds 30
+job-harness-local download --model laya-s256 --approve TOKEN_FROM_MODEL_INFO
+job-harness-local download --runtime mediapipe-1.1.0-macos-arm64 --approve TOKEN_FROM_RUNTIME_INFO
+job-harness-local verify --model laya-s256
+job-harness-local verify --runtime mediapipe-1.1.0-macos-arm64
+job-harness-local serve --decision-model laya-s256
 ```
 
-The [Google prompt guide](https://ai.google.dev/gemma/docs/embeddinggemma/inference-embeddinggemma-with-sentence-transformers) supplies these asymmetric retrieval prefixes. Each request accepts 1–32 text inputs and returns normalized 768-dimensional float vectors. Token overflow returns an error instead of silently truncating. The harness stores a derived cache and returns original paths, source hashes and line anchors; read the source before making a claim. Select a shorter chunk if it exceeds 2,048 tokens.
-
-The SDK choice matters: the released MediaPipe 1.1.0 UniversalEmbedder failed locally on this text-only bundle by trying to load an absent vision encoder. The released LiteRT-LM 0.18.0 EmbeddingEngine loaded the same bundle and produced real vectors, without larger multimodal weights or Torch.
-
-## Typed decisions and inbox triage
-
-`POST /v1/decisions` accepts selected text and 1–8 questions:
-
-```json
-{"model":"laya-s256","state":"Please choose an interview time this week.","questions":{"intent":{"type":"choice","instructions":"Choose the requested action.","criteria":{"meeting":"Choose a time for an interview.","test":"Complete a written assessment."}},"reply":{"type":"nullable_boolean","condition":"The message asks for a written reply.","lower":0.2,"upper":0.8},"priority":{"type":"score","instructions":"Rate time sensitivity.","rubric":["No action requested.","Action this week.","Action today."]}}}
-```
-
-Choice values preserve their keys. Boolean values use a configurable threshold. Nullable boolean values are `true`, `false` or `null`; the default abstention band is 0.2–0.8. Score values are the SDK's continuous expected score on the zero-based ordered rubric, with probabilities retained. These probabilities are model estimates; this implementation makes no local calibration claim.
-
-Laya has a compact 256-token window. The adapter uses the bundle's official tokenizer with a conservative allowance for the question prompt and refuses oversized state/question combinations. Keep excerpts and descriptions short. At most 16 choice schemas are prewarmed in the Python adapter. It does not summarize a long email thread to fit that budget.
-
-For the harness's selected-message triage:
+The dashboard displays resource metadata and setup instructions. A profile's verification status describes the recorded development run; installation and endpoint availability on the current machine are separate checks. After starting the provider, select its endpoint, model and pinned revision explicitly for a real CLI request:
 
 ```sh
-job-harness context triage --input /path/to/selected-message.txt \
-  --endpoint http://127.0.0.1:18081/v1 \
-  --model laya-s256 --revision gcs-1791231584156797
+jh context triage --input selected-thread.txt \
+  --endpoint http://127.0.0.1:18081/v1 --model laya-s256 \
+  --revision gcs-1791231584156797
 ```
 
-The compatibility route `/v1/chat/completions` implements only this fixed typed triage contract. It rejects free-form generation, streaming, tools and enrichment requests. Mixed acknowledgments/rejections with recognized action requests stay `needs_reply=true`; disagreement or abstention stays uncertain. The rationale is a fixed review instruction, not generated evidence. The Rust result includes its independent rules baseline and never permits archiving. For summaries or application wording, use an external agent or a separately selected compatible generative model.
+This returns a reviewable suggestion for the supplied text. It grants no archive or send permission.
 
-## Local verification and practical limits
+For retrieval, repeat `info/download/verify` for `embeddinggemma2-text` and the matching `litert-lm-0.18.0-PLATFORM` runtime; add `--embedding-model embeddinggemma2-text` to `serve`. Select the platform's runtime ID from `list`. Only selected models load. Serving never downloads or installs anything.
 
-Dependency-free synthetic checks:
+The default cache is `$XDG_CACHE_HOME/job-harness/models` (normally `~/.cache/job-harness/models`), or the local application-data cache on Windows. `--cache /absolute/path` overrides it. Files verify before publication; a complete manifest is written last. Repeating an approved download retains complete verified files, restarts partial individual transfers and repairs interrupted manifests. Verification rejects missing, corrupt or unlisted model files. SDK verification rechecks the canonical archive hash and the extracted library against that archive before loading.
+
+For an offline machine, copy complete model/version and native-runtime/version directories, including archives/manifests, from an already verified cache. Run `verify` on the receiving machine before `serve --cache ...`. Native libraries must match its OS/CPU; weights can be reused where a corresponding runtime exists. Copy only public model/runtime caches, never a private workspace or credentials. No hosted mirror is needed.
+
+## Separate native Kev scorer
+
+The standard Rust provider archive does **not** include this executable. Build it explicitly on Apple Silicon:
 
 ```sh
-PYTHONPATH=providers/local python3 -m unittest discover -s providers/local/tests -v
+swift build --package-path providers/local/kev-native --build-system native -c release
+job-harness-local info --model kev-0.8b
+job-harness-local info --runtime kev-metal-0.32.3-macos-arm64
+job-harness-local download --model kev-0.8b --approve TOKEN_FROM_MODEL_INFO
+job-harness-local download --runtime kev-metal-0.32.3-macos-arm64 --approve TOKEN_FROM_RUNTIME_INFO
+job-harness-local serve --decision-model kev-0.8b \
+  --kev-sidecar /absolute/path/to/providers/local/kev-native/.build/release/kev-native \
+  --kev-metallib /absolute/model/cache/kev-metal-0.32.3-macos-arm64/0.32.3/mlx.metallib
 ```
 
-An explicit real-runtime smoke requires already installed SDKs and approved cached weights; it never installs or downloads anything:
+`Package.resolved` pins source dependencies. The tested compiler is Swift 6.4; the SDK declares a 6.2 floor. The legacy SwiftPM build mode avoids the default engine's request for a separately installed Metal compiler: the reviewed standalone kernel archive works without installing a global Metal toolchain. That build mode is deprecated upstream and may need a future toolchain update. The exact kernel profile requires macOS 26+. Record and verify the built scorer checksum when packaging/transferring it. Installing the Rust provider alone does not install Swift or build the scorer.
 
-```sh
-providers/local/.venv/bin/python examples/models/smoke.py \
-  --cache-dir /path/to/model/cache --output /path/to/synthetic-benchmark.json \
-  --harness /path/to/job-harness
-```
+Native Kev reuses the published Qwen architecture and public post-final-norm hidden-state API. It preserves control-marker escaping, causal branches, CPU FP32 LoRA merge rounded once to BF16, calibrated FP32 pointer head, confidence formulas, rubric scale and nullable thresholds. The exact `head.pt` hash fixes four raw storage/name/shape mappings; only those checked ZIP entries are extracted locally. Pickle metadata is never parsed/executed, and Torch is not a dependency. Full causal rows are batched within 16,384 tokens; state is limited to 8,192 tokens, with no truncation. A generic chat model does not replace this head.
 
-The [recorded native smoke](../examples/models/benchmark-2026-10-12.json) on macOS arm64, 18 logical CPUs, CPU backend and requested two embedding threads measured 1.53 s worker startup (excluding artifact hash verification), about 1.88 GiB combined worker peak RSS, 1.10 s for 32 fictional embedding passages, and 32–36 ms warm query requests. Four Laya primitives took 247 ms together. These are local observations, not portable performance promises. The first expected passage ranked first in one toy retrieval fixture; this is not a relevance evaluation.
+## Contracts, isolation and evidence
 
-The [Rust CLI integration](../examples/models/harness-integration-2026-10-12.json) also exercised real indexing, hybrid search with source hashes/line anchors and Laya triage in a temporary synthetic workspace: two passages indexed in 161 ms and search in 59 ms as measured inside the harness. No canonical evidence changed.
+The serial gateway binds only `127.0.0.1`, requires the exact Host and rejects Origin. It exposes OpenAI-compatible `/v1/embeddings`, typed `/v1/decisions`, and fixed triage-only `/v1/chat/completions`. It rejects free-form generation, streaming, tools and audio. Embeddings are finite normalized 768-float vectors with explicit caller prefixes and native overflow errors. Typed requests accept 1–8 questions and 2–8 options/levels. Nullable booleans preserve unknown values within explicit lower/upper thresholds (default 0.2–0.8). Scores are zero-indexed rubric expectations, not universal grades; confidence is not an accuracy guarantee.
 
-**Laya quality needs calibration on approved task examples.** This smoke included a wrong boolean and a high-confidence acknowledgment label on a message also requesting an interview reply. The gateway preserved the requested action and uncertainty. It proves the actual SDK and typed contract run, not that Laya can make unattended inbox decisions. No private facts, employer messages, microphone access, remote deployment or CI model download were used.
+Inference runs in a fresh native process with bounded JSON IPC, a temporary directory and no inherited host API/AWS credentials. Native diagnostics are suppressed. HTTP input has an absolute read deadline; inference has a hard deadline. Failure kills the worker and requires an explicit restart; Unix group cleanup includes the Swift child. CtrlC/SIGTERM stops the selected worker. Core dumps are disabled on POSIX and Linux dumpability is disabled; Windows dump behavior remains unknown. Native SDKs still have the user's filesystem/network rights: this is crash/credential isolation, **not an OS sandbox**. Loopback is not authentication against another local process; a local caller can exhaust the request deadline and stop the non-respawning worker.
 
-## Kev and Clef alternatives
+`--threads` sets Gemma's CPU API. Laya exposes no such field, so environment hints are advisory and do not enforce a thread count. The 16-schema Rust prewarm cache does not establish an audited bound for SDK internals. Unsigned native macOS execution was verified; a future hardened/notarized binary needs an independently verified library-loading policy.
 
-The [Kev author’s SDK](https://github.com/jaredpalmer/kev/tree/2ecafc49fe1e8945cd600443e6c04c1cf0b3a78f) provides a separate Apple Silicon MLX path. `kev-0.8b` is selectable through the same `/v1/decisions` and triage gateway, using its own environment. It does not add Torch to the Gemma/Laya environment or Rust core.
+Current native reports use fictional inputs and real Rust retrieval/triage calls:
 
-| Profile | Complete selected download | Runtime and evidence |
+| Measurement | Local result | Evidence |
 |---|---:|---|
-| [Kev-0.8B](https://huggingface.co/jaredpalmer/kev-0.8b) | 1,835,370,519 bytes / 1.71 GiB | LoRA/head **and** pinned Qwen base; author MLX bf16 path verified locally |
-| [Kev-4B](https://huggingface.co/jaredpalmer/kev-4b) | 9,502,461,619 bytes / 8.85 GiB | Metadata only; no download or inference lifecycle here |
-| [Clef-flash 9B](https://huggingface.co/Cloudflare/clef-flash) | 19,083,367,679 bytes / 17.77 GiB | Metadata only; public full weights and joint decision head, no local trial or hosted call |
+| Gemma 32-passage batch |1,277 ms |[native Gemma](../examples/models/native-gemma-2026-10-12.json) |
+| Gemma five warm queries |41–46 ms |same report; SDK vectors match exactly: max difference 0/cosine 1 |
+| Laya five typed questions, warm median |352 ms |[native Laya](../examples/models/native-laya-2026-10-12.json); direct SDK probabilities match exactly |
+| Kev five typed questions, warm median |294 ms |[native Kev](../examples/models/native-kev-0.8b-2026-10-12.json) |
+| Kev Rust host / Swift scorer peak RSS |182 MB /1,893 MB |separate processes; MLX allocation peak 2,440 MB is a different counter |
 
-Both Kev adapters and their Qwen bases declare Apache-2.0; Clef-flash’s publisher repository includes its Apache-2.0 license. The complete immutable file plans are in [model-profiles.json](../providers/local/model-profiles.json). [summary.json](../providers/local/summary.json) is a compact generated projection for the native CLI/dashboard. Published memory figures are workload-specific: Kev-4B’s card reports **11.9 GB process footprint** on an M5/32 GB Mac for three questions and an 8,192-token state, in bf16. That is the condition behind the approximate “12 GB” claim, not a universal RAM requirement. It was not tested here.
+Kev's 12 token sequences and pointer positions match the author encoder. Fixture choices and boolean/nullable outcomes matched the earlier SDK reference; raw probability drift reached 0.0217 with different BF16 kernels/cache execution. The earlier Python/MLX cached 26 ms result is a historical reference, not a native measurement. Six cases do not establish accuracy or calibration. Laya retains wrong labels/urgencies and abstentions; genuine reversed order changed two urgency choices. Its old prototype sorted schema-cache keys and failed to reverse cached options, so that historical report is annotated. All proposals remain review-only, with an independent request guard and no archive permission.
 
-The [independent Apple Silicon benchmark](https://github.com/tak-bro/local-jev-bench/tree/f84f5b90d69a2e59a1afa9bd8b0952b593641274) reports Kev-0.8B short-set first-call medians of 27.9–57.6 ms; its long typed-decisions set takes 152.4 ms. The abbreviated “28–58 ms” excludes that set. Its Laya path uses Ollaya, so those numbers do not measure this MediaPipe adapter. Small handwritten sets, training overlap, option-order changes and contention limit the comparisons.
-
-For the selected Kev profile, install a **separate** tested environment on Apple Silicon macOS / Python 3.12:
-
-```sh
-uv venv --python 3.12 providers/local/.venv-kev
-uv pip install --python providers/local/.venv-kev/bin/python --no-deps \
-  -r providers/local/requirements-runtime-kev.txt
-uv pip install --python providers/local/.venv-kev/bin/python --no-deps -e providers/local
-
-providers/local/.venv-kev/bin/job-harness-local info kev-0.8b
-providers/local/.venv-kev/bin/job-harness-local download kev-0.8b --approve TOKEN_FROM_INFO
-providers/local/.venv-kev/bin/job-harness-local serve \
-  --decision-model kev-0.8b --port 18082 --threads 2 --timeout 30
-
-job-harness context triage --input /path/to/selected-message.txt \
-  --endpoint http://127.0.0.1:18082/v1 \
-  --model kev-0.8b --revision bf75a6a8848ea6960ff2ed108d9ed44c2941174f
-```
-
-The pinned SDK is installed without its training extras. It reuses the author’s tokenizer, encoder, LoRA merger, MLX backbone and pointer head. The head is loaded explicitly with `torch.load(weights_only=True)`; base and adapter revisions/hashes must match. HF/Transformers offline flags are set inside the fresh-env worker. The local state budget is strict at 8,192 tokens; no context is silently truncated. Torch’s head receives the selected CPU thread count, while the backbone runs on Metal. Review/abstention thresholds are conservative host rules and are uncalibrated for this workload; the SDKs define confidence differently. Quantized Kev inference is unverified.
-
-The [frozen six-case fixture](../examples/models/triage-fixture.json) and [Kev result](../examples/models/kev-0.8b-2026-10-12.json) record original/reversed option order, raw probability outputs, separate guarded triage, and actual Rust CLI results. Warm five-question HTTP requests had a 26.24 ms median, with roughly 3.01 GiB process peak RSS (`ru_maxrss`, with Metal accounting potentially different). MLX’s separate allocation peak is reported for the worker lifetime. A first direct SDK load took 8.69 s and its first two-question inference took 2.62 s before kernel warmup; the later gateway startup was 2.79 s with existing caches. These are different startup conditions, not interchangeable “cold” timings. Raw reply decisions often abstained. [Laya on the same fixture](../examples/models/laya-2026-10-12.json) used CPU and had a 533.88 ms warm median for five primitive calls; Kev used Metal with a shared state pass. This compares the tested adapter paths, not general model quality. Both had no observed label-order flip in twelve rows; that small result proves little about unseen messages.
-
-Reproduce against an already running selected provider; this script installs/downloads nothing:
+Checks need no SDKs, weights, network or Python:
 
 ```sh
-python3 examples/models/typed_smoke.py \
-  --endpoint http://127.0.0.1:18082/v1 --model kev-0.8b \
-  --revision bf75a6a8848ea6960ff2ed108d9ed44c2941174f \
-  --harness /path/to/job-harness --output /path/to/fictional-typed-probe.json
+cargo test --locked --manifest-path providers/local/native/Cargo.toml
+cargo clippy --locked --manifest-path providers/local/native/Cargo.toml --all-targets -- -D warnings
+job-harness-local doctor
 ```
 
-The requested Claude Opus 5.5 / high discussion supported a bounded 0.8B feasibility trial and keeping every model optional. It did not justify a default or a 4B/9B download. Larger models need a workload-specific reason and fresh metadata review. Kev-0.8B’s own card cautions against tool-call routing and consequential unattended employment decisions; the gateway only proposes typed results for review. Neither these fixtures nor a public benchmark establish hiring-triage quality or transferable calibration.
+Explicit real probes require already verified runtimes/weights:
+
+```sh
+job-harness-local probe --model laya-s256 --endpoint http://127.0.0.1:18081/v1 --output report.json
+job-harness-local encoding-check --cache /absolute/model/cache --output encoding.json
+```
+
+Add `--harness /absolute/path/to/job-harness` for real core integration. [Example notes](../examples/models/README.md) describe fixture coverage and historical limitations.

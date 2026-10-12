@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use std::{
     collections::BTreeMap,
-    fs::{self, File, OpenOptions},
+    fs::{self, OpenOptions},
     io::{Read, Write},
     path::{Path, PathBuf},
 };
@@ -70,7 +70,7 @@ fn publish_new(path: &Path, bytes: &[u8]) -> Result<()> {
         )
     })?;
     #[cfg(unix)]
-    File::open(parent)?.sync_all()?;
+    fs::File::open(parent)?.sync_all()?;
     Ok(())
 }
 fn selected_workspace(root: &Path) -> Result<PathBuf> {
@@ -735,7 +735,7 @@ mod tests {
             assert!(import_source(&root, &file).is_err());
         }
         let huge = temp.path().join("large.txt");
-        File::create(&huge)
+        fs::File::create(&huge)
             .unwrap()
             .set_len(MAX_SOURCE_BYTES as u64 + 1)
             .unwrap();

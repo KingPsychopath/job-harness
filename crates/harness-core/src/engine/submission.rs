@@ -382,6 +382,7 @@ impl Engine {
                 evidence: &json!(links),
                 key: s(args, "idempotency_key")?,
                 correction: None,
+                expected_record_sha256: None,
             },
             changes,
         )?;

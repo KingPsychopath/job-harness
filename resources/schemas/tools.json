@@ -2414,7 +2414,7 @@
     }
   },
   "update_application": {
-    "description": "Update the canonical tracking block with a dated event, evidence and automatic pipeline rebuild.",
+    "description": "Update the canonical tracking block with a dated event, evidence and automatic pipeline rebuild. Optional expected_record_sha256 prevents a reviewed move from overwriting a newer canonical record.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2560,6 +2560,13 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 20000
+        },
+        "expected_record_sha256": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "Optional read_record SHA256 of the exact canonical bytes reviewed. A changed record is refused under the mutation lock before any tracking write."
         }
       },
       "required": [

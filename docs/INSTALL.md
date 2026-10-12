@@ -1,60 +1,94 @@
-# Install and onboard
+# Install what you need
 
-The native preview targets Windows, macOS and Linux. Exact-head CI is the platform evidence; optional native model SDK availability is a separate boundary. Public Cargo, npm and Homebrew publication is not configured. Native release archives can be produced without including a personal workspace.
+Start with the native toolkit. Exact search, notes, application coordination, private backups, CLI/MCP and the local dashboard are included. Models, their runtimes, Typst and the optional desktop application install separately.
 
-## Source installation
+## Native release: no compiler required
 
-Install Rust from its official distribution, authenticate GitHub for this private repository, then:
+Get your platform archive from [GitHub Releases](https://github.com/KingPsychopath/job-harness/releases). This repository and its releases remain private; authenticate with your existing GitHub access. Choose your actual CPU:
+
+| System | Archive target |
+|---|---|
+| Apple Silicon macOS | `aarch64-apple-darwin` |
+| Intel macOS | `x86_64-apple-darwin` |
+| Linux x86-64 | `x86_64-unknown-linux-gnu` |
+| Linux ARM64 | `aarch64-unknown-linux-gnu` |
+| Windows x86-64 | `x86_64-pc-windows-msvc` |
+
+Download the matching archive and `SHA256SUMS`. On macOS, compare `shasum -a 256 ARCHIVE`; on Linux, `sha256sum ARCHIVE`; on Windows, `Get-FileHash ARCHIVE -Algorithm SHA256`. The digest must match the archive's exact entry. SHA256 detects changed bytes; it does not replace trust in the repository or signing.
+
+Extract the archive and put both `job-harness` and `jh` in your user bin directory, then add that directory to PATH. Windows executables have `.exe`. `BUILD.json` records the source commit, target and build toolchain. `jh --version` confirms which installation you are using.
+
+The optional desktop archive is separate: on macOS, open or move **Job Harness.app** into Applications; on Windows/Linux, launch its native executable after installing the platform webview requirements. It opens your configured workspace or offers an existing-folder chooser. You do not need to enter commands in the GUI. The local provider archive is another optional component; its runtime/weight lifecycle is described below.
+
+These preview archives are **unsigned**. macOS Gatekeeper and Windows SmartScreen may warn about them. Review provenance and your platform's normal explicit application approval; do not disable global security controls. Public package registries, signed installers and auto-update are not enabled.
+
+## Set up your private workspace
+
+```sh
+jh setup --workspace "$HOME/Career/workspace"
+jh status
+jh connect mcp
+```
+
+On a terminal, setup asks which capabilities you want. All optional software stays uninstalled until you choose its separate lifecycle. To automate without prompts:
+
+```sh
+jh setup --workspace "$HOME/Career/workspace" --capability mcp --json
+jh setup --workspace "$HOME/Career/workspace" --capability retrieval --plan --json
+jh capabilities --json
+```
+
+`--plan` changes nothing. Without a capability selection, noninteractive setup configures only the base. Repeated selections are deduplicated in the plan. Setup initializes a new/empty directory or selects an existing valid workspace; it never resets its coordinator or career evidence. Credentials are neither requested nor stored.
+
+Use `jh demo --workspace "$HOME/Career/demo"` for fictional data. It refuses an existing nonempty destination and makes no employer, mail or model requests. `jh --root "$HOME/Career/demo" gui` displays that separate workspace without changing your default.
+
+### Bring what you already have
+
+`jh source import --input approved-cv.pdf` preserves the supplied file and records its identity. Select that retained relative path as `primary_cv` in `config/career-ledger.json`; import does not automatically approve content. Choose an IANA timezone and source paths in that config. Add direct answers with source, date, scope and unresolved limits. Original notes can be imported without reconstructing missing facts. [Detailed onboarding](../resources/guides/job-harness-onboarding.md)
+
+Root precedence is explicit `--root`, then `JOB_HARNESS_WORKSPACE`, then host-local settings. Settings use `$XDG_CONFIG_HOME/job-harness/settings.json`, otherwise APPDATA on Windows or `~/.config/job-harness/settings.json`. They hold a path, not candidate facts or keys, and are excluded from private exports.
+
+## Add a capability deliberately
+
+| Goal | Next step | Additional download |
+|---|---|---|
+| Give an existing agent the tools | `jh connect mcp`; paste the returned config into your host | None in Job Harness |
+| Launch a separately installed agent | `jh acp --help` | Your selected agent |
+| Use a compatible local/remote model | `jh agent run --help` | Your selected runtime/model, or provider access |
+| Semantic retrieval or typed suggestions | `jh context models`, then the [native model lifecycle](MODELS.md) | Listed native runtime and pinned model bytes |
+| Compile an evidence-backed CV | [CV guide](CV.md) | Optional Typst and chosen fonts |
+| Use a native desktop window | [Desktop package](../apps/desktop/README.md) | Separate application; OS webview requirements |
+
+Selecting a capability in setup is a plan, not an installation or permission grant. Model info reports immutable sources, size, hardware and unknown memory requirements before explicit installation. The local provider never downloads on serve. Remote model endpoints send only selected prompt/context; choose them intentionally. Browser, mail and calendar sessions remain host-owned. [Access boundaries](AUTH.md)
+
+## Build from source
+
+Install Rust from [rustup](https://rustup.rs), the platform C toolchain, and authenticate GitHub for this private repository:
 
 ```sh
 gh repo clone KingPsychopath/job-harness
 cd job-harness
 ./scripts/install.sh
-# Or: cargo install --locked --path crates/harness-cli --root "$HOME/.local"
 ```
 
-On Windows PowerShell, use `./scripts/install.ps1` (Rust with the MSVC C build tools), then add `$HOME/.local/bin` to PATH. On macOS/Linux, use the shell installer. Resources and templates are embedded in the binary; it runs outside the checkout without Python or a source-tree working directory. Typst is optional and required only for compiling CVs.
+The pinned core build uses Rust 1.97.1; its minimum Rust version is 1.88. Source builds use bundled SQLite/cryptography and need a C compiler. Embedded resources make the installed binary independent of the checkout. Optional desktop compilation has its own minimum and platform dependencies.
 
-## Your private workspace
-
-```sh
-job-harness --root "$HOME/Career/workspace" init
-job-harness configure --workspace "$HOME/Career/workspace"
-job-harness call bootstrap <<'JSON'
-{"operation":"reconcile","capabilities":[]}
-JSON
-job-harness connect mcp
-```
-
-Initialization refuses a nonempty destination and creates no personal facts. Add your approved PDF, set relative `primary_cv` and answer-source paths, and choose an IANA timezone in `config/career-ledger.json`. Record facts and preferences with date, attribution, scope and limits. [Onboarding details](../resources/guides/job-harness-onboarding.md)
-
-Root precedence: explicit `--root`, then `JOB_HARNESS_WORKSPACE`, then host-local `$XDG_CONFIG_HOME/job-harness/settings.json` (otherwise `~/.config/job-harness/settings.json`). Host settings hold a path; candidate bundles never include them. Use a fixed absolute root in MCP registration.
-
-## Connect and verify
-
-Use `connect mcp` output in any MCP client. Focused advertises 11 tools; full advertises the complete catalog. Optional skill installation links `resources/skills/` into your host's skill directory. Clients can retrieve embedded skills with `read_record`, so installation is not required.
-
-Reload a client after changing its server command, then verify bootstrap through that actual connection. Configuration is not proof a previously running process switched versions. ACP and local/remote model commands are described in [agent wiring](AGENTS.md).
-
-## Upgrade or move
-
-Export a full private bundle before upgrading. Keep the old installed binary until recovery and compatibility checks pass. Unknown attempts must survive; never clear the coordinator to fix a migration error. Restore into a new directory and inspect unfinished work before taking external actions.
-
-Use [workspace transfers](BUNDLES.md) for personal data, release archives for software, and the host's secure credential store for access. A GUI consumes the same boundaries.
-
-## Windows PowerShell
+On Windows PowerShell with MSVC build tools:
 
 ```powershell
 gh repo clone KingPsychopath/job-harness
 Set-Location job-harness
 ./scripts/install.ps1
 $env:Path = (Join-Path $HOME ".local/bin") + [IO.Path]::PathSeparator + $env:Path
-job-harness --root (Join-Path $HOME "Career/workspace") init
-job-harness configure --workspace (Join-Path $HOME "Career/workspace")
-job-harness status
-job-harness connect mcp
+jh setup --workspace (Join-Path $HOME "Career/workspace") --json
+jh status
+jh connect mcp
 ```
 
-The native Windows release uses `.exe` files in a ZIP; macOS/Linux use native binaries in tar archives. Native release installation needs no Rust or Python. Source builds need the selected platform's C compiler for bundled SQLite/cryptography. Host settings use XDG/HOME where present and APPDATA on Windows otherwise. Use `--input` with UTF-8 JSON files for portable Unicode tool arguments.
+Use UTF-8 JSON files with `--input` for portable structured arguments. Use native Windows paths in host launch configuration; a copied Unix config does not select the equivalent Windows directory automatically.
 
-The same core/protocol contracts apply across operating systems. The pure domain is also WASM-checkable; browser/mobile embedding needs host storage and connector adapters. Other Rust targets need platform-specific build verification rather than an unsupported universal execution claim.
+## Connect, upgrade and move
+
+The MCP focused profile advertises 11 tools; full exposes all 40. Specialized schemas and generic guides are embedded and retrievable without installing a skill folder. Reload the actual client after changing its server executable, then run bootstrap through that connection. A saved config alone does not prove an old process restarted.
+
+Export a full private bundle before upgrading. Keep the previous binary until compatibility/recovery checks pass. Restore into a new directory and inspect unfinished work. Unknown attempts must survive upgrades. Release archives contain software; [workspace bundles](BUNDLES.md) contain private data; the secure host credential store contains access.

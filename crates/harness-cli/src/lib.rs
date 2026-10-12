@@ -1,6 +1,7 @@
 //! Native CLI: compact JSON for piping; help and progress never contaminate MCP.
 mod context;
-mod host;
+pub mod host;
+mod onboarding;
 mod presentation;
 use clap::{Parser, Subcommand, ValueEnum};
 use job_harness_core::{Engine, HarnessError, contracts};
@@ -36,6 +37,28 @@ impl Profile {
 }
 #[derive(Subcommand)]
 enum Command {
+    /// Create a searchable fictional workspace; refuses existing data and performs no external actions.
+    Demo {
+        #[arg(long)]
+        workspace: PathBuf,
+    },
+    /// See the included toolkit and optional capabilities, requirements and next commands.
+    Capabilities {
+        #[arg(long)]
+        json: bool,
+    },
+    /// Set up a private workspace and choose optional capabilities; never downloads them silently.
+    Setup {
+        #[arg(long)]
+        workspace: PathBuf,
+        #[arg(long)]
+        capability: Vec<String>,
+        /// Print the plan without creating a workspace or saving host settings.
+        #[arg(long)]
+        plan: bool,
+        #[arg(long)]
+        json: bool,
+    },
     #[cfg(windows)]
     #[command(name = "__acp-launch", hide = true)]
     AcpLaunch {
@@ -334,6 +357,31 @@ fn input(path: Option<PathBuf>) -> anyhow::Result<Value> {
 
 async fn execute(cli: Cli) -> anyhow::Result<Option<Value>> {
     match cli.command {
+        Command::Demo { workspace } => return Ok(Some(success(onboarding::demo(&workspace)?))),
+        Command::Capabilities { json } => {
+            let data = onboarding::catalog();
+            if json {
+                return Ok(Some(success(data)));
+            }
+            print!("{}", onboarding::text(&data));
+            return Ok(None);
+        }
+        Command::Setup {
+            workspace,
+            mut capability,
+            plan,
+            json,
+        } => {
+            if capability.is_empty() && !json && !plan && std::io::stdin().is_terminal() {
+                capability = onboarding::prompt()?;
+            }
+            let data = onboarding::setup(&workspace, &capability, plan)?;
+            if json {
+                return Ok(Some(success(data)));
+            }
+            print!("{}", onboarding::text(&data));
+            return Ok(None);
+        }
         #[cfg(windows)]
         Command::AcpLaunch { agent, arguments } => {
             job_harness_protocol::acp_windows::launch(&agent, &arguments)?;
@@ -388,6 +436,9 @@ async fn execute(cli: Cli) -> anyhow::Result<Option<Value>> {
     }
     let root = host::resolve(cli.root)?;
     let data = match cli.command {
+        Command::Capabilities { .. } | Command::Setup { .. } | Command::Demo { .. } => {
+            unreachable!()
+        }
         Command::Status { json } => {
             let snapshot = job_harness_core::presentation::status_snapshot(&root)?;
             if json || snapshot["ok"] != true {

@@ -1,0 +1,35 @@
+[package]
+name = "job-harness-desktop"
+version = "0.2.0"
+edition = "2024"
+rust-version = "1.90"
+license = "MIT"
+description = "Optional native window for a private Job Harness workspace"
+publish = false
+
+# The desktop renderer is opt-in; it adds no dependencies to the main CLI workspace.
+[workspace]
+
+[dependencies]
+anyhow = "1"
+axum = "0.8"
+clap = { version = "4", features = ["derive", "env"] }
+harness-core = { package = "job-harness-core", path = "../../crates/harness-core" }
+harness-cli = { package = "job-harness", path = "../../crates/harness-cli" }
+rfd = "0.17"
+job-harness-protocol = { path = "../../crates/harness-protocol" }
+open = "5"
+tauri = { version = "2.12.3", default-features = false, features = ["wry"] }
+tokio = { version = "1", features = ["rt-multi-thread", "net", "sync", "time"] }
+url = "2"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
+
+[dev-dependencies]
+tempfile = "3"

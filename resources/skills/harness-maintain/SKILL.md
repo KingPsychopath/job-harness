@@ -13,4 +13,6 @@ Preserve schema-1 state, exact packet bytes, sourced answer identity and unknown
 
 Run targeted Rust tests while developing, then make check. Run make check-parity for identity, coordinator, schema or transfer changes, and make check-package for install/resource changes. Report what was tested locally, on CI and through an actual installed client. Review graphics when changed.
 
+Without Make, use the portable `cargo xtask repository`, `cargo xtask contracts --check` and `cargo xtask package --binary PATH` commands alongside Rust formatting, Clippy and tests. Compatibility tests retain native vectors after the completed language migration; do not restore the retired runtime as a test dependency. Optional desktop/model components have separate manifests and validation.
+
 Finish a focused reviewable change with clear commits and evidence. Do not publish packages, expose services, change visibility or send real employer messages as part of a synthetic check.

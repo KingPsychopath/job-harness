@@ -1,0 +1,30 @@
+[package]
+name = "job-harness-dev"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+[[bin]]
+name = "xtask"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+serde_json.workspace = true
+serde.workspace = true
+job-harness-core.workspace = true
+job-harness-domain.workspace = true
+job-harness-protocol.workspace = true
+regex.workspace = true
+tempfile.workspace = true
+roxmltree = "0.20"
+toml = "0.8"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "process", "io-util", "time"] }
+rmcp = { version = "3.5.1", default-features = false, features = ["client", "transport-child-process"] }
+tar = "0.4"
+flate2 = "1"
+zip.workspace = true
+walkdir.workspace = true

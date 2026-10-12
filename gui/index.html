@@ -5,92 +5,110 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="job-harness-csrf" content="{{CSRF}}" />
     <meta name="job-harness-mode" content="{{WRITE_MODE}}" />
-    <title>Job Harness · Workspace</title>
+    <title>Job Harness</title>
     <link rel="stylesheet" href="/app.css" />
+    <script defer src="/connections.js"></script>
     <script defer src="/app.js"></script>
   </head>
   <body>
     <div class="shell">
-      <aside class="sidebar">
-        <a class="brand" href="/"
-          ><span class="mark">jh</span
-          ><span>Job Harness<small>YOUR CAREER WORKSPACE</small></span></a
-        >
-        <div class="nav-label">WORKSPACE</div>
-        <nav>
+      <aside class="sidebar" aria-label="Workspace navigation">
+        <div class="app-name"><img src="/icon.svg" alt="" />Job Harness</div>
+        <nav aria-label="Views">
           <button class="nav-item active" data-view="pipeline">
-            ◇ Pipeline</button
-          ><button class="nav-item" data-view="attention">◎ Attention</button
-          ><button class="nav-item" data-view="knowledge">
-            ▤ Notes & evidence</button
-          ><button class="nav-item" data-view="connections">
-            ⌁ Connections
+            Applications
+          </button>
+          <button class="nav-item" data-view="knowledge">
+            Notes &amp; evidence
           </button>
         </nav>
-        <label class="focus-choice">FOCUS
+        <div class="sidebar-bottom">
+          <label class="focus-choice" for="focus">Current focus</label>
           <select id="focus">
             <option value="searching">Searching</option>
             <option value="building">Building experience</option>
             <option value="exploring">Exploring a move</option>
             <option value="starting">Starting somewhere</option>
           </select>
-        </label>
-        <button id="playbook" class="refresh">A useful next step</button>
-        <div class="side-note">
-          <span class="online"></span
-          ><span id="mode-label">Local, private</span>
-          <p>Context survives the agent.<br />You stay in control.</p>
-        </div>
-        <div class="loop">
-          <small>THE WORKING LOOP</small>
-          <p>Read → Decide → Prepare<br />Act once → Verify → Learn</p>
+          <button id="playbook" class="text-button">Workflow guide</button>
+          <div class="secondary-nav" aria-label="Workspace panels">
+            <button data-panel="sources">Search evidence</button
+            ><button data-panel="activity">Activity</button
+            ><button data-panel="connections">Connections &amp; setup</button>
+          </div>
+          <div class="theme-controls" role="group" aria-label="Appearance">
+            <button
+              data-theme="system"
+              aria-label="Follow system appearance"
+              title="System appearance"
+            >
+              ◐</button
+            ><button
+              data-theme="light"
+              aria-label="Light appearance"
+              title="Light appearance"
+            >
+              ☀</button
+            ><button
+              data-theme="dark"
+              aria-label="Dark appearance"
+              title="Dark appearance"
+            >
+              ☾
+            </button>
+          </div>
+          <p id="mode-label" class="sidebar-mode">Read only</p>
         </div>
       </aside>
       <main>
-        <header>
-          <div>
-            <p class="eyebrow">A CLEAR VIEW OF WHAT COMES NEXT</p>
-            <h1 id="page-title">Your pipeline.</h1>
-            <p class="subtitle" id="page-subtitle">
-              One durable history. Every next step in its place.
-            </p>
+        <header class="toolbar">
+          <h1 id="page-title">Applications</h1>
+          <div class="toolbar-actions">
+            <span id="health" hidden></span
+            ><button id="reload-session" hidden>Reload session</button
+            ><button
+              id="attention-button"
+              title="Requests and reviews needing attention"
+            >
+              Attention</button
+            ><button
+              id="refresh"
+              class="icon-button"
+              aria-label="Refresh workspace"
+              title="Refresh workspace"
+            >
+              ↻
+            </button>
           </div>
-          <button id="refresh" class="refresh">↻ Refresh</button>
         </header>
-        <section class="stats">
-          <article class="stat">
-            <span>Applications</span><strong id="total">—</strong
-            ><small>Canonical records</small>
-          </article>
-          <article class="stat">
-            <span>Open work</span><strong id="runs">—</strong
-            ><small>Tracked runs</small>
-          </article>
-          <article class="stat amber">
-            <span>Verify before retrying</span><strong id="recovery">—</strong
-            ><small>Unfinished attempts</small>
-          </article>
-          <article class="stat green">
-            <span>Workspace status</span><strong id="health">Loading</strong
-            ><small>Local engine</small>
-          </article>
-        </section>
-        <p id="status" role="status" aria-live="polite"></p>
-        <p id="focus-hint" class="metadata">Bring applications and unanswered requests forward.</p>
-        <section id="view" class="pipeline"></section>
-        <footer>
-          Workspace → Engine → Agent / Human → Host connectors<span
-            >Versioned tools. Verified outcomes.</span
-          >
+        <div class="view-body">
+          <p id="focus-hint" class="focus-hint">
+            Applications and unanswered requests.
+          </p>
+          <div id="update-notice" class="update-notice" hidden>
+            <span>Workspace updated. Your current review is preserved.</span
+            ><button id="apply-updates">Refresh when ready</button>
+          </div>
+          <section id="view" aria-label="Selected workspace view"></section>
+        </div>
+        <footer class="status-bar">
+          <p id="status" role="status" aria-live="polite"></p>
+          <span>Local workspace</span>
         </footer>
       </main>
     </div>
-    <dialog id="detail">
+    <dialog id="detail" aria-labelledby="detail-title">
       <div class="dialog-top">
         <h2 id="detail-title">Source</h2>
-        <button id="close-detail" class="refresh">Close</button>
+        <button id="close-detail">Close</button>
       </div>
       <div id="detail-body"></div>
+      <p
+        id="detail-status"
+        class="detail-status"
+        role="status"
+        aria-live="polite"
+      ></p>
     </dialog>
   </body>
 </html>

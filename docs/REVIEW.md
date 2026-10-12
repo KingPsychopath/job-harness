@@ -4,7 +4,7 @@ The Rust migration was reviewed with independent workflow testers and repeated r
 
 ## What the reviews changed
 
-Architecture review supported one canonical local journal and disposable relational/search views, rather than competing Python/Rust writers or a second authority. Golden vectors preserve existing numeric encoding, Unicode identities, normalized URLs, dates, packet hashes and pipeline bytes. The historical Python implementation remains only as a test oracle.
+Architecture review supported one canonical local journal and disposable relational/search views, rather than competing writers or a second authority. Golden vectors preserve existing numeric encoding, Unicode identities, normalized URLs, dates, packet hashes and pipeline bytes. The completed differential migration was run before retiring the Python oracle; its source remains in Git history, with no runtime or development dependency.
 
 Adversarial source review led to common state validation, fail-closed missing history, superseded replay protection, compiled read-only authority, schema-keyword validation, immediate SQLite refresh transactions, deletion cleanup, recovery ordering, explicit profile history omission and bounded provider/ACP execution. Losing bytes in a journal conflict remain recoverable; a stale success response cannot authorize another action.
 
@@ -12,7 +12,11 @@ Independent forward tests then found five specific defects: an explicit project 
 
 The Windows audit found and corrected directory flushing, native atomic replacement, portable filename/alias validation, APPDATA settings and ACP descendant cleanup through a Job Object. Native Windows CI executes those branches; a local cross-check alone is compile evidence.
 
-The model review tightened schema/probability ranges, advertised revisions, interrupted download recovery and native worker isolation. The optional worker uses a minimal fresh environment, isolated imports, temporary cwd, bounded JSON IPC, disabled core dumps and a hard deadline. This is process/crash isolation, not a filesystem/network sandbox.
+The model review tightened schema/probability ranges, advertised revisions, interrupted download recovery and native worker isolation. The optional worker uses a minimal fresh environment, temporary cwd, bounded JSON IPC, disabled core dumps and a hard deadline. This is process/crash isolation, not a filesystem/network sandbox.
+
+The final provider replaces the owned Python implementation with Rust native-library adapters and a separate optional Swift/MLX worker. Gemma vectors and Laya probabilities matched official SDK results on the supplied fixtures. Native Laya ordering tests exposed two urgency changes hidden by an earlier cached Python probe; the historical reports now explain that limitation. The measured Kev run preserved the fixture's typed outcomes, without claiming a general accuracy or speed advantage.
+
+Desktop review moved routine work into named controls and kept technical inspection optional. Native testing found an unsupported JavaScript confirmation dialog; an in-app discard choice preserves the edit flow. The native host owns the review-mode menu, and every write checks the current source. A one-use launch, private cookie and tab-held nonce protect the loopback routes without giving the page a way to grant itself access.
 
 ## Scope decisions challenged with Claude
 
@@ -27,7 +31,8 @@ Models retrieve or suggest; they do not certify qualifications, archive mail or 
 | Rust unit/integration tests | Contracts, state transitions, concurrency, recovery, bundles, indexes, intake, presentation and transport fixtures |
 | Differential oracle | 49 cross-language traces, preserved historical packet/URL/number identities, exact pipeline bytes, transfer in both directions and shared locking |
 | Independent forward CLI journeys | Rough capture → selective review → scoped context; mail/form counterexamples; one-submit interruption; exact artifact/history restoration |
-| Copied native artifact | CLI/MCP/resources and private transfers run outside source with no Python on PATH |
+| Copied native artifacts | Core CLI/MCP/resources and transfers run outside source; optional provider doctor needs no SDK/weights, and desktop metadata checks open no window |
+| Native macOS window | Fictional read-only and reviewed note/tracker journeys, host-owned review menu, clipboard/navigation boundaries and current UI captures |
 | Real local model runs | Released Gemma/Laya and optional Kev runtime execution, source-anchored retrieval, typed decisions and scoped latency/memory measurements |
 | Separate private migration check | Protected career files remain unchanged; a real full backup restores exact retained bytes and 218 records |
 | Exact-head GitHub CI | Remote Windows/Linux/macOS verification; inspect the latest [workflow run](https://github.com/KingPsychopath/job-harness/actions/workflows/ci.yml) for its actual result |

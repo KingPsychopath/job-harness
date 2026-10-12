@@ -12,13 +12,12 @@ concurrency:
 env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: '1'
-  PYTHONUTF8: '1'
 defaults:
   run:
     shell: bash
 jobs:
   verify:
-    timeout-minutes: 30
+    timeout-minutes: 35
     strategy:
       fail-fast: false
       matrix:
@@ -28,9 +27,6 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: '3.11'
       - name: Install the pinned Rust toolchain
         run: rustup toolchain install 1.97.1 --profile minimal --component rustfmt,clippy --target wasm32-unknown-unknown
       - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
@@ -40,12 +36,23 @@ jobs:
             ~/.cargo/registry/cache
             ~/.cargo/git/db
             target
-          key: rust-ci-${{ runner.os }}-${{ runner.arch }}-1.97.1-${{ hashFiles('Cargo.lock') }}
+            providers/local/native/target
+          key: rust-ci-${{ runner.os }}-${{ runner.arch }}-1.97.1-${{ hashFiles('Cargo.lock', 'providers/local/native/Cargo.lock') }}
           restore-keys: rust-ci-${{ runner.os }}-${{ runner.arch }}-1.97.1-
       - name: Format and lint
         run: |
           cargo +1.97.1 fmt --all -- --check
-          cargo +1.97.1 clippy --workspace --all-targets --locked -- -D warnings
+          if ! cargo +1.97.1 clippy --workspace --all-targets --locked -- -D warnings > lint.log 2>&1; then
+            cat lint.log
+            tail -80 lint.log | while IFS= read -r line; do
+              line=${line//'%'/'%25'}
+              line=${line//$'\r'/'%0D'}
+              printf '::error::%s\n' "$line"
+            done
+            exit 1
+          fi
+          cat lint.log
+          rm lint.log
       - name: Behavior, recovery and adapter tests
         run: cargo +1.97.1 test --workspace --all-targets --locked
       - name: Keep the domain embeddable in WASM
@@ -55,21 +62,21 @@ jobs:
         run: |
           rustup toolchain install 1.88.0 --profile minimal
           cargo +1.88.0 check --workspace --all-targets --locked --target-dir target/msrv
-      - name: Repository privacy and resources
+      - name: Repository privacy, resources and generated contracts
         run: |
-          python scripts/check_repository.py
-          python scripts/generate_contracts.py --check
-      - name: Optional provider contracts without SDKs, weights or network
-        run: PYTHONPATH=providers/local python -m unittest discover -s providers/local/tests -v
-      - name: Differential compatibility
-        if: runner.os != 'Windows'
+          cargo +1.97.1 run -p job-harness-dev --locked -- repository
+          cargo +1.97.1 run -p job-harness-dev --locked -- contracts --check
+      - name: Optional native provider contracts without weights or SDK downloads
         run: |
-          cargo +1.97.1 build --workspace --locked
-          python scripts/check_parity.py
+          cargo +1.97.1 fmt --manifest-path providers/local/native/Cargo.toml -- --check
+          cargo +1.97.1 clippy --manifest-path providers/local/native/Cargo.toml --all-targets --locked -- -D warnings
+          cargo +1.97.1 test --manifest-path providers/local/native/Cargo.toml --locked
+          cargo +1.97.1 build --release --manifest-path providers/local/native/Cargo.toml --locked
+          cargo +1.97.1 run -p job-harness-dev --locked -- package --component local --binary providers/local/native/target/release/job-harness-local${{ runner.os == 'Windows' && '.exe' || '' }}
       - name: Verify a native artifact outside the checkout
         run: |
           cargo +1.97.1 build --release --bins --locked
-          python scripts/verify_native.py --binary target/release/job-harness${{ runner.os == 'Windows' && '.exe' || '' }}
+          cargo +1.97.1 run -p job-harness-dev --locked -- package --binary target/release/job-harness${{ runner.os == 'Windows' && '.exe' || '' }}
       - name: Verify Windows source installation
         if: runner.os == 'Windows'
         shell: pwsh
@@ -80,3 +87,35 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "Installed executable failed" }
           & (Join-Path $HarnessPrefix "bin/jh.exe") --version
           if ($LASTEXITCODE -ne 0) { throw "Installed alias failed" }
+  desktop:
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Linux system webview build dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev librsvg2-dev libayatana-appindicator3-dev
+      - name: Install the pinned Rust toolchain
+        run: rustup toolchain install 1.97.1 --profile minimal --component rustfmt,clippy
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            apps/desktop/target
+          key: rust-desktop-${{ runner.os }}-${{ runner.arch }}-1.97.1-${{ hashFiles('apps/desktop/Cargo.lock') }}
+          restore-keys: rust-desktop-${{ runner.os }}-${{ runner.arch }}-1.97.1-
+      - name: Desktop source and boundary tests
+        run: |
+          cargo +1.97.1 fmt --manifest-path apps/desktop/Cargo.toml -- --check
+          cargo +1.97.1 clippy --manifest-path apps/desktop/Cargo.toml --all-targets --locked -- -D warnings
+          cargo +1.97.1 test --manifest-path apps/desktop/Cargo.toml --locked
+          cargo +1.97.1 build --manifest-path apps/desktop/Cargo.toml --locked
+          cargo +1.97.1 run -p job-harness-dev --locked -- package --component desktop --binary apps/desktop/target/debug/job-harness-desktop${{ runner.os == 'Windows' && '.exe' || '' }}

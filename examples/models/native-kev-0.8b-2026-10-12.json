@@ -1,0 +1,1694 @@
+{
+  "measurement_date": "2026-10-12",
+  "scope": "Real native HTTP/Rust feasibility smoke: six fictional cases and two option orders; no private facts, quality ranking, actions or downloads.",
+  "fixture_sha256": "b9b1b90236a175c897644f4a68f7bf82b9645fe7050ec29e740a71a4130513e1",
+  "model": "kev-0.8b",
+  "revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+  "health": {
+    "ok": true,
+    "native": true,
+    "python_runtime": false,
+    "worker": {
+      "ok": true,
+      "load_ms": {
+        "kev-0.8b": 1295.409583
+      },
+      "worker_peak_rss_bytes": 176848896,
+      "native": true,
+      "python_runtime": false,
+      "core_dump_limit_bytes": 0,
+      "host_credentials_inherited": false,
+      "isolation": "fresh environment, temporary working directory, bounded JSON IPC; native process retains same UID filesystem and network rights"
+    }
+  },
+  "raw_cases": [
+    {
+      "id": "receipt",
+      "order": "original",
+      "truth": {
+        "label": "receipt",
+        "needs_reply": false
+      },
+      "raw_decision": {
+        "model": "kev-0.8b",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "receipt",
+            "probabilities": {
+              "receipt": 0.35382205,
+              "scheduling": 0.042197168,
+              "rejection": 0.2218363,
+              "assessment": 0.061927706,
+              "other": 0.32021677
+            },
+            "confidence": 0.19227756249999997
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.24986924,
+            "confidence": 0.50026152,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.24986924,
+            "confidence": 0.50026152,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "normal": 0.7958893,
+              "review": 0.12547553,
+              "urgent": 0.078635104
+            },
+            "confidence": 0.69383395
+          },
+          "priority": {
+            "type": "score",
+            "value": 0.342967898,
+            "level": "0",
+            "probabilities": [
+              0.76801854,
+              0.12099509,
+              0.110986404
+            ],
+            "confidence": 0.485548153,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "runtime_metrics": {
+          "mlx_process_peak_bytes": 2440600164,
+          "swift_process_peak_rss_bytes": 1744257024,
+          "memory_scope": "Swift process lifetime; MLX allocation counter is separate from process RSS",
+          "state_tokens": 11,
+          "state_truncated": false,
+          "branch_mode": "batched independent full causal rows"
+        },
+        "model_revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+        "metrics": {
+          "elapsed_ms": 266.687,
+          "worker_peak_rss_bytes": 176881664
+        }
+      },
+      "first_shape_http_ms": 337.12425,
+      "warm_repeat_http_ms": 267.60287500000004
+    },
+    {
+      "id": "receipt",
+      "order": "reversed",
+      "truth": {
+        "label": "receipt",
+        "needs_reply": false
+      },
+      "raw_decision": {
+        "model": "kev-0.8b",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "receipt",
+            "probabilities": {
+              "other": 0.18711844,
+              "assessment": 0.065537766,
+              "rejection": 0.21797593,
+              "scheduling": 0.0237755,
+              "receipt": 0.50559235
+            },
+            "confidence": 0.3819904375
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.24986924,
+            "confidence": 0.50026152,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.24986924,
+            "confidence": 0.50026152,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "urgent": 0.061517313,
+              "review": 0.25037956,
+              "normal": 0.6881032
+            },
+            "confidence": 0.5321548
+          },
+          "priority": {
+            "type": "score",
+            "value": 0.342967898,
+            "level": "0",
+            "probabilities": [
+              0.76801854,
+              0.12099509,
+              0.110986404
+            ],
+            "confidence": 0.485548153,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "runtime_metrics": {
+          "mlx_process_peak_bytes": 2440600164,
+          "swift_process_peak_rss_bytes": 1744257024,
+          "memory_scope": "Swift process lifetime; MLX allocation counter is separate from process RSS",
+          "state_tokens": 11,
+          "state_truncated": false,
+          "branch_mode": "batched independent full causal rows"
+        },
+        "model_revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+        "metrics": {
+          "elapsed_ms": 306.639708,
+          "worker_peak_rss_bytes": 176881664
+        }
+      },
+      "first_shape_http_ms": 317.763125,
+      "warm_repeat_http_ms": 307.49120800000003
+    },
+    {
+      "id": "rejection",
+      "order": "original",
+      "truth": {
+        "label": "rejection",
+        "needs_reply": false
+      },
+      "raw_decision": {
+        "model": "kev-0.8b",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "rejection",
+            "probabilities": {
+              "receipt": 0.18294735,
+              "scheduling": 0.01234861,
+              "rejection": 0.378595,
+              "assessment": 0.059653472,
+              "other": 0.36645558
+            },
+            "confidence": 0.22324375
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": false,
+            "probability_true": 0.1477818,
+            "confidence": 0.7044364000000001,
+            "abstained": false
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.1477818,
+            "confidence": 0.7044364000000001,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "normal": 0.7419409,
+              "review": 0.1406418,
+              "urgent": 0.117417306
+            },
+            "confidence": 0.61291135
+          },
+          "priority": {
+            "type": "score",
+            "value": 0.32469623,
+            "level": "0",
+            "probabilities": [
+              0.7952994,
+              0.08470487,
+              0.11999568
+            ],
+            "confidence": 0.5129556550000001,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "runtime_metrics": {
+          "mlx_process_peak_bytes": 2440600164,
+          "swift_process_peak_rss_bytes": 1744257024,
+          "memory_scope": "Swift process lifetime; MLX allocation counter is separate from process RSS",
+          "state_tokens": 14,
+          "state_truncated": false,
+          "branch_mode": "batched independent full causal rows"
+        },
+        "model_revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+        "metrics": {
+          "elapsed_ms": 301.42654200000004,
+          "worker_peak_rss_bytes": 176881664
+        }
+      },
+      "first_shape_http_ms": 309.474042,
+      "warm_repeat_http_ms": 302.3605
+    },
+    {
+      "id": "rejection",
+      "order": "reversed",
+      "truth": {
+        "label": "rejection",
+        "needs_reply": false
+      },
+      "raw_decision": {
+        "model": "kev-0.8b",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "rejection",
+            "probabilities": {
+              "other": 0.117040925,
+              "assessment": 0.063392125,
+              "rejection": 0.49316603,
+              "scheduling": 0.014915783,
+              "receipt": 0.31148517
+            },
+            "confidence": 0.36645753749999993
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": false,
+            "probability_true": 0.1477818,
+            "confidence": 0.7044364000000001,
+            "abstained": false
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.1477818,
+            "confidence": 0.7044364000000001,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "urgent": 0.073532104,
+              "review": 0.13173774,
+              "normal": 0.7947301
+            },
+            "confidence": 0.69209515
+          },
+          "priority": {
+            "type": "score",
+            "value": 0.32469623,
+            "level": "0",
+            "probabilities": [
+              0.7952994,
+              0.08470487,
+              0.11999568
+            ],
+            "confidence": 0.5129556550000001,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "runtime_metrics": {
+          "mlx_process_peak_bytes": 2440600164,
+          "swift_process_peak_rss_bytes": 1744257024,
+          "memory_scope": "Swift process lifetime; MLX allocation counter is separate from process RSS",
+          "state_tokens": 14,
+          "state_truncated": false,
+          "branch_mode": "batched independent full causal rows"
+        },
+        "model_revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+        "metrics": {
+          "elapsed_ms": 294.313333,
+          "worker_peak_rss_bytes": 176881664
+        }
+      },
+      "first_shape_http_ms": 300.195959,
+      "warm_repeat_http_ms": 295.084208
+    },
+    {
+      "id": "scheduling",
+      "order": "original",
+      "truth": {
+        "label": "scheduling",
+        "needs_reply": true
+      },
+      "raw_decision": {
+        "model": "kev-0.8b",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "scheduling",
+            "probabilities": {
+              "receipt": 0.10070969,
+              "scheduling": 0.67189837,
+              "rejection": 0.05627273,
+              "assessment": 0.02270182,
+              "other": 0.1484174
+            },
+            "confidence": 0.5898729624999999
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.5656731,
+            "confidence": 0.13134620000000008,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": true,
+            "probability_true": 0.5656731,
+            "confidence": 0.13134620000000008,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "review",
+            "probabilities": {
+              "normal": 0.30844146,
+              "review": 0.47113612,
+              "urgent": 0.22042233
+            },
+            "confidence": 0.20670418
+          },
+          "priority": {
+            "type": "score",
+            "value": 0.9975988899999999,
+            "level": "1",
+            "probabilities": [
+              0.14446646,
+              0.71346813,
+              0.14206538
+            ],
+            "confidence": 0.57020224,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "runtime_metrics": {
+          "mlx_process_peak_bytes": 2440600164,
+          "swift_process_peak_rss_bytes": 1744257024,
+          "memory_scope": "Swift process lifetime; MLX allocation counter is separate from process RSS",
+          "state_tokens": 12,
+          "state_truncated": false,
+          "branch_mode": "batched independent full causal rows"
+        },
+        "model_revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+        "metrics": {
+          "elapsed_ms": 292.318625,
+          "worker_peak_rss_bytes": 176881664
+        }
+      },
+      "first_shape_http_ms": 296.619959,
+      "warm_repeat_http_ms": 293.350375
+    },
+    {
+      "id": "scheduling",
+      "order": "reversed",
+      "truth": {
+        "label": "scheduling",
+        "needs_reply": true
+      },
+      "raw_decision": {
+        "model": "kev-0.8b",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "scheduling",
+            "probabilities": {
+              "other": 0.07608757,
+              "assessment": 0.07333044,
+              "rejection": 0.041109268,
+              "scheduling": 0.7246985,
+              "receipt": 0.08477421
+            },
+            "confidence": 0.655873125
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.5656731,
+            "confidence": 0.13134620000000008,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": true,
+            "probability_true": 0.5656731,
+            "confidence": 0.13134620000000008,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "review",
+            "probabilities": {
+              "urgent": 0.2426032,
+              "review": 0.43391818,
+              "normal": 0.32347858
+            },
+            "confidence": 0.15087726999999998
+          },
+          "priority": {
+            "type": "score",
+            "value": 0.9975988899999999,
+            "level": "1",
+            "probabilities": [
+              0.14446646,
+              0.71346813,
+              0.14206538
+            ],
+            "confidence": 0.57020224,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "runtime_metrics": {
+          "mlx_process_peak_bytes": 2440600164,
+          "swift_process_peak_rss_bytes": 1747124224,
+          "memory_scope": "Swift process lifetime; MLX allocation counter is separate from process RSS",
+          "state_tokens": 12,
+          "state_truncated": false,
+          "branch_mode": "batched independent full causal rows"
+        },
+        "model_revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+        "metrics": {
+          "elapsed_ms": 296.979084,
+          "worker_peak_rss_bytes": 176881664
+        }
+      },
+      "first_shape_http_ms": 295.23316700000004,
+      "warm_repeat_http_ms": 298.142083
+    },
+    {
+      "id": "assessment",
+      "order": "original",
+      "truth": {
+        "label": "assessment",
+        "needs_reply": true
+      },
+      "raw_decision": {
+        "model": "kev-0.8b",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "assessment",
+            "probabilities": {
+              "receipt": 0.14030346,
+              "scheduling": 0.05614396,
+              "rejection": 0.15293536,
+              "assessment": 0.42338896,
+              "other": 0.22722828
+            },
+            "confidence": 0.27923619999999993
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.71742094,
+            "confidence": 0.43484188,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": true,
+            "probability_true": 0.71742094,
+            "confidence": 0.43484188,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "review",
+            "probabilities": {
+              "normal": 0.20213783,
+              "review": 0.51438963,
+              "urgent": 0.28347254
+            },
+            "confidence": 0.27158444500000006
+          },
+          "priority": {
+            "type": "score",
+            "value": 1.01706476,
+            "level": "1",
+            "probabilities": [
+              0.16575593,
+              0.65142334,
+              0.18282071
+            ],
+            "confidence": 0.47713503999999995,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "runtime_metrics": {
+          "mlx_process_peak_bytes": 2440600164,
+          "swift_process_peak_rss_bytes": 1770291200,
+          "memory_scope": "Swift process lifetime; MLX allocation counter is separate from process RSS",
+          "state_tokens": 9,
+          "state_truncated": false,
+          "branch_mode": "batched independent full causal rows"
+        },
+        "model_revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+        "metrics": {
+          "elapsed_ms": 240.255959,
+          "worker_peak_rss_bytes": 176881664
+        }
+      },
+      "first_shape_http_ms": 261.826334,
+      "warm_repeat_http_ms": 241.125542
+    },
+    {
+      "id": "assessment",
+      "order": "reversed",
+      "truth": {
+        "label": "assessment",
+        "needs_reply": true
+      },
+      "raw_decision": {
+        "model": "kev-0.8b",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "assessment",
+            "probabilities": {
+              "other": 0.20055267,
+              "assessment": 0.49213666,
+              "rejection": 0.13239622,
+              "scheduling": 0.032484807,
+              "receipt": 0.14242965
+            },
+            "confidence": 0.365170825
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.71742094,
+            "confidence": 0.43484188,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": true,
+            "probability_true": 0.71742094,
+            "confidence": 0.43484188,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "review",
+            "probabilities": {
+              "urgent": 0.34276474,
+              "review": 0.38909015,
+              "normal": 0.26814505
+            },
+            "confidence": 0.08363522500000005
+          },
+          "priority": {
+            "type": "score",
+            "value": 1.01706476,
+            "level": "1",
+            "probabilities": [
+              0.16575593,
+              0.65142334,
+              0.18282071
+            ],
+            "confidence": 0.47713503999999995,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "runtime_metrics": {
+          "mlx_process_peak_bytes": 2440600164,
+          "swift_process_peak_rss_bytes": 1794015232,
+          "memory_scope": "Swift process lifetime; MLX allocation counter is separate from process RSS",
+          "state_tokens": 9,
+          "state_truncated": false,
+          "branch_mode": "batched independent full causal rows"
+        },
+        "model_revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+        "metrics": {
+          "elapsed_ms": 244.55083299999998,
+          "worker_peak_rss_bytes": 176881664
+        }
+      },
+      "first_shape_http_ms": 240.651333,
+      "warm_repeat_http_ms": 245.344125
+    },
+    {
+      "id": "mixed_receipt_request",
+      "order": "original",
+      "truth": {
+        "label": "scheduling",
+        "needs_reply": true
+      },
+      "raw_decision": {
+        "model": "kev-0.8b",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "scheduling",
+            "probabilities": {
+              "receipt": 0.22473083,
+              "scheduling": 0.43486714,
+              "rejection": 0.09753822,
+              "assessment": 0.028537313,
+              "other": 0.21432655
+            },
+            "confidence": 0.29358392499999997
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": true,
+            "probability_true": 0.8559999,
+            "confidence": 0.7119998000000001,
+            "abstained": false
+          },
+          "action": {
+            "type": "boolean",
+            "value": true,
+            "probability_true": 0.8559999,
+            "confidence": 0.7119998000000001,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "review",
+            "probabilities": {
+              "normal": 0.31402683,
+              "review": 0.50909436,
+              "urgent": 0.17687887
+            },
+            "confidence": 0.26364153999999995
+          },
+          "priority": {
+            "type": "score",
+            "value": 0.91854798,
+            "level": "0",
+            "probabilities": [
+              0.40125886,
+              0.27893424,
+              0.31980687
+            ],
+            "confidence": 0.0,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "runtime_metrics": {
+          "mlx_process_peak_bytes": 2440600164,
+          "swift_process_peak_rss_bytes": 1818001408,
+          "memory_scope": "Swift process lifetime; MLX allocation counter is separate from process RSS",
+          "state_tokens": 12,
+          "state_truncated": false,
+          "branch_mode": "batched independent full causal rows"
+        },
+        "model_revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+        "metrics": {
+          "elapsed_ms": 272.51891700000004,
+          "worker_peak_rss_bytes": 176881664
+        }
+      },
+      "first_shape_http_ms": 276.1175,
+      "warm_repeat_http_ms": 273.386709
+    },
+    {
+      "id": "mixed_receipt_request",
+      "order": "reversed",
+      "truth": {
+        "label": "scheduling",
+        "needs_reply": true
+      },
+      "raw_decision": {
+        "model": "kev-0.8b",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "scheduling",
+            "probabilities": {
+              "other": 0.1295564,
+              "assessment": 0.085589185,
+              "rejection": 0.0695857,
+              "scheduling": 0.52989167,
+              "receipt": 0.18537702
+            },
+            "confidence": 0.4123645875
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": true,
+            "probability_true": 0.8559999,
+            "confidence": 0.7119998000000001,
+            "abstained": false
+          },
+          "action": {
+            "type": "boolean",
+            "value": true,
+            "probability_true": 0.8559999,
+            "confidence": 0.7119998000000001,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "review",
+            "probabilities": {
+              "urgent": 0.20973083,
+              "review": 0.44035986,
+              "normal": 0.34990934
+            },
+            "confidence": 0.16053979
+          },
+          "priority": {
+            "type": "score",
+            "value": 0.91854798,
+            "level": "0",
+            "probabilities": [
+              0.40125886,
+              0.27893424,
+              0.31980687
+            ],
+            "confidence": 0.0,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "runtime_metrics": {
+          "mlx_process_peak_bytes": 2440600164,
+          "swift_process_peak_rss_bytes": 1842282496,
+          "memory_scope": "Swift process lifetime; MLX allocation counter is separate from process RSS",
+          "state_tokens": 12,
+          "state_truncated": false,
+          "branch_mode": "batched independent full causal rows"
+        },
+        "model_revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+        "metrics": {
+          "elapsed_ms": 282.946167,
+          "worker_peak_rss_bytes": 176881664
+        }
+      },
+      "first_shape_http_ms": 292.025083,
+      "warm_repeat_http_ms": 283.796458
+    },
+    {
+      "id": "missing_content",
+      "order": "original",
+      "truth": {
+        "label": "other",
+        "needs_reply": null
+      },
+      "raw_decision": {
+        "model": "kev-0.8b",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "other",
+            "probabilities": {
+              "receipt": 0.28852028,
+              "scheduling": 0.011182273,
+              "rejection": 0.060991164,
+              "assessment": 0.020257086,
+              "other": 0.6190492
+            },
+            "confidence": 0.5238114999999999
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.35132128,
+            "confidence": 0.29735744,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.35132128,
+            "confidence": 0.29735744,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "normal": 0.46086138,
+              "review": 0.2947176,
+              "urgent": 0.24442098
+            },
+            "confidence": 0.19129206999999998
+          },
+          "priority": {
+            "type": "score",
+            "value": 0.8291518,
+            "level": "0",
+            "probabilities": [
+              0.47504017,
+              0.2207679,
+              0.30419195
+            ],
+            "confidence": 0.0,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "runtime_metrics": {
+          "mlx_process_peak_bytes": 2440600164,
+          "swift_process_peak_rss_bytes": 1868136448,
+          "memory_scope": "Swift process lifetime; MLX allocation counter is separate from process RSS",
+          "state_tokens": 15,
+          "state_truncated": false,
+          "branch_mode": "batched independent full causal rows"
+        },
+        "model_revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+        "metrics": {
+          "elapsed_ms": 297.800208,
+          "worker_peak_rss_bytes": 176881664
+        }
+      },
+      "first_shape_http_ms": 305.079625,
+      "warm_repeat_http_ms": 298.634917
+    },
+    {
+      "id": "missing_content",
+      "order": "reversed",
+      "truth": {
+        "label": "other",
+        "needs_reply": null
+      },
+      "raw_decision": {
+        "model": "kev-0.8b",
+        "results": {
+          "label": {
+            "type": "choice",
+            "value": "other",
+            "probabilities": {
+              "other": 0.5006451,
+              "assessment": 0.034065202,
+              "rejection": 0.0714869,
+              "scheduling": 0.015182912,
+              "receipt": 0.37861985
+            },
+            "confidence": 0.3758063749999999
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.35132128,
+            "confidence": 0.29735744,
+            "abstained": true
+          },
+          "action": {
+            "type": "boolean",
+            "value": false,
+            "probability_true": 0.35132128,
+            "confidence": 0.29735744,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "urgent": 0.22150141,
+              "review": 0.2678871,
+              "normal": 0.5106115
+            },
+            "confidence": 0.26591725
+          },
+          "priority": {
+            "type": "score",
+            "value": 0.8291518,
+            "level": "0",
+            "probabilities": [
+              0.47504017,
+              0.2207679,
+              0.30419195
+            ],
+            "confidence": 0.0,
+            "scale": {
+              "minimum": 0,
+              "maximum": 2
+            }
+          }
+        },
+        "action": "suggestion_only",
+        "canonical_changes": false,
+        "runtime_metrics": {
+          "mlx_process_peak_bytes": 2440600164,
+          "swift_process_peak_rss_bytes": 1893466112,
+          "memory_scope": "Swift process lifetime; MLX allocation counter is separate from process RSS",
+          "state_tokens": 15,
+          "state_truncated": false,
+          "branch_mode": "batched independent full causal rows"
+        },
+        "model_revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+        "metrics": {
+          "elapsed_ms": 299.31020800000005,
+          "worker_peak_rss_bytes": 176881664
+        }
+      },
+      "first_shape_http_ms": 294.9975,
+      "warm_repeat_http_ms": 300.22008300000005
+    }
+  ],
+  "guarded_triage": [
+    {
+      "id": "receipt",
+      "decision": {
+        "label": "receipt",
+        "needs_reply": false,
+        "urgency": "normal",
+        "uncertain": true,
+        "rationale": "Typed model proposal; inspect the source before acting.",
+        "probabilities": {
+          "label": {
+            "type": "choice",
+            "value": "receipt",
+            "probabilities": {
+              "receipt": 0.45836347,
+              "rejection": 0.099691525,
+              "scheduling": 0.04194672,
+              "assessment": 0.060786765,
+              "other": 0.3392115
+            },
+            "confidence": 0.32295433749999997
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": false,
+            "probability_true": 0.1591821,
+            "confidence": 0.6816358,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "normal": 0.8148074,
+              "review": 0.10251023,
+              "urgent": 0.08268232
+            },
+            "confidence": 0.7222110999999999
+          }
+        },
+        "request_guard": false
+      },
+      "http_elapsed_ms": 327.836542
+    },
+    {
+      "id": "rejection",
+      "decision": {
+        "label": "rejection",
+        "needs_reply": false,
+        "urgency": "normal",
+        "uncertain": true,
+        "rationale": "Typed model proposal; inspect the source before acting.",
+        "probabilities": {
+          "label": {
+            "type": "choice",
+            "value": "rejection",
+            "probabilities": {
+              "receipt": 0.11190573,
+              "rejection": 0.4806963,
+              "scheduling": 0.023817953,
+              "assessment": 0.062478174,
+              "other": 0.3211018
+            },
+            "confidence": 0.350870375
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": false,
+            "probability_true": 0.08035829,
+            "confidence": 0.83928342,
+            "abstained": false
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "normal": 0.7242724,
+              "review": 0.15135257,
+              "urgent": 0.124375075
+            },
+            "confidence": 0.5864086000000001
+          }
+        },
+        "request_guard": false
+      },
+      "http_elapsed_ms": 223.747959
+    },
+    {
+      "id": "scheduling",
+      "decision": {
+        "label": "scheduling",
+        "needs_reply": true,
+        "urgency": "review",
+        "uncertain": true,
+        "rationale": "Typed model proposal; inspect the source before acting.",
+        "probabilities": {
+          "label": {
+            "type": "choice",
+            "value": "scheduling",
+            "probabilities": {
+              "receipt": 0.05493151,
+              "rejection": 0.008126323,
+              "scheduling": 0.83208513,
+              "assessment": 0.0066791787,
+              "other": 0.098177806
+            },
+            "confidence": 0.7901064124999998
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.613784,
+            "confidence": 0.227568,
+            "abstained": true
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "review",
+            "probabilities": {
+              "normal": 0.2392154,
+              "review": 0.5700116,
+              "urgent": 0.19077297
+            },
+            "confidence": 0.3550173999999999
+          }
+        },
+        "request_guard": true
+      },
+      "http_elapsed_ms": 307.090125
+    },
+    {
+      "id": "assessment",
+      "decision": {
+        "label": "assessment",
+        "needs_reply": true,
+        "urgency": "review",
+        "uncertain": true,
+        "rationale": "Typed model proposal; inspect the source before acting.",
+        "probabilities": {
+          "label": {
+            "type": "choice",
+            "value": "assessment",
+            "probabilities": {
+              "receipt": 0.11755349,
+              "rejection": 0.06539274,
+              "scheduling": 0.035767596,
+              "assessment": 0.54146063,
+              "other": 0.23982552
+            },
+            "confidence": 0.42682578749999994
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.6005273,
+            "confidence": 0.20105459999999997,
+            "abstained": true
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "review",
+            "probabilities": {
+              "normal": 0.19581212,
+              "review": 0.48463768,
+              "urgent": 0.3195502
+            },
+            "confidence": 0.22695652000000002
+          }
+        },
+        "request_guard": false
+      },
+      "http_elapsed_ms": 306.606208
+    },
+    {
+      "id": "mixed_receipt_request",
+      "decision": {
+        "label": "scheduling",
+        "needs_reply": true,
+        "urgency": "review",
+        "uncertain": true,
+        "rationale": "Typed model proposal; inspect the source before acting.",
+        "probabilities": {
+          "label": {
+            "type": "choice",
+            "value": "scheduling",
+            "probabilities": {
+              "receipt": 0.20075485,
+              "rejection": 0.03115907,
+              "scheduling": 0.556079,
+              "assessment": 0.024992287,
+              "other": 0.18701483
+            },
+            "confidence": 0.44509874999999993
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.73634225,
+            "confidence": 0.47268449999999995,
+            "abstained": true
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "review",
+            "probabilities": {
+              "normal": 0.24764585,
+              "review": 0.61140066,
+              "urgent": 0.14095354
+            },
+            "confidence": 0.41710099000000006
+          }
+        },
+        "request_guard": true
+      },
+      "http_elapsed_ms": 225.092958
+    },
+    {
+      "id": "missing_content",
+      "decision": {
+        "label": "other",
+        "needs_reply": null,
+        "urgency": "normal",
+        "uncertain": true,
+        "rationale": "Typed model proposal; inspect the source before acting.",
+        "probabilities": {
+          "label": {
+            "type": "choice",
+            "value": "other",
+            "probabilities": {
+              "receipt": 0.13671517,
+              "rejection": 0.082755886,
+              "scheduling": 0.047478616,
+              "assessment": 0.0947824,
+              "other": 0.638268
+            },
+            "confidence": 0.5478349999999998
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.26560748,
+            "confidence": 0.46878504,
+            "abstained": true
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "normal": 0.3998983,
+              "review": 0.36904466,
+              "urgent": 0.23105708
+            },
+            "confidence": 0.09984744999999999
+          }
+        },
+        "request_guard": false
+      },
+      "http_elapsed_ms": 235.161125
+    }
+  ],
+  "rust_cli_triage": [
+    {
+      "id": "receipt",
+      "elapsed_ms": 1063.527583,
+      "response": {
+        "schema_version": 2,
+        "ok": true,
+        "data": {
+          "decision": {
+            "label": "receipt",
+            "needs_reply": false,
+            "urgency": "normal",
+            "uncertain": true,
+            "rationale": "Typed model proposal; inspect the source before acting.",
+            "probabilities": {
+              "label": {
+                "type": "choice",
+                "value": "receipt",
+                "probabilities": {
+                  "receipt": 0.45836347,
+                  "rejection": 0.099691525,
+                  "scheduling": 0.04194672,
+                  "assessment": 0.060786765,
+                  "other": 0.3392115
+                },
+                "confidence": 0.32295433749999997
+              },
+              "needs_reply": {
+                "type": "nullable_boolean",
+                "value": false,
+                "probability_true": 0.1591821,
+                "confidence": 0.6816358,
+                "abstained": false
+              },
+              "urgency": {
+                "type": "choice",
+                "value": "normal",
+                "probabilities": {
+                  "normal": 0.8148074,
+                  "review": 0.10251023,
+                  "urgent": 0.08268232
+                },
+                "confidence": 0.7222110999999999
+              }
+            },
+            "request_guard": false
+          },
+          "baseline": {
+            "label": "receipt",
+            "needs_reply": false,
+            "urgency": "normal",
+            "method": "bounded-keyword-baseline",
+            "uncertain": false,
+            "action": "suggestion_only",
+            "text_sha256": "bb0ddb5add5016b7eeaf8b8b0d0647ed7f8fb22d9537f58ea862b5d0418d1d4d",
+            "archive_permitted": false
+          },
+          "method": "optional-model-proposal",
+          "model": {
+            "id": "kev-0.8b",
+            "revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f"
+          },
+          "text_sha256": "bb0ddb5add5016b7eeaf8b8b0d0647ed7f8fb22d9537f58ea862b5d0418d1d4d",
+          "action": "suggestion_only",
+          "archive_permitted": false
+        },
+        "error": null,
+        "next": []
+      }
+    },
+    {
+      "id": "rejection",
+      "elapsed_ms": 334.85062500000004,
+      "response": {
+        "schema_version": 2,
+        "ok": true,
+        "data": {
+          "decision": {
+            "label": "rejection",
+            "needs_reply": false,
+            "urgency": "normal",
+            "uncertain": true,
+            "rationale": "Typed model proposal; inspect the source before acting.",
+            "probabilities": {
+              "label": {
+                "type": "choice",
+                "value": "rejection",
+                "probabilities": {
+                  "receipt": 0.11190573,
+                  "rejection": 0.4806963,
+                  "scheduling": 0.023817953,
+                  "assessment": 0.062478174,
+                  "other": 0.3211018
+                },
+                "confidence": 0.350870375
+              },
+              "needs_reply": {
+                "type": "nullable_boolean",
+                "value": false,
+                "probability_true": 0.08035829,
+                "confidence": 0.83928342,
+                "abstained": false
+              },
+              "urgency": {
+                "type": "choice",
+                "value": "normal",
+                "probabilities": {
+                  "normal": 0.7242724,
+                  "review": 0.15135257,
+                  "urgent": 0.124375075
+                },
+                "confidence": 0.5864086000000001
+              }
+            },
+            "request_guard": false
+          },
+          "baseline": {
+            "label": "rejection",
+            "needs_reply": false,
+            "urgency": "normal",
+            "method": "bounded-keyword-baseline",
+            "uncertain": false,
+            "action": "suggestion_only",
+            "text_sha256": "9c7874df463fd9308079f34edbdde084e44e8abc4cf16bd5532fe439dfe8cd91",
+            "archive_permitted": false
+          },
+          "method": "optional-model-proposal",
+          "model": {
+            "id": "kev-0.8b",
+            "revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f"
+          },
+          "text_sha256": "9c7874df463fd9308079f34edbdde084e44e8abc4cf16bd5532fe439dfe8cd91",
+          "action": "suggestion_only",
+          "archive_permitted": false
+        },
+        "error": null,
+        "next": []
+      }
+    },
+    {
+      "id": "scheduling",
+      "elapsed_ms": 284.337333,
+      "response": {
+        "schema_version": 2,
+        "ok": true,
+        "data": {
+          "decision": {
+            "label": "scheduling",
+            "needs_reply": true,
+            "urgency": "review",
+            "uncertain": true,
+            "rationale": "Typed model proposal; inspect the source before acting.",
+            "probabilities": {
+              "label": {
+                "type": "choice",
+                "value": "scheduling",
+                "probabilities": {
+                  "receipt": 0.05493151,
+                  "rejection": 0.008126323,
+                  "scheduling": 0.83208513,
+                  "assessment": 0.0066791787,
+                  "other": 0.098177806
+                },
+                "confidence": 0.7901064124999998
+              },
+              "needs_reply": {
+                "type": "nullable_boolean",
+                "value": null,
+                "probability_true": 0.613784,
+                "confidence": 0.227568,
+                "abstained": true
+              },
+              "urgency": {
+                "type": "choice",
+                "value": "review",
+                "probabilities": {
+                  "normal": 0.2392154,
+                  "review": 0.5700116,
+                  "urgent": 0.19077297
+                },
+                "confidence": 0.3550173999999999
+              }
+            },
+            "request_guard": true
+          },
+          "baseline": {
+            "label": "scheduling",
+            "needs_reply": true,
+            "urgency": "review",
+            "method": "bounded-keyword-baseline",
+            "uncertain": false,
+            "action": "suggestion_only",
+            "text_sha256": "28671e499e06f0ce926419b65234c3711f2fc639cba4c0e897f0543c8708ecd6",
+            "archive_permitted": false
+          },
+          "method": "optional-model-proposal",
+          "model": {
+            "id": "kev-0.8b",
+            "revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f"
+          },
+          "text_sha256": "28671e499e06f0ce926419b65234c3711f2fc639cba4c0e897f0543c8708ecd6",
+          "action": "suggestion_only",
+          "archive_permitted": false
+        },
+        "error": null,
+        "next": []
+      }
+    },
+    {
+      "id": "assessment",
+      "elapsed_ms": 258.17545800000005,
+      "response": {
+        "schema_version": 2,
+        "ok": true,
+        "data": {
+          "decision": {
+            "label": "assessment",
+            "needs_reply": true,
+            "urgency": "review",
+            "uncertain": true,
+            "rationale": "Typed model proposal; inspect the source before acting.",
+            "probabilities": {
+              "label": {
+                "type": "choice",
+                "value": "assessment",
+                "probabilities": {
+                  "receipt": 0.11755349,
+                  "rejection": 0.06539274,
+                  "scheduling": 0.035767596,
+                  "assessment": 0.54146063,
+                  "other": 0.23982552
+                },
+                "confidence": 0.42682578749999994
+              },
+              "needs_reply": {
+                "type": "nullable_boolean",
+                "value": null,
+                "probability_true": 0.6005273,
+                "confidence": 0.20105459999999997,
+                "abstained": true
+              },
+              "urgency": {
+                "type": "choice",
+                "value": "review",
+                "probabilities": {
+                  "normal": 0.19581212,
+                  "review": 0.48463768,
+                  "urgent": 0.3195502
+                },
+                "confidence": 0.22695652000000002
+              }
+            },
+            "request_guard": false
+          },
+          "baseline": {
+            "label": "assessment",
+            "needs_reply": true,
+            "urgency": "review",
+            "method": "bounded-keyword-baseline",
+            "uncertain": false,
+            "action": "suggestion_only",
+            "text_sha256": "62b7fc473c4ec9f6b9272fd065c5741978c1d98fa618d523ae80cbaf0dd7797b",
+            "archive_permitted": false
+          },
+          "method": "optional-model-proposal",
+          "model": {
+            "id": "kev-0.8b",
+            "revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f"
+          },
+          "text_sha256": "62b7fc473c4ec9f6b9272fd065c5741978c1d98fa618d523ae80cbaf0dd7797b",
+          "action": "suggestion_only",
+          "archive_permitted": false
+        },
+        "error": null,
+        "next": []
+      }
+    },
+    {
+      "id": "mixed_receipt_request",
+      "elapsed_ms": 247.579708,
+      "response": {
+        "schema_version": 2,
+        "ok": true,
+        "data": {
+          "decision": {
+            "label": "scheduling",
+            "needs_reply": true,
+            "urgency": "review",
+            "uncertain": true,
+            "rationale": "Typed model proposal; inspect the source before acting.",
+            "probabilities": {
+              "label": {
+                "type": "choice",
+                "value": "scheduling",
+                "probabilities": {
+                  "receipt": 0.20075485,
+                  "rejection": 0.03115907,
+                  "scheduling": 0.556079,
+                  "assessment": 0.024992287,
+                  "other": 0.18701483
+                },
+                "confidence": 0.44509874999999993
+              },
+              "needs_reply": {
+                "type": "nullable_boolean",
+                "value": null,
+                "probability_true": 0.73634225,
+                "confidence": 0.47268449999999995,
+                "abstained": true
+              },
+              "urgency": {
+                "type": "choice",
+                "value": "review",
+                "probabilities": {
+                  "normal": 0.24764585,
+                  "review": 0.61140066,
+                  "urgent": 0.14095354
+                },
+                "confidence": 0.41710099000000006
+              }
+            },
+            "request_guard": true
+          },
+          "baseline": {
+            "label": "scheduling",
+            "needs_reply": true,
+            "urgency": "review",
+            "method": "bounded-keyword-baseline",
+            "uncertain": false,
+            "action": "suggestion_only",
+            "text_sha256": "b0cd382c93d8019029af08284e07250c1de624beafdad422fafac34e865d6967",
+            "archive_permitted": false
+          },
+          "method": "optional-model-proposal",
+          "model": {
+            "id": "kev-0.8b",
+            "revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f"
+          },
+          "text_sha256": "b0cd382c93d8019029af08284e07250c1de624beafdad422fafac34e865d6967",
+          "action": "suggestion_only",
+          "archive_permitted": false
+        },
+        "error": null,
+        "next": []
+      }
+    },
+    {
+      "id": "missing_content",
+      "elapsed_ms": 260.603708,
+      "response": {
+        "schema_version": 2,
+        "ok": true,
+        "data": {
+          "decision": {
+            "label": "other",
+            "needs_reply": null,
+            "urgency": "normal",
+            "uncertain": true,
+            "rationale": "Typed model proposal; inspect the source before acting.",
+            "probabilities": {
+              "label": {
+                "type": "choice",
+                "value": "other",
+                "probabilities": {
+                  "receipt": 0.13671517,
+                  "rejection": 0.082755886,
+                  "scheduling": 0.047478616,
+                  "assessment": 0.0947824,
+                  "other": 0.638268
+                },
+                "confidence": 0.5478349999999998
+              },
+              "needs_reply": {
+                "type": "nullable_boolean",
+                "value": null,
+                "probability_true": 0.26560748,
+                "confidence": 0.46878504,
+                "abstained": true
+              },
+              "urgency": {
+                "type": "choice",
+                "value": "normal",
+                "probabilities": {
+                  "normal": 0.3998983,
+                  "review": 0.36904466,
+                  "urgent": 0.23105708
+                },
+                "confidence": 0.09984744999999999
+              }
+            },
+            "request_guard": false
+          },
+          "baseline": {
+            "label": "other",
+            "needs_reply": null,
+            "urgency": "normal",
+            "method": "bounded-keyword-baseline",
+            "uncertain": true,
+            "action": "suggestion_only",
+            "text_sha256": "eeff8ea6bfbfb5c97506f5ca82f8b4ac8059263c2846ab4197848646f089b6fe",
+            "archive_permitted": false
+          },
+          "method": "optional-model-proposal",
+          "model": {
+            "id": "kev-0.8b",
+            "revision": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f"
+          },
+          "text_sha256": "eeff8ea6bfbfb5c97506f5ca82f8b4ac8059263c2846ab4197848646f089b6fe",
+          "action": "suggestion_only",
+          "archive_permitted": false
+        },
+        "error": null,
+        "next": []
+      }
+    }
+  ],
+  "observed_option_order_label_flips": [],
+  "warm_repeat_http_ms": {
+    "values": [
+      267.60287500000004,
+      307.49120800000003,
+      302.3605,
+      295.084208,
+      293.350375,
+      298.142083,
+      241.125542,
+      245.344125,
+      273.386709,
+      283.796458,
+      298.634917,
+      300.22008300000005
+    ],
+    "median": 294.2172915,
+    "maximum": 307.49120800000003
+  },
+  "quality_claim": "No general accuracy or calibration claim; inspect raw errors and abstentions."
+}
