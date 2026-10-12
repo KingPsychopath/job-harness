@@ -8,7 +8,7 @@ Architecture review supported one canonical local journal and disposable relatio
 
 Adversarial source review led to common state validation, fail-closed missing history, superseded replay protection, compiled read-only authority, schema-keyword validation, immediate SQLite refresh transactions, deletion cleanup, recovery ordering, explicit profile history omission and bounded provider/ACP execution. Losing bytes in a journal conflict remain recoverable; a stale success response cannot authorize another action.
 
-Independent forward tests then found five specific defects: an explicit project lost to an unmatched query; conflicting posting identity accepted as exact; old receipts keeping replied invitations actionable; future confirmation dates allowing answer reuse; and empty observations reporting form readiness. All five were fixed and retested through the actual native CLI. Additional counterexamples cover message order, missing request identities, changed sources, renamed uploads, stable context packs and unknown mail/proposal projection.
+Independent forward tests then found five specific defects: an explicit project lost to an unmatched query; conflicting posting identity accepted as exact; old application confirmations keeping replied invitations actionable; future confirmation dates allowing answer reuse; and empty observations reporting form readiness. All five were fixed and retested through the actual native CLI. Additional counterexamples cover message order, missing request identities, changed sources, renamed uploads, stable context packs and unknown mail/proposal projection.
 
 The Windows audit found and corrected directory flushing, native atomic replacement, portable filename/alias validation, APPDATA settings and ACP descendant cleanup through a Job Object. A subsequent Windows CI run exposed native separators entering journal paths and a bundle directory flush after publication. A shared internal serializer now encodes native path components as portable references while external path guards remain strict. Regression cases cover nested journal writes, CV provenance, exact ZIP restoration, drive/UNC roots and Unix filenames containing literal backslashes. Native Windows CI executes those branches; local success alone does not establish Windows behavior.
 
@@ -27,6 +27,37 @@ Models retrieve or suggest; they do not certify qualifications, archive mail or 
 The product documentation pass restored the earlier header and graphic, replaced the homepage's command inventory with five agent requests, and moved implementation detail into focused guides. Restricted Opus review corrected SVG colour precedence and simplified preview wording; availability was then checked against the published release. Application examples retain the user's bounded batch scope and ask for missing facts or required confirmations. They do not impose a separate approval for every role when the host already has authority for the batch.
 
 Contribution review clarified issue-first substantial work, direct small fixes, practical fictional UI evidence and explicit closure rules for spam or unsupported patches. A blanket exclusion of autonomous agents was rejected: the submitting account remains responsible for understanding, reviewing and verifying every change, regardless of the tool used to produce it. Templates implement that common standard without claiming automatic spam detection.
+
+The next wording pass uses **application confirmations** for employer emails and
+**evidence** for saved proof. Stored paths, tool identifiers and recorded model
+measurements retain their original compatibility names. The graphic now shows
+agent and app entry points converging on one toolkit and private workspace;
+two restricted Opus reviews improved that topology and its labels.
+
+Onboarding testing found that a retained imported PDF could not be selected as
+the primary CV. The source fix permits only the exact imported-PDF path shape,
+checks its original checksum and checks again while copying the application
+materials. Broad source access remains closed. CLI regressions cover Unicode
+and uppercase PDF names, changed originals, traversal, outside symlinks and
+uncertain submissions that still block retries. An independent 18-check setup
+journey verified import, explicit selection, embedded guidance and exact full
+backup restoration with isolated host settings. A separate restricted Claude
+onboarding review timed out; no completed opinion is claimed for that review.
+The immutable v0.2.0 packages were not replaced; their CV-path workaround is
+documented in [Installation](INSTALL.md#v020-cv-path-compatibility).
+
+Current-source native macOS review confirmed the simplified Notes, draft and
+review labels in a fictional workspace. No note was submitted or accepted in
+that copy check. Connections wording was checked in source; its live panel was
+not reached after a UI capture interruption. The installed local CLI/app builds
+were updated without changing the saved workspace location or career files.
+
+Verification now defaults to local checks. CI and native releases are manual-only;
+pushes, PRs and tags start no jobs. A manual source check defaults to one Linux
+core job, with optional platform/component checks and shared debug-package builds.
+The full release checks one tag identity and rejects an existing release before
+the native matrix starts. Local actionlint, 128 profile combinations and nine
+mocked release-preflight cases passed. No remote workflow was run for this change.
 
 ## Verification boundaries
 

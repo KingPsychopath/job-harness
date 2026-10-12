@@ -1,6 +1,6 @@
 ---
 name: career-inbox-tidy
-description: Archive resolved job-application receipts and rejections, and foreground unanswered recruiting emails without losing scheduling requests.
+description: Archive resolved application confirmations and rejections, and foreground unanswered recruiting emails without losing scheduling requests.
 ---
 
 # Tidy application mail

@@ -1,36 +1,49 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="530" viewBox="0 0 1360 530" role="img" aria-labelledby="title description">
-  <title id="title">Job Harness: your workspace, any capable agent</title>
-  <desc id="description">A shared toolkit sits beside your separate private career workspace. Answers, CVs, notes and application history stay with you as you change agents.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="580" viewBox="0 0 1200 580" role="img" aria-labelledby="title description">
+  <title id="title">One private workspace, used by your chosen agent and the Job Harness app</title>
+  <desc id="description">Your chosen agent and the Job Harness app both read and record through the same Job Harness tools. One private workspace holds answers, CVs, notes, applications and outcomes. Browser, mail and calendar connections, credentials and action permissions belong to the agent host.</desc>
   <defs>
-    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#faf8f2"/>
-      <stop offset="1" stop-color="#f2f0e9"/>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="m2 1 4 4-4 4" fill="none" stroke="#89a7ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <linearGradient id="logo-surface" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#ffffff"/><stop offset="1" stop-color="#f0f3f9"/>
     </linearGradient>
   </defs>
   <style>
-    text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;fill:#203246}
-    .muted{fill:#637078}
-    .accent{fill:#4965ae}
-    .label{font-size:15px;font-weight:600;letter-spacing:1.8px}
-    .title{font-size:34px;font-weight:600;letter-spacing:-.4px}
-    .body{font-size:22px}
+    text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;fill:#e6edf3}
+    .name{font-size:26px;font-weight:600;letter-spacing:-.25px}
+    .body{font-size:21px;fill:#9fb0c3}
+    .link{fill:none;stroke:#89a7ff;stroke-width:2;marker-start:url(#arrow);marker-end:url(#arrow)}
   </style>
-  <rect x="1" y="1" width="1358" height="528" rx="24" fill="url(#paper)" stroke="#e0ded6"/>
-  <text x="64" y="83" class="label muted">JOB HARNESS</text>
-  <text x="61" y="164" font-size="64" font-weight="500" letter-spacing="-2">Your workspace.</text>
-  <text x="61" y="241" font-size="64" font-weight="500" letter-spacing="-2">Any capable agent.</text>
-  <text x="65" y="306" font-size="25" class="muted">Your job search. Kept together.</text>
-  <text x="65" y="345" font-size="25" class="muted">Useful tools. Your own connections.</text>
-  <rect x="64" y="403" width="390" height="62" rx="20" fill="#e8edf8" stroke="#d1d9ec"/>
-  <text x="91" y="442" font-size="20">Context · Commands · Workspace</text>
-  <rect x="744" y="78" width="550" height="348" rx="20" fill="#fffdfa" stroke="#d8dcd9"/>
-  <path d="M781 113v99" stroke="#4965ae" stroke-width="3" stroke-linecap="round"/>
-  <text x="803" y="122" class="label accent">SHARED TOOLKIT</text>
-  <text x="803" y="174" class="title">Job Harness</text>
-  <text x="803" y="217" class="body muted">Find evidence. Prepare. Follow through.</text>
-  <path d="M782 248h475" stroke="#e0e3df"/>
-  <text x="784" y="288" class="label">YOUR PRIVATE WORKSPACE</text>
-  <text x="784" y="332" font-size="24">Answers · CVs · Notes · Applications</text>
-  <text x="784" y="375" font-size="21" class="muted">Keep your history. Change your agent.</text>
-  <text x="746" y="474" font-size="20" class="muted">Separate software. Portable private data.</text>
+  <rect x="1" y="1" width="1198" height="578" rx="16" fill="#101820" stroke="#26313d"/>
+  <text x="48" y="53" font-size="27" font-weight="600" letter-spacing="-.4">One workspace. Two ways to work.</text>
+  <!-- The existing Job Harness logo, unchanged geometry and colours. -->
+  <g transform="translate(1100 22) scale(.085)">
+    <rect x="16" y="16" width="480" height="480" rx="104" fill="url(#logo-surface)" stroke="#dfe3ed" stroke-width="2"/>
+    <path d="M139 189h234v189H139zm70 0v-65h94v65M211 247v74m90-74v74" fill="none" stroke="#315eec" stroke-width="19" stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+  <path d="M48 86h1104" stroke="#26313d"/>
+
+  <text x="200" y="155" text-anchor="middle" class="name">Your chosen agent</text>
+  <text x="200" y="190" text-anchor="middle" class="body">Use your existing agent</text>
+  <path d="M352 156h86v91h12" class="link"/>
+
+  <text x="1000" y="155" text-anchor="middle" class="name">Job Harness app</text>
+  <text x="1000" y="190" text-anchor="middle" class="body">Review and organise</text>
+  <path d="M848 156h-86v91h-12" class="link"/>
+
+  <text x="600" y="256" text-anchor="middle" class="name">Job Harness tools</text>
+  <text x="600" y="288" text-anchor="middle" class="body">Read and record</text>
+  <path d="M600 306v29" class="link"/>
+
+  <rect x="375" y="348" width="450" height="118" rx="4" fill="#0b1117" stroke="#344256"/>
+  <text x="600" y="384" text-anchor="middle" font-size="24" font-weight="600">Private local workspace</text>
+  <text x="600" y="420" text-anchor="middle" class="body">Answers · CVs · Notes</text>
+  <text x="600" y="449" text-anchor="middle" class="body">Applications · Outcomes</text>
+
+  <path d="M200 212v276" fill="none" stroke="#89a7ff" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M48 481h1104" stroke="#26313d"/>
+  <text x="200" y="525" text-anchor="middle" font-size="23" font-weight="500">Browser · Mail · Calendar</text>
+  <text x="200" y="555" text-anchor="middle" class="body">Your agent’s connections</text>
+  <text x="535" y="528" class="body">Account access stays with your agent.</text>
 </svg>

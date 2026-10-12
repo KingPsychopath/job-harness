@@ -15,41 +15,25 @@
 
 Job Harness keeps the evidence behind your job search together: answers, project stories, interviews, CVs and application history. Give your agent the tools, then ask for the work you want done.
 
-## Ask your agent
-
-**Tidy the inbox**
-
-> Review my job emails. Archive resolved receipts and rejections, bring unanswered requests forward, and update my tracker.
-
-**Apply to roles**
-
-> Apply to 20 suitable saved roles within my stated preferences. Use my confirmed answers and primary CV, check duplicates and record verified outcomes. Ask only for missing facts or required confirmations.
-
-**Prepare for an interview**
-
-> Prepare a screening brief for this company and vacancy. Connect two supported project stories, likely questions and useful questions to ask them.
-
-**Keep useful notes**
-
-> Save these interview notes, link them to the company and show me proposed updates with their sources before accepting anything.
-
-**Find the right story**
-
-> Find my strongest example of improving a slow system. Show the original evidence and help me turn it into a clear interview answer.
-
-Your agent brings its own browser, email and calendar connections. The workspace retains sourced context and checked outcomes across sessions. [Everyday workflows](resources/guides/workflows.md) · [Access and permissions](docs/AUTH.md)
-
-## See where things stand
-
-The optional desktop app uses the same workspace as your agent. Move a card, review a note or inspect its original source; your agent sees the change next time.
-
-![Job Harness 0.2.0 on macOS, shown with fictional applications.](docs/assets/dashboard.png)
-
-[Preview Notes & evidence](docs/assets/note-review.png) · [Explore the fictional demo](examples/README.md) · [View a sample CV](examples/cv/example.pdf)
-
 ## Start once
 
-[Download the private preview](https://github.com/KingPsychopath/job-harness/releases/tag/v0.2.0) or [install from source](docs/INSTALL.md), then create your separate private workspace:
+| You want to… | Start here |
+|---|---|
+| **Use your existing agent** — recommended | [Download the core toolkit](https://github.com/KingPsychopath/job-harness/releases/tag/v0.2.0), then [connect your agent](docs/AGENTS.md). No compiler or extra model needed. |
+| **Use a desktop window** | Add the optional desktop package. It opens the same private workspace. [App setup](docs/INSTALL.md). |
+| **Open this repo in an agent project** | Clone it, open the folder in your agent and use the setup prompt below. Building from source needs Rust and a C toolchain. [Source setup](docs/INSTALL.md#build-from-the-toolkit-checkout). |
+
+**Start with a simple prompt:**
+
+> Set this up for me using my existing agent. Keep my career data separate from the software repo and use the tools and model I already have.
+
+> Here's my CV. Help me create my job-search workspace.
+
+> What needs my attention today?
+
+Your agent can follow the [setup instructions](docs/AGENTS.md) and choose a native download or source build. Optional models stay optional.
+
+For a terminal, create or select your separate private workspace:
 
 ```sh
 jh setup --workspace "$HOME/Career/workspace"
@@ -57,7 +41,41 @@ jh setup --workspace "$HOME/Career/workspace"
 
 Connect your agent, add your existing CV and confirmed answers, and start with one of the prompts above. Desktop, models and CV generation are optional. [Setup guide](resources/guides/job-harness-onboarding.md) · [Agent connection guide](docs/AGENTS.md)
 
+Switch agents or stop using the toolkit while keeping your history. [Back up, disconnect or remove it](docs/INSTALL.md#leave-or-switch-tools).
+
 **Private preview.** macOS, Linux and experimental Windows builds are available. Windows packages were cross-built and have not been run on Windows; a known notification stall is tracked in [issue 1](https://github.com/KingPsychopath/job-harness/issues/1). Packages are unsigned. [Platform requirements and checksums](docs/INSTALL.md) · [Validation record](docs/VALIDATION.md)
+
+## Ask your agent
+
+**Tidy the inbox**
+
+> Review my job emails. Archive resolved application confirmations and rejections, bring unanswered requests forward, and update my tracker.
+
+**Apply to roles**
+
+> Apply to 20 suitable saved roles using my saved answers and primary CV. Check duplicates and save verified outcomes.
+
+**Prepare for an interview**
+
+> Prepare me for my interview with [company]. Use the vacancy and my recorded project stories.
+
+**Keep useful notes**
+
+> Save these notes so I can reuse them later. Show me any suggested updates before accepting them.
+
+**Find the right story**
+
+> Find a project story about improving a slow system. Show me the evidence.
+
+Your agent brings its own browser, email and calendar connections. The workspace retains sourced context and checked outcomes across sessions. [Everyday workflows](resources/guides/workflows.md) · [Access and permissions](docs/AUTH.md)
+
+## See where things stand
+
+The optional desktop app uses the same workspace as your agent. Move a card, review a note or inspect its original source; your agent sees the change next time.
+
+![Job Harness on macOS, shown with fictional applications.](docs/assets/dashboard.png)
+
+[Preview Notes & evidence](docs/assets/note-review.png) · [Explore the fictional demo](examples/README.md) · [View a sample CV](examples/cv/example.pdf)
 
 ## Documentation
 

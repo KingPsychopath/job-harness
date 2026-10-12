@@ -1,54 +1,112 @@
-# Wire any agent or model
+# Use Job Harness with your agent
 
-The workspace is durable context, the engine provides tools, and the host owns model access and external connectors. No provider is required by the core.
+Use the agent you already have. Job Harness supplies a private career workspace and tools for reading sources, checking duplicates, organizing applications and preserving submission evidence. Your agent host supplies its own model, authentication, browser, mail and calendar access. Neither MCP nor a built-in model is mandatory: an agent that can run commands can use the CLI directly.
 
-## External MCP host
+| Your starting point | Next step |
+|---|---|
+| Installed core and an MCP-capable agent | [Connect MCP](#connect-mcp) |
+| Agent that can run local commands | [Use the CLI directly](#use-the-cli-directly) |
+| Toolkit checkout open in an agent project | [Build and set up a separate workspace](#open-the-checkout-in-your-agent) |
+
+[Installation](INSTALL.md) covers native releases, optional desktop use and leaving the toolkit. Private career data belongs outside this repository.
+
+## Connect MCP
+
+First initialize or select your private folder:
 
 ```sh
-job-harness connect mcp
-job-harness --root /absolute/private/workspace mcp --tool-profile focused
+jh setup --workspace "$HOME/Career/workspace" --capability mcp --json
+jh --root "$HOME/Career/workspace" connect mcp
 ```
 
-Use the returned command and arguments in a supporting client. Start with bootstrap for the requested operation/capabilities, read its focused skill and the workspace's AGENTS.md, inspect unfinished work, then batch relevant reads. Specialized schemas are available through `inspect_tools`; full mode exposes them directly.
+The second command returns an executable in `data.command` and arguments in `data.args`. Put those in your chosen host's MCP server configuration; the outer JSON format depends on that host. The executable path and workspace are fixed when the host starts the server. This command does not register a server, authenticate a model or connect your inbox.
 
-## External ACP agent
+Reload the host if needed, then ask its agent to call `bootstrap`. Read the returned focused skill and your workspace's `AGENTS.md`, inspect unfinished work and batch relevant reads. Confirm that bootstrap succeeds through the actual connection; saving a configuration is only the setup step.
+
+The default focused profile exposes 11 starting tools. `inspect_tools` provides specialized schemas when needed; the full profile exposes all 40. Generic guides and focused skills are embedded in the binary and can be read with `read_record`; installing skills into a particular agent is optional.
+
+## Use the CLI directly
+
+Give the agent the binary location and private workspace path. Use `--root` explicitly so work cannot accidentally select a different person's data. For example, on macOS/Linux:
 
 ```sh
-job-harness --root /absolute/private/workspace acp \
+jh --root "$HOME/Career/workspace" call bootstrap <<'JSON'
+{"operation":"reconcile","capabilities":[]}
+JSON
+jh schemas query_batch
+```
+
+On any platform, the same input can be saved as a UTF-8 `bootstrap.json` file and passed with `jh --root PATH call bootstrap --input bootstrap.json`. In PowerShell, quote your actual path and use `jh.exe` if that is the installed name. The JSON input is identical across platforms.
+
+CLI calls and MCP calls use the same engine and version 2 result: check `ok`, then `data` or `error`, and follow `next`. Use error codes rather than interpreting prose. Follow paging before claiming a complete scan. Related reads use `query_batch`; related local changes use `execute_batch` with explicit result references. [Tool contract and examples](../resources/guides/job-harness-contract.md)
+
+## Open the checkout in your agent
+
+Cloning this repository gives the agent the toolkit source and reusable guidance. It does **not** create a personal career workspace or load your career history. For the easiest installation, use the [core release](INSTALL.md#download-the-core-no-compiler-required). To build the checkout, install Rust and the platform C toolchain, then run:
+
+```sh
+gh repo clone KingPsychopath/job-harness
+cd job-harness
+cargo build --release --bins --locked
+./target/release/jh setup --workspace "$HOME/Career/workspace" --json
+./target/release/jh --root "$HOME/Career/workspace" connect mcp
+```
+
+In PowerShell, use `.\target\release\jh.exe`, and `(Join-Path $HOME "Career/workspace")` for the workspace argument. The repository pins its Rust toolchain; desktop and model-provider builds are separate optional components.
+
+Open the cloned folder as your agent project and give it this prompt, replacing the private path:
+
+```text
+Use Job Harness for my career work. Read the repository's AGENTS.md. Use the
+installed CLI, or build the core from this checkout if needed. Set up or select
+/absolute/private/career-workspace outside this repository; preserve any existing
+records. Use that path explicitly for every CLI call. Bootstrap, read the focused
+skill and help me add supplied CV, notes and confirmed answers. Keep original
+sources and ask only for missing facts. Use this host's connectors only within my
+request. Do not put my career data, credentials or private bundles in the repo.
+```
+
+Setup saves a host-local default folder, but explicit `--root` remains useful for agents. Repeated setup selects an existing valid workspace without resetting its history. `--plan --json` previews setup without creating files or saving a default. [First-source onboarding](../resources/guides/job-harness-onboarding.md#add-your-first-sources)
+
+## Give the agent a bounded task
+
+```text
+Use Job Harness with my private workspace. Bootstrap for this task, read its
+focused skill and relevant sources, and inspect unfinished work. Batch related
+reads and local updates. Reuse scoped answers and my primary CV, check duplicates,
+and distinguish observed outcomes from proposed actions. Use this host's
+connectors within my request and save evidence of what actually happened.
+```
+
+A recorded run describes intent; it does not grant permission. Before an authorized application submission, freeze the reviewed CV and answers, reserve the application, begin once, submit once externally, and record the verified result. Saved submission proof is evidence of the outcome; an application-confirmation email is a separate observed source. A submission already in progress or with an unknown result must be inspected externally before retrying.
+
+The harness coordinates local records; it does not grant your host access to email, job sites or calendars. Configure only the connectors you need in that host. Your agent's native tools remain subject to its own permissions and can have a broader reach than the engine's file controls.
+
+## Optional ACP handoff
+
+If you want Job Harness to launch a separately installed ACP agent:
+
+```sh
+jh --root /absolute/private/workspace acp \
   --agent /absolute/path/to/acp-agent --prompt "Review my unfinished career work"
 ```
 
-This is an ACP **client** launching a user-selected agent process. It initializes a session with a fixed workspace and the Job Harness stdio MCP server. Authenticate that agent separately. The harness advertises no terminal or filesystem-write capability and cancels permission requests; your own agent host may offer a richer interactive approval flow. It does not silently approve actions. ACP startup supplies unfinished-work health; external agent native tools are outside the engine's filesystem controls.
+This is an ACP client, not a bundled agent. Authenticate your selected agent separately. The client starts a session with a fixed workspace and a Job Harness MCP server. It advertises no terminal or filesystem-write capability and rejects permission requests by default; your own host may provide an interactive approval flow. Startup includes unfinished-work health. The selected agent's other tools remain outside the engine's file controls.
 
-## Direct local or compatible remote model
+## Optional direct model connection
+
+A compatible tool-capable model can use the optional bounded adapter:
 
 ```sh
-job-harness agent run --endpoint http://127.0.0.1:11434/v1 \
-  --model YOUR_TOOL_CAPABLE_MODEL --prompt "Review the pipeline and identify unresolved work"
-
-# Host securely injects MODEL_API_KEY for this one command:
-job-harness agent run --endpoint https://YOUR_PROVIDER/v1 \
-  --model YOUR_MODEL --api-key-env MODEL_API_KEY --prompt "Review unfinished work"
+jh --root /absolute/private/workspace agent run \
+  --endpoint http://127.0.0.1:11434/v1 --model YOUR_TOOL_CAPABLE_MODEL \
+  --prompt "Review the application tracker and identify unresolved work"
 ```
 
-The optional adapter uses the OpenAI-compatible chat/tool-call wire format, including compatible Ollama or LM Studio endpoints. Compatibility is a protocol requirement, not a guarantee that every model/provider supports tools. Other providers can be reached through an external agent or an adapter implementing the same boundary.
+It uses the OpenAI-compatible chat/tool-call format. Compatible Ollama or LM Studio endpoints are options; tool support must be verified for the selected model. Remote endpoints require HTTPS. A host can securely inject a key for one command and name it with `--api-key-env MODEL_API_KEY`; never put the key in a prompt, configuration file or career record.
 
-Remote endpoints require HTTPS; local loopback HTTP is accepted. Keys come only from a named environment variable and are never written to the workspace. Redirects are disabled. Steps, calls, time, context and response sizes are bounded. Only the prompt and selected tool results are sent; no automatic workspace upload occurs. Choose a trusted endpoint before passing private information.
+The adapter bounds steps, calls, time and response sizes. It sends the prompt and selected tool results, so choose a trusted endpoint before sharing private material. It defaults to read-only tools. `--allow-local-writes` enables supported local changes; it does not authorize external submissions, email or calendar actions. Local models and their runtimes are separate [optional downloads](MODELS.md).
 
-Sessions default to a compile-time read-only tool set. `--allow-local-writes` permits supported local coordination, not external submission, mail sending or calendar booking. Supply external connectors through a capable host and current user scope. No model loop guesses a missing fact or retries a begun application.
+## Improve the toolkit separately
 
-## Operational request
-
-```text
-Use Job Harness with my configured private workspace. Bootstrap for this task,
-read its focused skill and relevant sources, and inspect unfinished work.
-Batch related reads and local updates. Reuse scoped answers and my primary CV,
-check duplicates, and keep observed outcomes separate from proposed actions.
-Use this host's connectors within my request and preserve actual evidence.
-```
-
-Read `data`, `error` and `next`, never parse error prose. Follow paging before claiming complete coverage. A run records intent, not permission. For a form: complete it, freeze/reserve exact artifacts, begin once, submit once externally, and finish with verified outcome evidence. [Full contract](../resources/guides/job-harness-contract.md)
-
-## Toolkit improvement
-
-Use the separate [harness-maintain skill](../resources/skills/harness-maintain/SKILL.md). Reproduce friction with synthetic data, improve a focused capability, test recovery/contracts, and preserve source/resource boundaries. Do not turn development logs, coaching or model output into candidate facts.
+Use [harness-maintain](../resources/skills/harness-maintain/SKILL.md) for software changes. Reproduce problems with fictional data, test contracts and recovery, and keep development files outside career evidence. Coaching, model output and development logs do not become candidate facts merely because an agent wrote them.

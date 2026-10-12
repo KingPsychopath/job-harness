@@ -9,7 +9,7 @@ Start with [onboarding](job-harness-onboarding.md). Read the [version 2 contract
 | Request | Operation / focused skill |
 |---|---|
 | Scan job emails and show who needs a reply | review_inbox / application-email-review |
-| Archive resolved receipts/rejections and foreground requests | tidy_inbox / career-inbox-tidy |
+| Archive resolved application confirmations/rejections and bring requests forward | tidy_inbox / career-inbox-tidy |
 | Find suitable roles on named sources | discover / career-discover |
 | Apply to a bounded number of suitable roles | apply / career-apply |
 | Arrange authorised recruitment meetings | schedule / career-schedule |
@@ -32,11 +32,11 @@ The default public responses contain summaries and artifact references. Full sou
 
 ## Facts, configuration and history
 
-Career facts/attribution live under context. Approved CV wording lives under content. Exact vacancy records and dated process outcomes live under applications. Pipeline Markdown/JSON are generated views. Shared runs/attempts/action IDs and immutable packets/receipts live under applications/operations; they are not another fact store.
+Career facts/attribution live under context. Approved CV wording lives under content. Exact vacancy records and dated process outcomes live under applications. Pipeline Markdown/JSON are generated views. Shared runs/attempts/action IDs and unchanged application materials and saved evidence live under applications/operations; they are not another fact store.
 
 Personal configuration lives in each ledger's config/career-ledger.json: timezone, primary PDF, browser preference and answer-source paths. Salary/contact/consent answers stay in attributed records. Generic workflow defaults ship with the toolkit; optional config/career-workflows.json overrides routing for one ledger. No candidate identity is hardcoded into the package or generic skills.
 
-Legacy prose remains historical and can be stale. A generic employer receipt is insufficient to attribute an outcome across several vacancies. Older acknowledgements must not regress a newer interview stage. Booked, proposed, completed and outcome unknown remain distinct.
+Legacy prose remains historical and can be stale. A generic employer application confirmation is insufficient to attribute an outcome across several vacancies. Older acknowledgements must not regress a newer interview stage. Booked, proposed, completed and outcome unknown remain distinct.
 
 ## Recovery
 

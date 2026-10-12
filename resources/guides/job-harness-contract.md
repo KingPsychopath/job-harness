@@ -8,7 +8,15 @@ The Rust API, MCP and CLI share `Engine::open(root)?.call(tool, &arguments)`. Th
 
 Each tool has a strict input schema and its own output schema. `job-harness schemas TOOL` prints both. Results are validated before returning. `data` contains the tool's typed result; `next` contains suggested calls with arguments and a reason, not permission to execute them. Error results have stable `code`, `message`, `retryable` and `recovery` fields. Do not parse English error messages to decide what to do. MCP returns the same envelope in structuredContent and serialized text for compatible clients; isError follows `ok`. CLI emits one compact JSON object to stdout and exits nonzero on failure, including partial batches.
 
-Version 2 changes the public MCP/CLI result shape. The native runtime and development gates invoke no Python; historical compatibility is retained in native golden vectors after the completed cross-language migration. Existing JSON tool inputs and disk schema remain compatible. Upgrade consumers to read `data.record_path`, `data.attempt_id` and `data.page`; do not rely on raw coordinator state. The on-disk schema remains version 1, preserving current runs and receipts.
+Version 2 changes the public MCP/CLI result shape. The native runtime and development gates invoke no Python; historical compatibility is retained in native golden vectors after the completed cross-language migration. Existing JSON tool inputs and disk schema remain compatible. Upgrade consumers to read `data.record_path`, `data.attempt_id` and `data.page`; do not rely on raw coordinator state. The on-disk schema remains version 1, preserving current runs and saved evidence.
+
+Use **application confirmation** for an employer's acknowledgement email and
+**evidence** for saved proof of an action. Existing tool names (`save_receipt`),
+stored fields (`receipt`) and storage folders (`receipts`) are retained for
+compatibility. Historic classifier results also use `receipt` as the code for an
+application confirmation. Do not rename stored data or alter recorded model
+measurements to update display wording. A confirmation containing a request
+still needs action; its category alone never makes it safe to archive.
 
 ## Deferred tool discovery
 

@@ -257,7 +257,7 @@ fn render(records: &[Value]) -> String {
     for r in records {
         *counts.entry(text(r, "stage")).or_insert(0usize) += 1;
     }
-    let mut lines=vec!["# Application pipeline".into(),"".into(),"Generated from canonical vacancy records. Update the record, then call Job Harness `rebuild_pipeline`; do not edit this view. No live board, email or calendar sync.".into(),"".into(),"Structured entries retain their attributed review dates. Legacy prose can be stale; use the linked record before taking action. Applied includes direct requests/profile sharing, not only ATS receipts. Proposed times are never booked times.".into(),"".into(),"| Stage | Records |".into(),"|---|---:|".into()];
+    let mut lines=vec!["# Application pipeline".into(),"".into(),"Generated from your saved application records. Edit the application record, then call Job Harness `rebuild_pipeline`; do not edit this view. This view does not check live job boards, email or calendars.".into(),"".into(),"Recorded entries keep their last checked dates. Older notes may be stale; read the linked record before taking action. Applied can include direct requests or shared profiles, not just employer application confirmations. Proposed meeting times are not booked meetings.".into(),"".into(),"| Stage | Records |".into(),"|---|---:|".into()];
     for stage in STAGES {
         lines.push(format!("| {stage} | {} |", counts.get(stage).unwrap_or(&0)));
     }

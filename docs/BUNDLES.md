@@ -9,7 +9,7 @@ job-harness --root "$HOME/Career/restored" workspace import --input "$HOME/Caree
 
 ## Two scopes
 
-`workspace` is the default: attributed context, content, workspace configuration, applications, coordinator state, frozen packets/receipts, outputs and original source material. It retains unknown/begun attempts and therefore their retry blocks. Generic linked guides/skills, Git history, scratch/build caches and host settings are excluded. Common credential-like filenames are filtered; this is not a secret-content scanner. Review evidence and original source material before transferring it. Credentials and browser sessions must never be stored in the workspace.
+`workspace` is the default: attributed context, content, workspace configuration, applications, coordinator state, saved application materials and evidence, outputs and original source material. It retains unknown/begun attempts and therefore their retry blocks. Generic linked guides/skills, Git history, scratch/build caches and host settings are excluded. Common credential-like filenames are filtered; this is not a secret-content scanner. Review evidence and original source material before transferring it. Credentials and browser sessions must never be stored in the workspace.
 
 `profile` is for fresh onboarding: context, content, configured canonical answer sources and primary CV. It omits vacancy/coordinator history. Export is refused while any reserved, submitting or unknown attempt exists; use a full bundle to retain retry guards. This is not a continuation of an existing search; use a full bundle when duplicate prevention must retain earlier applications. Credential sessions and provider accounts must be connected separately in either case.
 

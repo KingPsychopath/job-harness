@@ -36,17 +36,17 @@ const focuses = {
   building: {
     view: "knowledge",
     hint: "Capture useful work, project context and learning while it is fresh.",
-    task: "Paste a rough work note. Keep the original, link an existing project when known, and review sourced interpretations separately.",
+    task: "Paste a rough work note. Keep the original, link it to a project when known, and review suggested summaries separately.",
   },
   exploring: {
     view: "knowledge",
     hint: "Review preferences and evidence for a possible move.",
-    task: "Retrieve current preferences and project stories in a bounded context pack. Let your agent discuss evidence gaps and prepare selected documents.",
+    task: "Find relevant preferences and project stories. Let your agent flag missing evidence and draft the documents you choose.",
   },
   starting: {
     view: "knowledge",
     hint: "Bring new responsibilities, milestones and learning together.",
-    task: "Capture supplied milestones and learning, then request a period review with known dates and explicit gaps.",
+    task: "Save milestones and learning, then review that period of work using recorded dates and flag anything missing.",
   },
 };
 const titles = {
@@ -57,7 +57,7 @@ const titles = {
   ],
   knowledge: [
     "Notes & evidence",
-    "Supplied originals, sourced proposals and accepted reviews.",
+    "Your notes, suggested updates and reviewed additions.",
   ],
   sources: [
     "Search evidence",
@@ -122,7 +122,7 @@ function label(value) {
     "needs-review": "Needs review",
     personal_notes: "Personal notes",
     transcript: "Transcript",
-    provider_summary: "Provider summary",
+    provider_summary: "Summary from another tool",
     generated_summary: "Draft summary",
     unknown_submission: "Verify submission",
     supplied_mail: "Unanswered request",
@@ -735,7 +735,7 @@ async function companyDetail(row) {
         }),
     );
     if (generation !== detailGeneration || !$("detail").open) return;
-    body.append(node("h3", "", "Sourced company context"));
+    body.append(node("h3", "", "Company notes and evidence"));
     for (const passage of context.sources || []) {
       const card = node("article", "attention-card");
       const provenance = passage.provenance || {};
@@ -744,7 +744,7 @@ async function companyDetail(row) {
         node(
           "p",
           "metadata",
-          `${label(provenance.source_kind || "source")} · occurred ${provenance.occurred_at || provenance.occurred_period || "unknown"} · recorded ${provenance.recorded_at || "unknown"}`,
+          `${label(provenance.source_kind || "source")} · Date: ${provenance.occurred_at || provenance.occurred_period || "unknown"} · Saved: ${provenance.recorded_at || "unknown"}`,
         ),
         pre(narrative(passage.excerpt)),
       );
@@ -1146,7 +1146,7 @@ async function knowledge() {
   ]);
   if (noteRows.length)
     view.append(
-      table(["Note", "Type", "Proposals", "Reviews", "When"], noteRows),
+      table(["Note", "Type", "Drafts", "Reviews", "When"], noteRows),
     );
   if (!(data.notes || []).length)
     view.append(
@@ -1396,7 +1396,7 @@ function importForm() {
   return form;
 }
 async function noteReview(id, proposalId) {
-  const body = modal("Review supplied context", "document", false, () =>
+  const body = modal("Review this note", "document", false, () =>
     noteReview(id, proposalId),
   );
   if (!body) return;
@@ -1415,7 +1415,7 @@ async function noteReview(id, proposalId) {
     if (!proposalId && data.proposals?.length)
       return noteReview(id, data.proposals.at(-1).proposal_id);
     $("detail-title").textContent =
-      data.metadata?.source_label || "Review supplied context";
+      data.metadata?.source_label || "Review this note";
     const intro = node("div", "review-intro");
     intro.append(
       node(
@@ -1450,7 +1450,7 @@ async function noteReview(id, proposalId) {
     for (const [index, p] of (data.proposals || []).entries())
       selectors.append(
         button(
-          `Proposal ${index + 1}`,
+          `Draft ${index + 1}`,
           () => noteReview(id, p.proposal_id),
           "citation",
         ),
@@ -1475,7 +1475,7 @@ async function noteReview(id, proposalId) {
               ? question
               : question.text ||
                   question.question ||
-                  "A question needs clarification in the proposal details.",
+                  "A question in this draft needs clarification.",
           ),
         );
       }
@@ -1551,7 +1551,7 @@ async function noteReview(id, proposalId) {
       }
       if (!pendingCount)
         proposed.append(
-          empty("All items in this proposal have been reviewed and accepted."),
+          empty("All items in this draft have been reviewed and saved."),
         );
       if (!writable)
         proposed.append(
@@ -1614,7 +1614,7 @@ async function noteReview(id, proposalId) {
               if (body.dataset.generation === String(detailGeneration))
                 await noteReview(id, proposal.proposal_id);
               message(
-                "Selected context accepted with citations. CV facts were not automatically changed.",
+                "Selected updates saved with source links. Your CV was not changed.",
               );
             } catch (e) {
               message(e.message);
@@ -1633,14 +1633,14 @@ async function noteReview(id, proposalId) {
       node(
         "summary",
         "",
-        `Accepted reviews (${(data.accepted_reviews || []).length})`,
+        `Reviewed additions (${(data.accepted_reviews || []).length})`,
       ),
     );
     for (const accepted of data.accepted_reviews || []) {
       acceptedSection.append(
-        node("h3", "", `Accepted review · ${accepted.approved_by}`),
+        node("h3", "", `Reviewed by ${accepted.approved_by}`),
         button(
-          "Read accepted items",
+          "Read saved additions",
           () => source(accepted.accepted_path),
           "citation",
         ),
@@ -1654,18 +1654,18 @@ async function noteReview(id, proposalId) {
       ),
     );
     if (writable && !data.archived) {
-      const draft = field("Draft a proposed summary / addition", "textarea");
+      const draft = field("Your suggested summary or addition", "textarea");
       const keyFor = payloadKey();
       const draftSection = node("details", "review-section");
-      draftSection.append(node("summary", "", "Draft a sourced proposal"));
+      draftSection.append(node("summary", "", "Draft an update from this note"));
       draftSection.append(
         node(
           "p",
           "metadata",
-          "Your draft is a proposal, not a confirmed fact. Verify its support in the original before acceptance.",
+          "Check your draft against the original note before saving it as a reviewed addition.",
         ),
         draft.wrap,
-        button("Save proposal for review", async () => {
+        button("Save draft for review", async () => {
           try {
             const p = await post("/api/notes/propose", {
               note_id: id,
@@ -1805,8 +1805,8 @@ function operationLabel(tool) {
     finish_run: "Work completed",
     update_application: "Application tracker updated",
     intake_note: "Original note preserved",
-    propose_note: "Note interpretation proposed",
-    accept_note: "Selected context accepted",
+    propose_note: "Suggested note update saved",
+    accept_note: "Reviewed additions saved",
     archive_note: "Note archived",
     prepare_application: "Application materials prepared",
     begin_submission: "Submission started",
@@ -1938,7 +1938,7 @@ $("playbook").addEventListener("click", () => {
     node(
       "p",
       "metadata",
-      "Your focus affects this session’s view. Connect an agent for interpretation or writing from your saved evidence.",
+      "Your focus affects this session’s view. Connect an agent to discuss or write from your saved evidence.",
     ),
   );
   body.append(

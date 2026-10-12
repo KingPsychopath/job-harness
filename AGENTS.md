@@ -1,4 +1,25 @@
-# Job Harness development
+# Job Harness
+
+## Use the toolkit or develop it
+
+For a job-search request, use the toolkit; do not start by editing its code. Read
+[setup](docs/INSTALL.md) and the [agent guide](docs/AGENTS.md). Prefer the installed
+`job-harness`/`jh` executable or this host's Job Harness MCP. If neither is
+available, use the native release or build this checkout with the pinned Rust
+toolchain. Opening this repo in an agent does not install or connect it.
+
+Select the user's existing private workspace, or run `jh setup --workspace PATH`
+for an explicitly chosen separate directory outside this checkout. Never use the
+software repository as a candidate workspace. Call `bootstrap` for the task,
+read its focused skill and the workspace's own instructions, then use the host's
+authorized browser, mail and calendar connections. Reuse existing model access;
+no extra model is required. Do not infer missing career facts or reset existing
+history. See [everyday requests](resources/guides/workflows.md).
+
+For a toolkit improvement, follow the development instructions below and
+[harness-maintain](resources/skills/harness-maintain/SKILL.md).
+
+## Develop the toolkit
 
 Read README.md and docs/ARCHITECTURE.md before substantial edits. This is the generic tool repository; candidate facts, CVs, application records and host credentials live in separate private workspaces. Never use a real candidate as a test fixture or copy their Git history here.
 

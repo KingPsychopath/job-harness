@@ -8,7 +8,7 @@ The agent supplies interpretation and wording. The harness preserves sources, va
 job-harness source import --input approved-cv.pdf
 ```
 
-The native importer retains exact PDF/Markdown/text/JSON bytes under `sources/imports/`, with content identity and capture provenance. Repeating an identical import verifies the saved bytes. It does not parse career facts, approve claims, replace the primary CV or upload anything. The agent can read supplied text or use its host's document parser, then present sourced changes. Without a CV, start with one rough note using [intake](INTAKE.md).
+The native importer retains exact PDF/Markdown/text/JSON bytes under `sources/imports/`, with a file checksum and a record of where it came from. Repeating an identical import verifies the saved bytes. It does not parse career facts, approve claims, replace the primary CV or upload anything. The agent can read supplied text or use its host's document parser, then present sourced changes. Without a CV, start with one rough note using [intake](INTAKE.md).
 
 ## Draft a selected document
 

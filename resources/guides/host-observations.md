@@ -11,12 +11,12 @@ Coverage describes the requested window and exclusions. Pagination and failed re
 ## Thread attribution
 
 ```json
-{"checks":[{"id":"thread","kind":"mail","observation":{"provider":"mail-connector","thread_id":"thread-1","message_ids":["receipt-1","invite-2"],"request_message_ids":["invite-2"],"latest_message_id":"invite-2","vacancy_url":null,"posting_id":null,"company":"Example","candidate_records":[],"requires_reply":true,"replied_to_message_ids":[],"observed_at":"2026-01-02T10:00:00Z"}}]}
+{"checks":[{"id":"thread","kind":"mail","observation":{"provider":"mail-connector","thread_id":"thread-1","message_ids":["confirmation-1","invite-2"],"request_message_ids":["invite-2"],"latest_message_id":"invite-2","vacancy_url":null,"posting_id":null,"company":"Example","candidate_records":[],"requires_reply":true,"replied_to_message_ids":[],"observed_at":"2026-01-02T10:00:00Z"}}]}
 ```
 
 Use provider/thread/message identity first, then posting ID and vacancy URL. A company alone cannot disambiguate two jobs. `candidate_records` are workspace-relative canonical application paths; an unmatched or ambiguous message goes to review. Evaluate the latest unanswered request, including assessment/action requests, before archiving. The check never grants archive permission or changes a stage. Store source references, hashes and relevant excerpts, rather than cloning an entire mailbox.
 
-Every supplied posting ID/URL is compared against canonical identity fields. A contradiction or missing canonical identity stays in review. List request-bearing IDs separately from receipts; a replied invitation does not become actionable because an earlier receipt lacks a reply. Missing request/latest-message evidence remains incomplete.
+Every supplied posting ID/URL is compared against canonical identity fields. A contradiction or missing canonical identity stays in review. List IDs of messages needing action separately from application confirmations; a replied invitation does not become actionable because an earlier application confirmation lacks a reply. Missing request/latest-message evidence remains incomplete.
 
 For `review_queue`, save a bounded JSON observation file under an allowed workspace text path and pass `mail_observations_path`. Its shape is:
 
@@ -44,7 +44,7 @@ Only an explicit boolean can invert question polarity. An answer about UK sponso
 
 Inspect → resolve from approved sources → identify missing fields → fill through the host → read back current values and attachment state → prepare/reserve → begin once → submit once externally → finish with evidence.
 
-Every resolved field names a profile, saved answer or drafted narrative source; unresolved stays explicit. A rerender invalidates old field references. After ATS CV parsing, record altered dates, duplicate employment rows, cleared uploads or other claim changes in `parsed_claim_changes`; reconcile them before preparation. Expected/observed values are compared exactly. An uploaded filename alone does not prove backend receipt; retain the host's actual observations and the frozen packet identity.
+Every resolved field names a profile, saved answer or drafted narrative source; unresolved stays explicit. A rerender invalidates old field references. After ATS CV parsing, record altered dates, duplicate employment rows, cleared uploads or other claim changes in `parsed_claim_changes`; reconcile them before preparation. Expected/observed values are compared exactly. An uploaded filename alone does not prove the employer received the file; retain the host's actual observations and the frozen packet identity.
 
 Never include passwords, session tokens or OTPs in observations. Credential fields stay host-owned. Readback supports preparation and does not authorize submission or replace the one-submit guard. Evidence from the final confirmation differs from evidence of a filled form.
 

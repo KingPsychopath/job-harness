@@ -3,13 +3,13 @@ name: career-reconcile
 description: Audit and reconcile the candidate's application tracker, incomplete runs, duplicate records and stale outcomes using source evidence without blindly retrying submissions.
 ---
 
-# Reconcile career tracking
+# Review and repair application tracking
 
 Read mentioned sources through read_record (batch related reads); generic guides/skills may return origin=toolkit. For native file tools, use the returned ledger/toolkit root for each source. Avoid repeatedly loading broad views or unrelated context.
 
 Resolve the ledger root with bootstrap, then read its AGENTS.md and [operations guide](../../guides/career-operations.md). Call reconcile_tracker, inspect unfinished runs and start a reconcile run. Recover any interrupted local writes with rebuild_pipeline; if a manual edit conflicts, inspect both versions and resolve deliberately instead of resetting coordinator state.
 
-Match exact employer/role/posting and receipts before fixing statuses or combining records. Legacy prose is historical evidence, not a live status check. Do not promote needs-review to applied by guessing, close another role from a generic employer email, or infer interview completion from elapsed time. Add structured tracking when sources establish it; preserve dated history.
+Match exact employer/role/posting and saved evidence before fixing statuses or combining records. Legacy prose is historical evidence, not a live status check. Do not promote needs-review to applied by guessing, close another role from a generic employer email, or infer interview completion from elapsed time. Add structured tracking when sources establish it; preserve dated history.
 
 For reserved attempts that never began, resume or cancel them within their original authorised scope. For submitting/outcome_unknown attempts, inspect employer portal/mail and finish_submission with confirmed or negative evidence. Never repeat Submit from an unfinished attempt. A partial/blocked run may retain an unknown attempt for recovery.
 

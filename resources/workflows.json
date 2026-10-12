@@ -10,7 +10,7 @@
     },
     "tidy_inbox": {
       "skill": ".agents/skills/career-inbox-tidy/SKILL.md",
-      "result": "Archive individually resolved receipts/rejections with before/after labels; preserve unanswered requests."
+      "result": "Archive individually resolved application confirmations and rejections with before/after labels; preserve unanswered requests."
     },
     "discover": {
       "skill": ".agents/skills/career-discover/SKILL.md",

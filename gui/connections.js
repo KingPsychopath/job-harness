@@ -80,9 +80,9 @@
     const workspace = section("Workspace");
     const core = row(workspace, "Job Harness", "Version " + data.version + " · " + device.platform, state("running"));
     core.copy.append(node("p", "connection-location", data.workspace));
-    row(workspace, "Review controls", data.mode === "local_writes" ? "Named local changes are enabled for this session." : "Your records are read only. For local changes in the native window, turn off Workspace → Read only.", status(data.mode === "local_writes" ? "Review enabled" : "Read only", data.mode === "local_writes" ? "good" : "neutral"));
+    row(workspace, "Review controls", data.mode === "local_writes" ? "You can review and edit notes and application records in this session." : "Your records are read only. For local changes in the native window, turn off Workspace → Read only.", status(data.mode === "local_writes" ? "Review enabled" : "Read only", data.mode === "local_writes" ? "good" : "neutral"));
     const hosts = section("Your agent");
-    const host = row(hosts, "MCP workspace tools", (data.mcp?.focused_tools || 11) + " focused tools are available. Connect them in your chosen agent host.", status("Host connection not checked", "neutral"));
+    const host = row(hosts, "Agent workspace tools (MCP)", (data.mcp?.focused_tools || 11) + " focused tools are available. Connect them to your existing agent.", status("Agent connection not checked", "neutral"));
     const byId = Object.fromEntries((device.tools || []).map((tool) => [tool.id, tool]));
     const cli = byId["job-harness"] || {state: "not_found"};
     if (cli.state === "available" && typeof cli.command_path === "string") {
@@ -91,7 +91,7 @@
           "job-harness": {command: cli.command_path, args: ["--root", data.workspace, "mcp", "--tool-profile", "focused"]}
         }
       }, null, 2);
-      host.copy.append(node("p", "metadata", "Add this configuration in your chosen agent host. It does not register or connect a host automatically."));
+      host.copy.append(node("p", "metadata", "Add this configuration in your agent’s settings. This app does not connect the agent automatically."));
       let field = null;
       const showConfiguration = (select) => {
         if (!field) {
@@ -124,7 +124,7 @@
       host.copy.append(node("p", "metadata", "A matching separate CLI is needed for an agent host to run these tools. Install it, then refresh checks."));
       host.actions.append(safeLink(releases + "/tag/v" + data.version, cli.state === "incompatible_version" ? "Get matching CLI" : "Get CLI"));
     }
-    row(hosts, "Browser, mail and calendar", "Authentication and action permissions stay in your agent host. This window has not tested those sessions.", status("Host owned", "neutral"));
+    row(hosts, "Browser, mail and calendar", "Your agent manages sign-in and action permissions. This app has not checked those connections.", status("Agent managed", "neutral"));
 
     const tools = section("Local tools");
     const provider = byId["job-harness-local"] || {state: "not_found"};
@@ -136,17 +136,17 @@
     row(tools, "Local provider service", "Only 127.0.0.1:18081 was checked. Custom endpoints and loaded model identities are not checked here.", state(device.provider?.state || "unreachable"));
 
     const models = section("Optional local models");
-    models.append(node("p", "metadata", "A cache record is not proof of complete files. Verify checks exact pinned bytes; installation never starts a model."));
+    models.append(node("p", "metadata", "Recorded files still need verification. Verify checks the expected file checksums; downloading never starts a model."));
     const allowed = data.native_model_actions === true;
-    const names = {"embeddinggemma2-text": ["Gemma", "Find related source passages when wording differs."], "laya-s256": ["Laya", "Produce bounded decision suggestions for human review."], "kev-0.8b": ["Kev", "Advanced decision model with a separate Swift/Metal worker."]};
+    const names = {"embeddinggemma2-text": ["Gemma", "Find related evidence even when the wording differs."], "laya-s256": ["Laya", "Suggest answers to specific questions for your review."], "kev-0.8b": ["Kev", "Optional decision model for Apple Silicon Macs."]};
     for (const model of device.models || []) {
       const [title, purpose] = names[model.id] || [model.name || model.id, ""];
       const advanced = model.id === "kev-0.8b";
       const cacheState = model.cache?.state || "location_unknown";
       const item = row(models, title, purpose + " " + formatBytes(model.download_bytes) + " of model files.", advanced ? status(cacheState === "manifest_present" ? "Advanced · files recorded" : "Advanced setup", cacheState === "manifest_present" ? "warn" : "neutral") : state(cacheState));
-      if (model.runtime) item.copy.append(node("p", "metadata", "Native runtime: " + (labels[model.runtime.cache?.state]?.[0] || "Not checked") + ". Model running state is unknown."));
+      if (model.runtime) item.copy.append(node("p", "metadata", "Model runtime: " + (labels[model.runtime.cache?.state]?.[0] || "Not checked") + ". Model running state is unknown."));
       if (advanced) item.copy.append(node("p", "metadata", model.hardware || "Separate native worker and reviewed runtime required."));
-      if (!model.platform_runtime_listed && !advanced) item.copy.append(node("p", "metadata", "No pinned native runtime is listed for this platform. A compatible remote host remains available."));
+      if (!model.platform_runtime_listed && !advanced) item.copy.append(node("p", "metadata", "No supported local runtime is listed for this platform. You can still use a compatible remote service."));
       if (model.model_card) item.actions.append(safeLink(model.model_card, "Requirements"));
       const actionNote = node("p", "connection-action-note metadata");
       item.copy.append(actionNote);
@@ -155,12 +155,12 @@
 
       const verify = button("Verify files", async () => {
         if (activeAction) return message(activeAction.note);
-        activeAction = {id: model.id, note: "Checking pinned model and runtime bytes…"};
+        activeAction = {id: model.id, note: "Checking model and runtime files…"};
         verify.disabled = true; review.disabled = true;
         actionNote.textContent = activeAction.note;
         try {
           const result = await post("/api/models/verify", {id: model.id});
-          actionNote.textContent = result.artifacts_verified === true ? "Pinned model and runtime bytes verified at " + new Date(result.verified_at).toLocaleTimeString() + ". Model running state remains unknown." : "Verification did not confirm complete artifacts.";
+          actionNote.textContent = result.artifacts_verified === true ? "Model and runtime files verified at " + new Date(result.verified_at).toLocaleTimeString() + ". Model running state remains unknown." : "Verification did not confirm complete artifacts.";
           message(actionNote.textContent);
           if (result.artifacts_verified === true) item.controls.firstChild.replaceWith(status("Files verified just now", "good"));
           snapshot = null;
@@ -170,7 +170,7 @@
       const review = button(cacheState === "manifest_present" ? "Review repair" : "Review download", async () => {
         if (activeAction) return message(activeAction.note);
         review.disabled = true;
-        actionNote.textContent = "Loading the exact pinned download plan…";
+        actionNote.textContent = "Loading the download details…";
         try {
           const plan = await read("/api/models/plan?" + new URLSearchParams({id: model.id}));
           if (!item.el.isConnected) return;
@@ -179,7 +179,7 @@
           pane.append(node("h4", "", "Review " + title + " download"), node("p", "", formatBytes(plan.download_bytes) + " total, including its native runtime."), node("p", "metadata", plan.hardware || ""));
           for (const artifact of plan.items || []) {
             const detail = node("div", "connection-plan-item");
-            detail.append(node("strong", "", artifact.kind === "runtime" ? "Native runtime · " + artifact.id : title + " model"), node("p", "metadata", formatBytes(artifact.download_bytes) + " · License: " + artifact.license), safeLink(artifact.source, "Pinned publisher source"), node("p", "connection-digest", "SHA256 " + artifact.sha256));
+            detail.append(node("strong", "", artifact.kind === "runtime" ? "Native runtime · " + artifact.id : title + " model"), node("p", "metadata", formatBytes(artifact.download_bytes) + " · License: " + artifact.license), safeLink(artifact.source, "Publisher source (fixed version)"), node("p", "connection-digest", "SHA256 " + artifact.sha256));
             pane.append(detail);
           }
           pane.append(node("p", "metadata", "These files go into your local model cache. No credentials are read and no model or service starts. Interrupted downloads may leave partial cache files."));

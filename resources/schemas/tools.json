@@ -2890,7 +2890,7 @@
     }
   },
   "save_receipt": {
-    "description": "Preserve exact receipt bytes in private content-addressed storage.",
+    "description": "Save an exact copy of submission evidence in the private workspace. The legacy tool name is retained for compatibility.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -9403,7 +9403,7 @@
                             "type": "null"
                           }
                         ],
-                        "description": "Observed request-bearing message IDs, excluding receipts; omit/null means request evidence is incomplete."
+                        "description": "Observed request-bearing message IDs, excluding application confirmations; omit/null means request evidence is incomplete."
                       },
                       "latest_message_id": {
                         "anyOf": [

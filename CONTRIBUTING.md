@@ -25,6 +25,10 @@ Images and recordings must show the actual behavior under review. Label mocks an
 
 AI assistance is allowed. Human and agent contributions have the same standard: review the entire diff, check behavior, verify claims and explain the change. Agent submissions must be authorized by and answerable through a responsible person or organization. Maintainers may ask about any part of the diff or its evidence and may close submissions that cannot be supported. Review model output before submitting it; report actual check results, not generated claims of verification.
 
+GitHub verification is manual-only. No workflow checks run automatically on PRs.
+Report relevant local results; a maintainer can request a focused remote check
+when it resolves a platform gap. See [verification profiles](docs/DEVELOPMENT.md#choose-a-manual-ci-profile).
+
 Submit only material you have the right to contribute. Contributions use the project's [MIT license](LICENSE); preserve required upstream copyright and license notices for reused material.
 
 ## No spam or unsolicited sweeps

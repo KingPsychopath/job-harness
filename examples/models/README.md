@@ -21,4 +21,10 @@ The embedding probe checks32×768-dimensional vectors, five warm queries, one sy
 
 The runnable catalog contains only EmbeddingGemma2 text, Laya s256 and Kev 0.8B. Larger candidates inspected as metadata during development were not downloaded or tested and are no longer setup options. Historical SDK reports are retained as evaluation evidence; they do not add installable profiles.
 
+Historical reports retain the original category code `receipt`, meaning an
+**application confirmation**. Their recorded probabilities and model inputs are
+unchanged. Saved proof is called **evidence** in the app and guides; the
+[compatibility note](../../resources/guides/job-harness-contract.md) explains old
+machine identifiers.
+
 See [docs/MODELS.md](../../docs/MODELS.md) for actual native limitations and exact upstream sources. No weights, SDKs or generated kernels are tracked here.

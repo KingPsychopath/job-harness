@@ -1,76 +1,95 @@
-# Job Harness — onboarding
+# Start with your own career workspace
 
-Job Harness gives people and agents one private career workspace and dependable tools to use it. It provides sourced context, bounded batches, application coordination and evidence-backed tracking. The agent host supplies external mail, browser and calendar access. Native CLI and optional GUI actions share the same engine. The core targets Windows/macOS/Linux; cross-machine storage needs a separate coordinator.
+Job Harness keeps supplied career information and application history in one private folder. People and agents use the same tools to retrieve sources, reuse confirmed answers, check duplicates and organize applications. Your agent host supplies live browser, mail and calendar access; the toolkit does not connect those accounts by itself.
 
-## How it runs
+## Choose a starting point
 
-```mermaid
-flowchart LR
-    A[Agent or GUI] --> H[Job Harness API]
-    H --> C[Schemas, batches and coordination]
-    C --> W[Private candidate ledger]
-    A --> R[Host runtime and permissions]
-    R --> P[Mail, job sites and calendar]
-    R --> H
-```
+| You have… | Start with… |
+|---|---|
+| An existing agent | The [native core release](../../docs/INSTALL.md), then MCP or direct CLI |
+| A preference for a window | The separate desktop app, opening an initialized workspace |
+| The toolkit repo open in an agent | [Build the core and use a separate private folder](../../docs/AGENTS.md#open-the-checkout-in-your-agent) |
 
-The agent supplies decisions; Job Harness runs predictable local steps and keeps durable evidence. The host runtime supplies live actions and permissions. Each private workspace holds one candidate's configuration and career records.
+No built-in model, questionnaire or CV generator is required. Optional local models, Typst and desktop installation can come later.
 
-## Four separate homes
+## Set up a separate private folder
 
-| Home | Contains | Share with the toolkit? |
-|---|---|---|
-| `crates/` and generic skills/guides | Tool contracts, coordination, adapters, workflow defaults and onboarding | Yes, through the code-only repository or native release |
-| Each ledger's `config/` | Timezone, CV path, answer-source paths and optional workflow overrides | No; owner-specific configuration |
-| Each ledger's `context/`, `content/`, `applications/`, `output/` | Facts, approved CV, preferences, vacancies, history, exact packets and receipts | No; private candidate data |
-| Agent/GUI host | Model choice, connector bindings, credentials, user permissions and scheduling | No; host-owned runtime/access |
-
-Configuration selects data; it is not evidence for a career claim. Each candidate has a separate ledger/root and coordinator. Switching root is a trusted host startup choice, never an argument available to an agent tool. Agents sharing one candidate use the same private workspace/coordinator. Copies on different machines have independent locks.
-
-## Try it without personal information
-
-Try a fictional workspace first, or set up your own private workspace outside the toolkit:
+On macOS/Linux, after installing the core:
 
 ```sh
-jh demo --workspace /path/to/fictional-demo
-jh setup --workspace /path/to/private-ledger --json
-job-harness --root /path/to/private-ledger call bootstrap <<'JSON'
-{"operation":"reconcile","capabilities":[]}
-JSON
-job-harness schemas execute_batch
-job-harness config-schema ledger
+jh setup --workspace "$HOME/Career/workspace" --json
+jh --root "$HOME/Career/workspace" status
+jh --root "$HOME/Career/workspace" connect mcp
 ```
 
-Initialization builds a temporary sibling directory and moves it into place only after success. It refuses to replace a nonempty directory. It creates blank answer/evidence records and neutral configuration; it copies no salary, contact details, CV, demographic answer or career history. Set primary_cv to a repository-relative PDF path, set the IANA timezone, and supply attributed career records/approved answers. Missing personal facts remain missing. Generic skills, operating guides and workflow defaults stay in the toolkit; read_record resolves them there and returns origin=toolkit. They are not copied into each candidate ledger. A private file at the same allowed path is an explicit owner override.
+In PowerShell, use `(Join-Path $HOME "Career/workspace")` for the workspace argument. Setup creates a new/empty folder or selects an existing valid workspace without resetting it. It saves a host-local default location. `--plan --json` previews setup without changing files or settings. Optional `--capability` choices describe requirements; they do not download models or grant access.
 
-Terminal setup can ask which optional capabilities you want. Agents use `--json` and repeated `--capability ID`; `--plan` writes nothing. Selection never downloads a model or grants access. `jh capabilities` lists requirements and next steps. Existing valid workspaces are selected without resetting their evidence or state.
+The toolkit checkout is reusable software. Keep private data outside it. One person's agents use the same private workspace; copies on different machines have independent locks and do not synchronize automatically.
 
-Wire a stdio MCP client to this command, using absolute paths. Embedded resources work outside the checkout:
+For a fictional trial, run `jh demo --workspace PATH` with a new folder, then `jh --root PATH gui`. The demo is clearly fictional and does not change your saved workspace selection. Open the desktop app or the local URL printed by `gui`; `gui/index.html` in the code checkout is not a standalone application.
+
+## Add your first sources
+
+With an existing approved CV, retain it first:
+
+```sh
+jh --root "$HOME/Career/workspace" source import --input /path/to/approved-cv.pdf
+```
+
+The result's `data.path` is the retained workspace-relative path and `data.sha256` identifies its exact bytes. Import preserves the original and a record of where it came from; it does not approve claims, extract facts or change the primary CV. After reviewing the PDF, set `primary_cv` in the private workspace's `config/career-ledger.json` to that returned path. Current source supports an imported PDF here; the unchanged v0.2.0 preview requires the [CV-path compatibility step](../../docs/INSTALL.md#v020-cv-path-compatibility).
+
+Set `timezone` to your actual IANA timezone, such as `Europe/London` if appropriate. Paths in this configuration are relative to the **private workspace**, not the toolkit repository. Inspect the supported shape with `jh config-schema ledger`; keep credentials and model endpoints in the host instead.
+
+Without a CV, start with a supplied note:
+
+```sh
+jh --root "$HOME/Career/workspace" notes import \
+  --input /path/to/interview-notes.md --kind personal_notes --key first-interview-note
+```
+
+The key identifies this operation so a repeated request can be recognized. Use a different key for different supplied content. Original notes remain intact. Dates, ownership and outcomes that you have not supplied stay unknown. An agent can propose interpretations with source references; reviewing and accepting selected items is a separate step. Notes do not automatically rewrite your CV or mark an application submitted.
+
+Add confirmed answers and preferences to the configured answer records, recording who supplied them, when, where they apply and any limits. New workspaces include blank `applications/approved-answers.md` and `context/profile/application-decisions.md`. Salary, contact details and consent are personal records, not reusable toolkit defaults. Your agent should read existing answers before asking the same question again.
+
+## Give an agent its first task
+
+Connect the command and arguments returned by `connect mcp` to your chosen host, or let a command-running agent use the CLI with an explicit `--root`. [Connection instructions](../../docs/AGENTS.md)
 
 ```text
-job-harness --root /path/to/private-ledger mcp --tool-profile focused
+Use Job Harness with /absolute/private/career-workspace. Bootstrap, read the
+focused skill and inspect unfinished work. Help organize the CV, notes and answers
+I supply. Keep originals, preserve unknowns and propose interpretations with
+source references. Ask only for missing facts. Do not change my approved CV or
+send messages or applications beyond my request.
 ```
 
-Use `job-harness --root /path/to/private-ledger connect mcp` to print a client-neutral command/args pair with a native executable and fixed workspace. Skill installation is optional; any agent can read the focused skill returned by bootstrap through read_record. A fresh client session may be needed after configuring a new MCP. Always test bootstrap through the actual connection; registration alone is not live-tool proof.
+Through MCP, start with `bootstrap` for the requested operation. Through the CLI, on macOS/Linux:
 
-For a Rust host or GUI backend:
-
-```rust
-use job_harness_core::Engine;
-use serde_json::json;
-let harness = Engine::open("/path/to/private-ledger")?;
-let result = harness.call("bootstrap", &json!({"operation":"apply","capabilities":[]}));
-// Render data/error/next. The host binds external providers and authorization.
+```sh
+jh --root "$HOME/Career/workspace" call bootstrap <<'JSON'
+{"operation":"reconcile","capabilities":[]}
+JSON
 ```
 
-Use `query_batch` to fetch related records/answers together, `execute_batch` to organize local updates with result references, and `prepare_application` to freeze/reserve with one call. See the [contract and working examples](job-harness-contract.md). Actual external submissions still use a separate begin/one-submit/outcome boundary.
+The same JSON works on any platform through `call bootstrap --input bootstrap.json`. Read `ok`, `data`, `error` and `next`. Bootstrap points to the focused skill; `read_record` can read it from the binary, even without the checkout. Generic guides and skills remain in the toolkit. A private file at an allowed matching path is an explicit owner override.
 
-## First useful input
+Related source reads can use `query_batch`; related local changes can use `execute_batch`. Specialized tool shapes are available through `inspect_tools`. Follow paging and reported gaps before claiming a complete review. [Contracts and examples](job-harness-contract.md)
 
-With an existing CV, `job-harness source import --input approved-cv.pdf` retains the exact supplied file and provenance. Set it as primary only after your explicit review. Without a CV, start with a rough note through `notes import` or `intake_note`. The original remains intact and missing dates or ownership remain unknown. An agent can propose linked interpretations; accept selected items separately. No mandatory questionnaire or model installation is needed.
+## Keep the four boundaries clear
 
-Choose a [short playbook](workflows.md) for capture, a period review, a move, an application, an interview or a new role. The choice changes focus, never employment facts. `context_pack` presents bounded source history; the agent handles interpretation and writing.
+| Where | What belongs there |
+|---|---|
+| Toolkit repo or native release | Reusable code, schemas, skills, guides and fictional examples |
+| Private workspace `config/` | Timezone and paths selecting your CV and answer sources |
+| Private workspace records and retained files | Career evidence, notes, preferences, vacancies, application history and saved submission proof |
+| Agent or GUI host | Credentials, model access, connector sessions, permissions and schedules |
 
-## Share tooling, never a ledger
+Configuration selects sources; it is not evidence for a career claim. A stored run describes intent, not permission. A submission with an unknown outcome must be investigated before retrying. Saved submission proof and application-confirmation emails are evidence to inspect, not permission to guess a new status.
 
-Install the native binary or clone the code-only repository. Generic resources ship inside the native binary; there is no second source-export implementation. Each recipient creates their own external workspace or imports an explicitly private .jhb bundle. Bundles contain personal data and are never part of the software distribution. Host credentials and connector sessions remain separate.
+Choose a [short workflow](workflows.md) for a note, a review, an application, an interview or a new role. `context_pack` retrieves bounded source passages and reports missing or uncertain history; the agent handles interpretation and writing.
+
+## Back up, transfer or leave
+
+Use a full private workspace bundle to carry your history forward. A profile-only bundle omits application history. Restore to a new/empty separate folder and inspect it before removing anything. Bundles contain private plaintext data; protect them when sharing. Credentials and connector sessions stay in the host.
+
+[Backup format](../../docs/BUNDLES.md) · [Verify a backup and leave or switch tools](../../docs/INSTALL.md#leave-or-switch-tools)

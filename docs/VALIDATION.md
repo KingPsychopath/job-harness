@@ -37,3 +37,19 @@ Restricted Claude Opus 5.5 high review and independent agents examined the gener
 The next Windows step is to execute the instrumented diagnostic, identify the stalled phase, correct the demonstrated cause and repeat the bounded test. Production changes require fresh platform checks before a new source tag. Native Windows/Linux GUI acceptance and platform signing remain unverified; local inference measurements are recorded separately in [Models](MODELS.md).
 
 Release assets include `SHA256SUMS` and `PLATFORM_VALIDATION.json`, which distinguish native builds, cross-builds and actual execution. None contains career data, credentials, model weights or proprietary runtime downloads. Current documentation and screenshots can advance independently of the immutable v0.2.0 source tag.
+
+## Source changes after the published preview
+
+Current source uses clearer email/evidence wording and an agent-first setup path.
+It also fixes explicit selection of an imported PDF as the primary CV, without
+widening general source access or relaxing submission recovery. Local core,
+desktop and copied-package checks passed on macOS, along with an independent
+18-check setup/import/backup journey. New source was not tested on Windows or
+Linux. Published v0.2.0 archives retain their original bytes; follow the
+[older-preview CV-path step](INSTALL.md#v020-cv-path-compatibility) when using them.
+
+CI and releases are now manual-only to avoid automatic Actions spending. Workflow
+syntax, option combinations and release preflight were checked locally; they have
+not been executed on GitHub. Default manual CI uses one Linux core job; platform,
+desktop, provider and package work are opt-in. [Verification profiles](DEVELOPMENT.md#choose-a-manual-ci-profile)
+describe the available checks. Existing regression tests remain in the local suite.

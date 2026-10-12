@@ -1,10 +1,10 @@
-# One workspace, several drivers
+# The app and your agent share one workspace
 
-The GUI, CLI and MCP clients use the same engine and canonical state. Opening the desktop app creates no second tracker. A reviewed GUI write becomes visible to the next CLI/MCP read. Native filesystem notifications signal background CLI/agent changes; the GUI then reads a fresh engine snapshot. Notifications contain only revision/mode hints, never source text or a competing record.
+The GUI, CLI and MCP clients use the same engine and saved workspace records. Opening the desktop app creates no second tracker. A reviewed GUI write becomes visible to the next CLI/MCP read. Native filesystem notifications signal background CLI/agent changes; the GUI then reads a fresh engine snapshot. Notifications contain only revision/mode hints, never source text or a competing record.
 
 ## Work surfaces
 
-Applications open as a board. Drag a card to another stage; click it for details and reviewed changes. A table remains available. Applications and Notes are the primary surfaces; attention, evidence search, activity and connections open as secondary inspectors. Attention gathers unfinished runs, uncertain outcomes, pending note review and supplied recruiting observations that still need action. It does not scan a mailbox itself. Notes keep originals alongside selectively accepted cited additions. Connections explain host/model boundaries; they are not a credential vault.
+Applications open as a board. Drag a card to another stage; click it for details and reviewed changes. A table remains available. Applications and Notes are the primary surfaces; attention, evidence search, activity and connections open as detail panels. Attention gathers unfinished runs, uncertain outcomes, pending note review and supplied recruiting observations that still need action. It does not scan a mailbox itself. Notes keep originals alongside reviewed additions with source links. Connections explain host/model boundaries; they are not a credential vault.
 
 Updates use an authenticated local stream, with no recurring directory scans or content hashing. Bursts coalesce before the view rereads the engine. While a review, draft or drag is active, a small update notice offers a safe refresh instead of replacing the interaction. The Refresh icon explicitly rereads the current view; it never retries a submission or runs a model. Hidden windows disconnect the stream and reconnect on return. Filesystem notifications are change hints, not a guaranteed history: unsupported/network filesystems and watcher errors leave manual Refresh available.
 

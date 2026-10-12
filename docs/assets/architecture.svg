@@ -10,7 +10,7 @@
   <circle cx="70" cy="587" r="5" fill="#315eec"/><text x="96" y="594" class="name">Pure domain</text><text x="96" y="629" class="body">Identity, states and canonical encoding</text><text x="96" y="661" class="mono">Native + WASM-checkable</text>
   <text x="784" y="183" class="label">PRIVATE WORKSPACE</text><text x="784" y="250" class="name">Evidence you can read</text><text x="784" y="287" class="body">Markdown facts, answers, vacancies and original notes</text>
   <text x="784" y="347" class="name">State you can recover</text><text x="784" y="384" class="body">One coordinator journal; unresolved attempts persist</text>
-  <text x="784" y="444" class="name">Artifacts you can verify</text><text x="784" y="481" class="body">Selected JSON, exact PDFs, packets and receipts</text>
+  <text x="784" y="444" class="name">Files and evidence you can verify</text><text x="784" y="481" class="body">Selected content, exact PDFs and saved evidence</text>
   <text x="784" y="541" class="name">Views you can rebuild</text><text x="784" y="578" class="body">Derived SQLite indexes and pipeline projections</text><text x="784" y="650" class="mono">Config selects behavior; it never invents facts.</text>
   <path d="M54 708h1332" stroke="#dfe3e9"/><text x="55" y="753" class="label">HOST BOUNDARY</text><text x="290" y="753" class="body">Browser · mail · calendar · model runtimes · credentials · current user scope</text><text x="55" y="797" class="body">The host performs external actions. The engine records exact intent, uncertainty and evidence.</text>
 </svg>

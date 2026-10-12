@@ -1,4 +1,4 @@
 interface:
   display_name: "Tidy job emails"
-  short_description: "Archive resolved receipts and keep reply requests visible"
-  default_prompt: "Use $career-inbox-tidy to archive resolved job receipts and rejections and foreground messages that need my reply."
+  short_description: "Archive resolved application confirmations and keep reply requests visible"
+  default_prompt: "Use $career-inbox-tidy to archive resolved application confirmations and rejections and foreground messages that need my reply."
