@@ -1,0 +1,4 @@
+interface:
+  display_name: "Application email review"
+  short_description: "Update application outcomes and evidence-based lessons"
+  default_prompt: "Use $application-email-review to check my job emails, update the application ledger, and review what the new outcomes teach us."

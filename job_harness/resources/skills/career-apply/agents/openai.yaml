@@ -1,0 +1,4 @@
+interface:
+  display_name: "Apply to roles"
+  short_description: "Submit suitable roles with duplicate guards and receipts"
+  default_prompt: "Use $career-apply to apply to suitable roles within my requested sources and limit using my saved answers and primary CV."

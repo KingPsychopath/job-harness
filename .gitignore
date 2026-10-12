@@ -1,0 +1,22 @@
+# Runtime and private workspaces must remain outside this repository.
+.venv/
+.scratch/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.DS_Store
+*.jhb
+*.bundle
+.env*
+# Defense in depth for accidental private data creation.
+/applications/
+/context/
+/content/
+/config/
+/output/
+/sources/
+/workspaces/
+/profiles/

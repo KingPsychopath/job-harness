@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reconcile applications"
+  short_description: "Resolve stale records and uncertain submission outcomes"
+  default_prompt: "Use $career-reconcile to reconcile my tracker and unfinished runs with fresh evidence and keep unknown outcomes explicit."

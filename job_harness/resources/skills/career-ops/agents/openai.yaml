@@ -1,0 +1,4 @@
+interface:
+  display_name: "Career operations"
+  short_description: "Run standard job-search workflows with shared records"
+  default_prompt: "Use $career-ops to handle my career operations, reuse saved answers and keep the shared ledger current."

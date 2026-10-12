@@ -1,0 +1,10 @@
+name: Feature request
+description: Describe a useful workflow and its concrete outcome.
+body:
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Workflow and desired behavior
+      description: Describe the problem and relevant scope using generic examples.
+    validations:
+      required: true

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Save career knowledge"
+  short_description: "Keep confirmed answers and evidence reusable"
+  default_prompt: "Use $career-knowledge-update to save my new answers or interview notes in the canonical ledger with attribution and scope."

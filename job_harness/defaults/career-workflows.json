@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "shared_reads": [
+    "AGENTS.md"
+  ],
+  "workflows": {
+    "review_inbox": {
+      "skill": ".agents/skills/application-email-review/SKILL.md",
+      "result": "Read full relevant mail, reconcile outcomes, save evidence and checkpoint; show reply queue with email links."
+    },
+    "tidy_inbox": {
+      "skill": ".agents/skills/career-inbox-tidy/SKILL.md",
+      "result": "Archive individually resolved receipts/rejections with before/after labels; preserve unanswered requests."
+    },
+    "discover": {
+      "skill": ".agents/skills/career-discover/SKILL.md",
+      "result": "Produce a source-bounded or broad deduplicated shortlist with fit, unknowns and canonical records."
+    },
+    "apply": {
+      "skill": ".agents/skills/career-apply/SKILL.md",
+      "result": "Complete authorised suitable applications up to a cap; freeze packets, reserve, submit once, save confirmed or unknown outcomes."
+    },
+    "schedule": {
+      "skill": ".agents/skills/career-schedule/SKILL.md",
+      "result": "Verify latest availability, book chosen time, accept calendar invitation, save evidence and authorised reply."
+    },
+    "prepare_interview": {
+      "skill": ".agents/skills/career-interview-prep/SKILL.md",
+      "result": "Refresh the exact vacancy brief with plain company explanation, sourced stories, natural opening and questions."
+    },
+    "update_knowledge": {
+      "skill": ".agents/skills/career-knowledge-update/SKILL.md",
+      "result": "Attribute supplied knowledge, reuse new answers, link interview notes and keep coaching separate from facts."
+    },
+    "reconcile": {
+      "skill": ".agents/skills/career-reconcile/SKILL.md",
+      "result": "Review stale/conflicting records and unfinished attempts; fix with evidence and rebuild the tracker."
+    }
+  }
+}

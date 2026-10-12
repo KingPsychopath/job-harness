@@ -1,0 +1,4 @@
+interface:
+  display_name: "Discover roles"
+  short_description: "Find suitable roles and check application history"
+  default_prompt: "Use $career-discover to find suitable roles within my requested sources, check duplicates and save fit evidence."

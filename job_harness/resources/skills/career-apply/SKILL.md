@@ -1,0 +1,20 @@
+---
+name: career-apply
+description: Apply to the candidate's authorised suitable roles on named boards, saved lists or broader sources using the shared answers, primary CV, duplicate checks and verified receipts.
+---
+
+# Apply to roles
+
+Read mentioned sources through read_record (batch related reads); generic guides/skills may return origin=toolkit. For native file tools, use the returned ledger/toolkit root for each source. Avoid repeatedly loading broad views or unrelated context.
+
+Resolve the ledger root with bootstrap, then read its AGENTS.md, [operations guide](../../guides/career-operations.md), approved answers, profile decisions, current tracker entries and exact vacancy. Use find_application with a stage/query and paged results; read the generated pipeline only when a broad overview is needed. Start an apply run with explicit sources, a positive max_submissions and dry_run=false only when submitting is authorised. A limit caps submissions, not skipped discoveries. Saved/tracked-only scope stays within that list. For “all”, determine the finite eligible list and set its count; report exclusions without inventing extra preferences.
+
+Use available browser tools under the configured preference and user request. Before each role inspect exact and employer matches from `check_duplicate`, including cooldowns and unknown outcomes. Reuse recorded facts and draft narrative answers from evidence, including own-word prompts; don't ask for recorded answers again. Use settings.primary_cv returned by bootstrap unless a supported tailored variant materially helps. Save newly supplied defaults in the configured canonical answer sources with date, source, scope and limits.
+
+Prepare the full form and save exact final answers/message. Call `prepare_application` with the matching vacancy record, source, CV and answers; it freezes the packet and reserves the attempt with one call. It returns frozen artifact paths; upload those exact bytes. If answers, selected CV or destination change, cancel only an unstarted reservation and prepare with a new key; a begun attempt requires outcome reconciliation first. Reusing a key with changed source bytes is rejected. A packet hash does not establish factual accuracy; verify the claims and fit first.
+
+Prepare/reserve only a complete form within user scope. After any required action-time confirmations, call `begin_submission` separately; proceed with exactly one external Submit only when ready_for_single_submit=true. Replayed results explicitly prohibit another Submit. Observe confirmation, preserve a screenshot/email receipt and call `finish_submission`. If interrupted after begin, inspect portal/email first; record outcome_unknown when unresolved. Never cancel or expire a begun attempt merely to retry. An unstarted reservation can be cancelled; a negative resolution requires real evidence that no submission occurred.
+
+Unknown personal declarations, mismatched eligibility and tool-required confirmations remain genuine exceptions. Existing user authority persists; don't add per-form approval gates. If a portal is blocked, preserve prepared work and continue other roles within scope. Keep requested external tracker/board stages aligned with verified outcomes and log changes. Finish with confirmed submissions, duplicates avoided, prepared exceptions and receipt links; follow the ledger's commit rule for the owned packets/records/log. No unsolicited recruiter outreach or offer acceptance.
+
+In focused MCP, load named specialised schemas with inspect_tools and run them as batch steps. Use query_batch for related reads and execute_batch for ordered local updates; pipe prior result fields with $ref. Read the version 2 data/error/next envelope. Page until next_offset is null when claiming exhaustive coverage. Use plan_adapter and record_adapter_result for requested external board sync, with actual live observations. See the [tool contract](../../guides/job-harness-contract.md) when recovering or composing batches.

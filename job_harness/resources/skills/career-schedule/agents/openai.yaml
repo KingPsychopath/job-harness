@@ -1,0 +1,4 @@
+interface:
+  display_name: "Schedule interviews"
+  short_description: "Book chosen times and verify calendar confirmation"
+  default_prompt: "Use $career-schedule to handle the authorised interview booking, verify its calendar state and update the tracker."
