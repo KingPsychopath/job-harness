@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "person": {
+    "name": "Alex Example",
+    "headline": "Product engineer",
+    "location": "Example City",
+    "email": "alex@example.invalid",
+    "links": [
+      {
+        "label": "Portfolio",
+        "url": "https://example.invalid"
+      }
+    ]
+  },
+  "summary": {
+    "text": "Product engineer who makes complicated workflows easier to use. Works across interfaces, services and delivery, with a focus on clear behavior and reliable recovery.",
+    "evidence": [
+      "context/profile/example.md"
+    ]
+  },
+  "experience": [
+    {
+      "title": "Senior product engineer",
+      "organisation": "Example Studio",
+      "period": "2022-present",
+      "evidence": [
+        "context/profile/example.md"
+      ],
+      "bullets": [
+        {
+          "text": "Helped operations staff review incoming work in one place, using a typed web interface and a relational task model.",
+          "evidence": [
+            "context/profile/example.md"
+          ]
+        },
+        {
+          "text": "Made interrupted imports recoverable by separating durable intent from external completion and preserving exact source records.",
+          "evidence": [
+            "context/profile/example.md"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Software engineer",
+      "organisation": "Sample Works",
+      "period": "2019-2022",
+      "evidence": [
+        "context/profile/example.md"
+      ],
+      "bullets": [
+        {
+          "text": "Built small services and interfaces for internal teams, from discovery through testing and release.",
+          "evidence": [
+            "context/profile/example.md"
+          ]
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Clearer decisions from scattered records",
+      "organisation": "Field Notes - synthetic portfolio example",
+      "period": "Selected work",
+      "url": "https://example.invalid/field-notes",
+      "evidence": [
+        "context/profile/example.md"
+      ],
+      "bullets": [
+        {
+          "text": "Combines attributed Markdown with a generated query index so useful relationships stay easy to find without losing their sources.",
+          "evidence": [
+            "context/profile/example.md"
+          ]
+        }
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "text": "Rust, TypeScript, SQL · API design, testing, observability · Product discovery and technical writing",
+      "evidence": [
+        "context/profile/example.md"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "title": "BSc Computer Science",
+      "organisation": "Example University",
+      "period": "2016-2019",
+      "evidence": [
+        "context/profile/example.md"
+      ],
+      "bullets": []
+    }
+  ],
+  "provenance": {
+    "approved_by": "Synthetic fixture",
+    "approved_at": "2026-01-01",
+    "sources": [
+      "context/profile/example.md"
+    ]
+  },
+  "theme": {
+    "accent": "#287D72",
+    "ink": "#243444",
+    "font_size": 9.2,
+    "margin_mm": 17,
+    "section_gap_pt": 10
+  }
+}

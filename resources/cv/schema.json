@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://job-harness.local/schemas/cv/v1",
+  "title": "Job Harness CV selection v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "person", "summary", "experience", "projects", "skills", "education", "provenance"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "person": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "headline", "location", "email", "links"],
+      "properties": {
+        "name": {"$ref": "#/$defs/text"}, "headline": {"$ref": "#/$defs/text"},
+        "location": {"$ref": "#/$defs/text"}, "email": {"$ref": "#/$defs/text"},
+        "links": {"type": "array", "maxItems": 5, "items": {"type": "object", "additionalProperties": false, "required": ["label", "url"], "properties": {"label": {"$ref": "#/$defs/text"}, "url": {"type": "string", "pattern": "^https://", "maxLength": 2000}}}}
+      }
+    },
+    "summary": {"$ref": "#/$defs/claim"},
+    "experience": {"type": "array", "maxItems": 6, "items": {"$ref": "#/$defs/entry"}},
+    "projects": {"type": "array", "maxItems": 5, "items": {"$ref": "#/$defs/entry"}},
+    "skills": {"type": "array", "maxItems": 5, "items": {"$ref": "#/$defs/claim"}},
+    "education": {"type": "array", "maxItems": 4, "items": {"$ref": "#/$defs/entry"}},
+    "provenance": {"type": "object", "additionalProperties": false, "required": ["approved_by", "approved_at", "sources"], "properties": {"approved_by": {"$ref": "#/$defs/text"}, "approved_at": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"}, "sources": {"$ref": "#/$defs/evidence"}}},
+    "theme": {"type": "object", "additionalProperties": false, "properties": {"accent": {"type": "string", "pattern": "^#[0-9a-fA-F]{6}$"}, "ink": {"type": "string", "pattern": "^#[0-9a-fA-F]{6}$"}, "font": {"type": "string", "minLength": 1, "maxLength": 120}, "font_size": {"type": "number", "minimum": 8, "maximum": 12}, "margin_mm": {"type": "number", "minimum": 10, "maximum": 25}, "section_gap_pt": {"type": "number", "minimum": 6, "maximum": 18}}}
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1, "maxLength": 3000},
+    "evidence": {"type": "array", "minItems": 1, "maxItems": 10, "uniqueItems": true, "items": {"type": "string", "pattern": "^(context|applications|sources)/[^\\\\]+$", "minLength": 3, "maxLength": 1000}},
+    "claim": {"type": "object", "additionalProperties": false, "required": ["text", "evidence"], "properties": {"text": {"$ref": "#/$defs/text"}, "evidence": {"$ref": "#/$defs/evidence"}}},
+    "entry": {"type": "object", "additionalProperties": false, "required": ["title", "organisation", "period", "evidence", "bullets"], "properties": {"title": {"$ref": "#/$defs/text"}, "organisation": {"$ref": "#/$defs/text"}, "period": {"$ref": "#/$defs/text"}, "evidence": {"$ref": "#/$defs/evidence"}, "url": {"type": "string", "pattern": "^https://", "maxLength": 2000}, "bullets": {"type": "array", "maxItems": 6, "items": {"$ref": "#/$defs/claim"}}}}
+  }
+}

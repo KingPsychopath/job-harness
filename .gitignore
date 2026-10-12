@@ -20,3 +20,6 @@ dist/
 /sources/
 /workspaces/
 /profiles/
+
+/target/
+/artifacts/

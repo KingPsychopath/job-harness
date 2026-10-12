@@ -1,0 +1,202 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "enum": [
+        1
+      ]
+    },
+    "shared_reads": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 20000
+      },
+      "maxItems": 30
+    },
+    "workflows": {
+      "type": "object",
+      "properties": {
+        "review_inbox": {
+          "type": "object",
+          "properties": {
+            "skill": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "result": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "skill",
+            "result"
+          ],
+          "additionalProperties": false
+        },
+        "tidy_inbox": {
+          "type": "object",
+          "properties": {
+            "skill": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "result": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "skill",
+            "result"
+          ],
+          "additionalProperties": false
+        },
+        "discover": {
+          "type": "object",
+          "properties": {
+            "skill": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "result": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "skill",
+            "result"
+          ],
+          "additionalProperties": false
+        },
+        "apply": {
+          "type": "object",
+          "properties": {
+            "skill": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "result": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "skill",
+            "result"
+          ],
+          "additionalProperties": false
+        },
+        "schedule": {
+          "type": "object",
+          "properties": {
+            "skill": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "result": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "skill",
+            "result"
+          ],
+          "additionalProperties": false
+        },
+        "prepare_interview": {
+          "type": "object",
+          "properties": {
+            "skill": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "result": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "skill",
+            "result"
+          ],
+          "additionalProperties": false
+        },
+        "update_knowledge": {
+          "type": "object",
+          "properties": {
+            "skill": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "result": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "skill",
+            "result"
+          ],
+          "additionalProperties": false
+        },
+        "reconcile": {
+          "type": "object",
+          "properties": {
+            "skill": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            },
+            "result": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20000
+            }
+          },
+          "required": [
+            "skill",
+            "result"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "review_inbox",
+        "tidy_inbox",
+        "discover",
+        "apply",
+        "schedule",
+        "prepare_interview",
+        "update_knowledge",
+        "reconcile"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "shared_reads",
+    "workflows"
+  ],
+  "additionalProperties": false
+}

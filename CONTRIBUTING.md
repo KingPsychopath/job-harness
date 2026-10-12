@@ -1,9 +1,11 @@
 # Contributing
 
-Start with [architecture](docs/ARCHITECTURE.md) and the source [AGENTS.md](AGENTS.md). Develop against synthetic workspaces; never copy a real CV, inbox or application history into a fixture, issue, screenshot or test artifact.
+Read [architecture](docs/ARCHITECTURE.md) and [AGENTS.md](AGENTS.md). Develop against synthetic workspaces; real CVs, inboxes, credentials and application history never belong in fixtures or screenshots.
 
-Install the dev extra in a virtual environment. Run `make check` for behavior/docs changes and `make check-package` when resources, install commands or package boundaries change. Runtime dependencies stay minimal. Test independent guarantees: stale/duplicate rejection, no retry after begin, partial batch recovery, concurrent writes, safe bundle import and real MCP/wheel boundaries.
+Use the pinned Rust toolchain. Run `make check`; use `make check-parity` for contract, normalization, coordinator and transfer changes, and `make check-package` for embedded resources or installation changes. Test behavior and recovery, not a copy of the implementation.
 
-Schemas, envelopes and on-disk versions are compatibility contracts. Update relevant docs and changelog with behavior. Generic resources have one canonical location under job_harness/resources. Host configuration and credentials never become package content.
+Keep the pure domain independent of providers. Share engine rules across transports. Add a focused capability instead of arbitrary SQL, shell or expressions. Markdown evidence, operational coordinator state, derived views, typed config and host credentials have distinct owners.
 
-Report local checks, remote CI and live provider evidence separately. A passing fixture does not verify an employer submission. Use clear focused commits. Public release/registry publication and changes to repository visibility require explicit owner authorization.
+Schemas and on-disk versions are compatibility contracts. Preserve unknown historical fields, exact artifact identities and unresolved attempts. Document deliberate semantic changes. Generic resources are canonical under `resources/`.
+
+Use clear commits and report local, CI and live evidence separately. Public publication, visibility changes and paid deployment require owner authorization. [Security](SECURITY.md)

@@ -1,12 +1,15 @@
 # Changelog
 
-## 0.1.0 — private preview
+## 0.2.0 — Rust engine
 
-- Separate installable generic toolkit and private candidate workspaces.
-- CLI, Python and local MCP share the version 2 typed tool contract.
-- Focused discovery, ordered local batches, immutable packets and one-submit recovery.
-- Private workspace/profile bundles with manifests, safe staged import and documented limits.
-- Host-local default workspace selection; credentials and provider sessions remain host-owned.
-- Professional project docs, original architecture graphics and synthetic CI/package checks.
+- Native workspace engine, CLI and embedded generic resources replace the Python runtime.
+- Official SDK MCP server, ACP client and optional bounded local/remote compatible model host.
+- Rebuildable relational SQLite search and source relationships.
+- Read-only loopback dashboard and evidence-linked Typst CV preparation/build.
+- Existing schema-1 journal, packet hashes and full workspace transfer compatibility retained.
+- Explicit recovery guidance, profile transfer protection and expanded safety/parity tests.
+- Native install and private release artifacts, modular capability source and separate maintainer guidance.
 
-This version identifies the private preview source/package; no public registry release is claimed.
+## 0.1.0 — Workspace foundation
+
+Generic career coordination, typed contracts, ordered batches, exact submission packets, perpetual uncertainty guards, private bundles and focused operational skills.

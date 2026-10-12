@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "scope": "Six fictional cases frozen before the Kev trial; feasibility checks only, not a hiring benchmark.",
+  "cases": [
+    {
+      "id": "receipt",
+      "text": "We received your application. No reply is needed.",
+      "expected_label": "receipt",
+      "expected_needs_reply": false
+    },
+    {
+      "id": "rejection",
+      "text": "Unfortunately we will not progress your application. No action is needed.",
+      "expected_label": "rejection",
+      "expected_needs_reply": false
+    },
+    {
+      "id": "scheduling",
+      "text": "Please reply with your availability for an interview this week.",
+      "expected_label": "scheduling",
+      "expected_needs_reply": true
+    },
+    {
+      "id": "assessment",
+      "text": "Please complete the hiring assessment by Friday.",
+      "expected_label": "assessment",
+      "expected_needs_reply": true
+    },
+    {
+      "id": "mixed_receipt_request",
+      "text": "We received your application. Please reply with interview availability.",
+      "expected_label": "scheduling",
+      "expected_needs_reply": true
+    },
+    {
+      "id": "missing_content",
+      "text": "Only the subject Application update is visible. The message body is unavailable.",
+      "expected_label": "other",
+      "expected_needs_reply": null
+    }
+  ],
+  "questions": {
+    "label": {
+      "type": "choice",
+      "instructions": "Select the requested action when present; otherwise classify the outcome.",
+      "criteria": {
+        "receipt": "Only acknowledges an application; no action requested.",
+        "scheduling": "Requests interview availability or choosing a time.",
+        "rejection": "Ends hiring without requested action.",
+        "assessment": "Requests a hiring assessment.",
+        "other": "Other or unavailable hiring message."
+      }
+    },
+    "needs_reply": {
+      "type": "nullable_boolean",
+      "condition": "The visible message explicitly asks the candidate to reply or take an action."
+    },
+    "action": {
+      "type": "boolean",
+      "condition": "The visible message explicitly asks the candidate to reply or take an action."
+    },
+    "urgency": {
+      "type": "choice",
+      "instructions": "Choose the review priority.",
+      "criteria": {
+        "normal": "Informational update with no requested action.",
+        "review": "Requests action without an immediate deadline.",
+        "urgent": "Action required today or within twenty-four hours."
+      }
+    },
+    "priority": {
+      "type": "score",
+      "instructions": "Rate time sensitivity.",
+      "rubric": [
+        "No requested action.",
+        "Action requested this week.",
+        "Action required today."
+      ]
+    }
+  }
+}

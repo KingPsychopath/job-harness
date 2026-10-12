@@ -1,0 +1,41 @@
+[workspace]
+members = ["crates/harness-domain", "crates/harness-core", "crates/harness-protocol", "crates/harness-cli"]
+resolver = "3"
+
+[workspace.package]
+version = "0.2.0"
+edition = "2024"
+rust-version = "1.88"
+license = "MIT"
+authors = ["Machineyearn"]
+repository = "https://github.com/KingPsychopath/job-harness"
+publish = false
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order", "float_roundtrip"] }
+thiserror = "2"
+chrono = { version = "0.4", default-features = false, features = ["serde", "std"] }
+chrono-tz = "0.10"
+regex = "1"
+url = "2"
+uuid = { version = "1", features = ["v4", "serde"] }
+sha2 = "0.10"
+hex = "0.4"
+fs2 = "0.4"
+libc = "0.2"
+tempfile = "3"
+walkdir = "2"
+unicode-normalization = "0.1"
+unicode-casefold = "0.2"
+zip = { version = "4", default-features = false, features = ["deflate"] }
+rusqlite = { version = "0.38", features = ["bundled"] }
+jsonschema = { version = "0.46", default-features = false }
+job-harness-domain = { path = "crates/harness-domain" }
+job-harness-core = { path = "crates/harness-core" }
+job-harness-protocol = { path = "crates/harness-protocol" }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true

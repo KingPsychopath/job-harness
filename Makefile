@@ -1,23 +1,29 @@
 PYTHON ?= python3
-.PHONY: check test check-mcp check-package assets build
+.PHONY: check test check-parity check-package assets build demo
 
 test:
-	$(PYTHON) -m unittest discover -s tests -p 'test_*.py'
+	cargo test --workspace --locked
 
-check-mcp:
-	$(PYTHON) scripts/verify_job_harness_mcp.py
-
-check: test check-mcp
-	$(PYTHON) -m ruff check job_harness tests scripts
+check: test
+	cargo fmt --all -- --check
+	cargo clippy --workspace --all-targets --locked -- -D warnings
 	$(PYTHON) scripts/check_repository.py
+	$(PYTHON) scripts/generate_contracts.py --check
+	PYTHONPATH=providers/local $(PYTHON) -m unittest discover -s providers/local/tests -v
+
+check-parity:
+	cargo build --locked
+	$(PYTHON) scripts/check_parity.py
 
 build:
-	$(PYTHON) -c "import shutil; shutil.rmtree('dist', ignore_errors=True)"
-	$(PYTHON) -m build
+	cargo build --release --locked
 
 check-package: build
-	$(PYTHON) scripts/check_dist.py
-	$(PYTHON) scripts/verify_package.py
+	$(PYTHON) scripts/verify_native.py --binary target/release/job-harness
 
 assets:
 	$(PYTHON) scripts/render_assets.py
+
+demo:
+	cargo build --locked
+	JOB_HARNESS_BINARY="$$(pwd)/target/debug/job-harness" ./scripts/demo.sh

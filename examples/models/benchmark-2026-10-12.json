@@ -1,0 +1,206 @@
+{
+  "measurement_date": "2026-10-12",
+  "scope": "Real native inference via HTTP on fictional selected inputs; no candidate workspace or audio. Retrieval timing is embedding generation for32passages, not full workspace indexing.",
+  "hardware": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "logical_cpus": 18
+  },
+  "provider": {
+    "endpoint": "http://127.0.0.1:56310/v1",
+    "models": {
+      "embeddinggemma2-text": "9be6e8b90982095dc05c2bd162e4b954ee4dbac7",
+      "laya-s256": "gcs-1791231584156797"
+    },
+    "metadata": {
+      "ok": true,
+      "load_ms": {
+        "embeddinggemma2-text": 201.797,
+        "laya-s256": 1268.058
+      },
+      "worker_peak_rss_bytes": 1981415424,
+      "sdk_versions": {
+        "litert-lm-api": "0.18.0",
+        "mediapipe": "1.1.0",
+        "tokenizers": "0.23.3"
+      },
+      "total_startup_ms": 1531.292,
+      "cpu_control": {
+        "requested_threads": 2,
+        "embedding_sdk_threads": 2,
+        "laya_thread_control": "environment hints; Python DecisionMaker exposes no native thread-count field",
+        "worker_cpu_affinity": "unavailable on this platform"
+      }
+    }
+  },
+  "embedding_batch": {
+    "passages": 32,
+    "dimensions": 768,
+    "http_elapsed_ms": 1100.141,
+    "native_metrics": {
+      "elapsed_ms": 1068.596,
+      "worker_peak_rss_bytes": 2013446144
+    }
+  },
+  "warm_query_http_ms": [
+    35.691,
+    32.624,
+    32.473,
+    32.517,
+    32.307
+  ],
+  "retrieval": {
+    "toy_cosine_scores": [
+      0.863103487137299,
+      0.6472489328796853,
+      0.5841799049532127,
+      0.6458031522242287
+    ],
+    "expected_passage_rank": 1,
+    "quality_claim": "one synthetic ranking smoke, not a relevance benchmark"
+  },
+  "typed_decisions": {
+    "http_elapsed_ms": 247.066,
+    "result": {
+      "model": "laya-s256",
+      "results": {
+        "intent": {
+          "type": "choice",
+          "value": "meeting",
+          "probabilities": {
+            "test": 0.06124800816178322,
+            "meeting": 0.9387519955635071
+          },
+          "confidence": 0.6676207184791565
+        },
+        "action": {
+          "type": "boolean",
+          "value": false,
+          "probability_true": 0.34614622592926025,
+          "confidence": 0.3077075481414795,
+          "abstained": false
+        },
+        "reply": {
+          "type": "nullable_boolean",
+          "value": null,
+          "probability_true": 0.2800843119621277,
+          "confidence": 0.43983137607574463,
+          "abstained": true
+        },
+        "priority": {
+          "type": "score",
+          "value": 0.9560389518737793,
+          "level": "1",
+          "probabilities": [
+            0.322411447763443,
+            0.39913812279701233,
+            0.2784504294395447
+          ],
+          "confidence": 0.010081388056278229,
+          "scale": {
+            "minimum": 0,
+            "maximum": 2
+          }
+        }
+      },
+      "action": "suggestion_only",
+      "canonical_changes": false,
+      "metrics": {
+        "elapsed_ms": 245.917,
+        "worker_peak_rss_bytes": 2016821248
+      }
+    }
+  },
+  "mixed_request_triage": [
+    {
+      "elapsed_ms": 190.819,
+      "decision": {
+        "label": "receipt",
+        "needs_reply": true,
+        "urgency": "review",
+        "uncertain": true,
+        "rationale": "Typed model proposal; inspect the source before acting.",
+        "probabilities": {
+          "label": {
+            "type": "choice",
+            "value": "receipt",
+            "probabilities": {
+              "scheduling": 0.009537487290799618,
+              "other": 0.0026426389813423157,
+              "rejection": 0.002709123305976391,
+              "receipt": 0.9838701486587524,
+              "assessment": 0.0012406061869114637
+            },
+            "confidence": 0.9376332759857178
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.75481778383255,
+            "confidence": 0.5096355676651001,
+            "abstained": true
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "review",
+            "probabilities": {
+              "normal": 0.32658645510673523,
+              "urgent": 0.32370349764823914,
+              "review": 0.34971001744270325
+            },
+            "confidence": 0.0005507734604179859
+          }
+        },
+        "request_guard": true
+      }
+    },
+    {
+      "elapsed_ms": 189.184,
+      "decision": {
+        "label": "scheduling",
+        "needs_reply": true,
+        "urgency": "normal",
+        "uncertain": true,
+        "rationale": "Typed model proposal; inspect the source before acting.",
+        "probabilities": {
+          "label": {
+            "type": "choice",
+            "value": "scheduling",
+            "probabilities": {
+              "rejection": 0.188054621219635,
+              "scheduling": 0.5990602374076843,
+              "other": 0.07122011482715607,
+              "assessment": 0.030160095542669296,
+              "receipt": 0.11150491237640381
+            },
+            "confidence": 0.2795220911502838
+          },
+          "needs_reply": {
+            "type": "nullable_boolean",
+            "value": null,
+            "probability_true": 0.5340635776519775,
+            "confidence": 0.06812715530395508,
+            "abstained": true
+          },
+          "urgency": {
+            "type": "choice",
+            "value": "normal",
+            "probabilities": {
+              "review": 0.13921338319778442,
+              "normal": 0.567951500415802,
+              "urgent": 0.2928351163864136
+            },
+            "confidence": 0.13032205402851105
+          }
+        },
+        "request_guard": true
+      }
+    }
+  ],
+  "generative_request_rejected": {
+    "error": {
+      "code": "unsupported_generation",
+      "message": "unsupported_generation: no free-form generation, streaming or tool calls"
+    }
+  }
+}

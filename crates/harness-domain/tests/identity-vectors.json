@@ -1,0 +1,662 @@
+{
+  "urls": [
+    {
+      "input": "http://example.com",
+      "output": "http://example.com"
+    },
+    {
+      "input": "https://EXAMPLE.com:443",
+      "output": "https://example.com:443"
+    },
+    {
+      "input": "http://EXAMPLE.com:80",
+      "output": "http://example.com:80"
+    },
+    {
+      "input": "https://[2001:db8::1]:443",
+      "output": "https://[2001:db8::1]:443"
+    },
+    {
+      "input": "http://bücher.example?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "http://bücher.example?a=1"
+    },
+    {
+      "input": "https://example.com.?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "https://example.com.?a=1"
+    },
+    {
+      "input": "http://example.com/?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "http://example.com?a=1"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "https://example.com:443?a=1"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/?blank=&a=~+hello&b=two%20words",
+      "output": "http://example.com:80?a=~+hello&b=two+words"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/?blank=&a=~+hello&b=two%20words",
+      "output": "https://[2001:db8::1]:443?a=~+hello&b=two+words"
+    },
+    {
+      "input": "http://bücher.example/?blank=&a=~+hello&b=two%20words",
+      "output": "http://bücher.example?a=~+hello&b=two+words"
+    },
+    {
+      "input": "https://example.com./?blank=&a=~+hello&b=two%20words",
+      "output": "https://example.com.?a=~+hello&b=two+words"
+    },
+    {
+      "input": "http://example.com/jobs/123///?z=%2F&a=2&a=1",
+      "output": "http://example.com/jobs/123?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/jobs/123///?z=%2F&a=2&a=1",
+      "output": "https://example.com:443/jobs/123?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/jobs/123///?z=%2F&a=2&a=1",
+      "output": "http://example.com:80/jobs/123?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/jobs/123///?z=%2F&a=2&a=1",
+      "output": "https://[2001:db8::1]:443/jobs/123?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "http://bücher.example/jobs/123///?=&keep=1#fragment",
+      "output": "http://bücher.example/jobs/123?keep=1"
+    },
+    {
+      "input": "https://example.com./jobs/123///?=&keep=1#fragment",
+      "output": "https://example.com./jobs/123?keep=1"
+    },
+    {
+      "input": "http://example.com/a%2Fb/%7Euser?=&keep=1#fragment",
+      "output": "http://example.com/a%2Fb/%7Euser?keep=1"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/a%2Fb/%7Euser?=&keep=1#fragment",
+      "output": "https://example.com:443/a%2Fb/%7Euser?keep=1"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/a%2Fb/%7Euser?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "http://example.com:80/a%2Fb/%7Euser?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/a%2Fb/%7Euser?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "https://[2001:db8::1]:443/a%2Fb/%7Euser?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "http://bücher.example/a%2Fb/%7Euser?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "http://bücher.example/a%2Fb/%7Euser?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "https://example.com./a%2Fb/%7Euser?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "https://example.com./a%2Fb/%7Euser?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "http://example.com/café",
+      "output": "http://example.com/café"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/café",
+      "output": "https://example.com:443/café"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/café",
+      "output": "http://example.com:80/café"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/café",
+      "output": "https://[2001:db8::1]:443/café"
+    },
+    {
+      "input": "http://bücher.example/café?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "http://bücher.example/café?a=1"
+    },
+    {
+      "input": "https://example.com./café?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "https://example.com./café?a=1"
+    },
+    {
+      "input": "http://example.com/jobs/(engineer)?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "http://example.com/jobs/(engineer)?a=1"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/jobs/(engineer)?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "https://example.com:443/jobs/(engineer)?a=1"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/jobs/(engineer)?blank=&a=~+hello&b=two%20words",
+      "output": "http://example.com:80/jobs/(engineer)?a=~+hello&b=two+words"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/jobs/(engineer)?blank=&a=~+hello&b=two%20words",
+      "output": "https://[2001:db8::1]:443/jobs/(engineer)?a=~+hello&b=two+words"
+    },
+    {
+      "input": "http://bücher.example/jobs/(engineer)?blank=&a=~+hello&b=two%20words",
+      "output": "http://bücher.example/jobs/(engineer)?a=~+hello&b=two+words"
+    },
+    {
+      "input": "https://example.com./jobs/(engineer)?blank=&a=~+hello&b=two%20words",
+      "output": "https://example.com./jobs/(engineer)?a=~+hello&b=two+words"
+    },
+    {
+      "input": "http://example.com?z=%2F&a=2&a=1",
+      "output": "http://example.com?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "https://EXAMPLE.com:443?z=%2F&a=2&a=1",
+      "output": "https://example.com:443?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "http://EXAMPLE.com:80?z=%2F&a=2&a=1",
+      "output": "http://example.com:80?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "https://[2001:db8::1]:443?z=%2F&a=2&a=1",
+      "output": "https://[2001:db8::1]:443?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "http://bücher.example?=&keep=1#fragment",
+      "output": "http://bücher.example?keep=1"
+    },
+    {
+      "input": "https://example.com.?=&keep=1#fragment",
+      "output": "https://example.com.?keep=1"
+    },
+    {
+      "input": "http://example.com/?=&keep=1#fragment",
+      "output": "http://example.com?keep=1"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/?=&keep=1#fragment",
+      "output": "https://example.com:443?keep=1"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "http://example.com:80?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "https://[2001:db8::1]:443?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "http://bücher.example/?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "http://bücher.example?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "https://example.com./?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "https://example.com.?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "http://example.com/jobs/123///",
+      "output": "http://example.com/jobs/123"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/jobs/123///",
+      "output": "https://example.com:443/jobs/123"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/jobs/123///",
+      "output": "http://example.com:80/jobs/123"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/jobs/123///",
+      "output": "https://[2001:db8::1]:443/jobs/123"
+    },
+    {
+      "input": "http://bücher.example/jobs/123///?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "http://bücher.example/jobs/123?a=1"
+    },
+    {
+      "input": "https://example.com./jobs/123///?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "https://example.com./jobs/123?a=1"
+    },
+    {
+      "input": "http://example.com/a%2Fb/%7Euser?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "http://example.com/a%2Fb/%7Euser?a=1"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/a%2Fb/%7Euser?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "https://example.com:443/a%2Fb/%7Euser?a=1"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/a%2Fb/%7Euser?blank=&a=~+hello&b=two%20words",
+      "output": "http://example.com:80/a%2Fb/%7Euser?a=~+hello&b=two+words"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/a%2Fb/%7Euser?blank=&a=~+hello&b=two%20words",
+      "output": "https://[2001:db8::1]:443/a%2Fb/%7Euser?a=~+hello&b=two+words"
+    },
+    {
+      "input": "http://bücher.example/a%2Fb/%7Euser?blank=&a=~+hello&b=two%20words",
+      "output": "http://bücher.example/a%2Fb/%7Euser?a=~+hello&b=two+words"
+    },
+    {
+      "input": "https://example.com./a%2Fb/%7Euser?blank=&a=~+hello&b=two%20words",
+      "output": "https://example.com./a%2Fb/%7Euser?a=~+hello&b=two+words"
+    },
+    {
+      "input": "http://example.com/café?z=%2F&a=2&a=1",
+      "output": "http://example.com/café?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/café?z=%2F&a=2&a=1",
+      "output": "https://example.com:443/café?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/café?z=%2F&a=2&a=1",
+      "output": "http://example.com:80/café?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/café?z=%2F&a=2&a=1",
+      "output": "https://[2001:db8::1]:443/café?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "http://bücher.example/café?=&keep=1#fragment",
+      "output": "http://bücher.example/café?keep=1"
+    },
+    {
+      "input": "https://example.com./café?=&keep=1#fragment",
+      "output": "https://example.com./café?keep=1"
+    },
+    {
+      "input": "http://example.com/jobs/(engineer)?=&keep=1#fragment",
+      "output": "http://example.com/jobs/(engineer)?keep=1"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/jobs/(engineer)?=&keep=1#fragment",
+      "output": "https://example.com:443/jobs/(engineer)?keep=1"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/jobs/(engineer)?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "http://example.com:80/jobs/(engineer)?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/jobs/(engineer)?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "https://[2001:db8::1]:443/jobs/(engineer)?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "http://bücher.example/jobs/(engineer)?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "http://bücher.example/jobs/(engineer)?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "https://example.com./jobs/(engineer)?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "https://example.com./jobs/(engineer)?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "http://example.com",
+      "output": "http://example.com"
+    },
+    {
+      "input": "https://EXAMPLE.com:443",
+      "output": "https://example.com:443"
+    },
+    {
+      "input": "http://EXAMPLE.com:80",
+      "output": "http://example.com:80"
+    },
+    {
+      "input": "https://[2001:db8::1]:443",
+      "output": "https://[2001:db8::1]:443"
+    },
+    {
+      "input": "http://bücher.example?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "http://bücher.example?a=1"
+    },
+    {
+      "input": "https://example.com.?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "https://example.com.?a=1"
+    },
+    {
+      "input": "http://example.com/?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "http://example.com?a=1"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "https://example.com:443?a=1"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/?blank=&a=~+hello&b=two%20words",
+      "output": "http://example.com:80?a=~+hello&b=two+words"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/?blank=&a=~+hello&b=two%20words",
+      "output": "https://[2001:db8::1]:443?a=~+hello&b=two+words"
+    },
+    {
+      "input": "http://bücher.example/?blank=&a=~+hello&b=two%20words",
+      "output": "http://bücher.example?a=~+hello&b=two+words"
+    },
+    {
+      "input": "https://example.com./?blank=&a=~+hello&b=two%20words",
+      "output": "https://example.com.?a=~+hello&b=two+words"
+    },
+    {
+      "input": "http://example.com/jobs/123///?z=%2F&a=2&a=1",
+      "output": "http://example.com/jobs/123?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/jobs/123///?z=%2F&a=2&a=1",
+      "output": "https://example.com:443/jobs/123?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/jobs/123///?z=%2F&a=2&a=1",
+      "output": "http://example.com:80/jobs/123?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/jobs/123///?z=%2F&a=2&a=1",
+      "output": "https://[2001:db8::1]:443/jobs/123?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "http://bücher.example/jobs/123///?=&keep=1#fragment",
+      "output": "http://bücher.example/jobs/123?keep=1"
+    },
+    {
+      "input": "https://example.com./jobs/123///?=&keep=1#fragment",
+      "output": "https://example.com./jobs/123?keep=1"
+    },
+    {
+      "input": "http://example.com/a%2Fb/%7Euser?=&keep=1#fragment",
+      "output": "http://example.com/a%2Fb/%7Euser?keep=1"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/a%2Fb/%7Euser?=&keep=1#fragment",
+      "output": "https://example.com:443/a%2Fb/%7Euser?keep=1"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/a%2Fb/%7Euser?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "http://example.com:80/a%2Fb/%7Euser?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/a%2Fb/%7Euser?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "https://[2001:db8::1]:443/a%2Fb/%7Euser?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "http://bücher.example/a%2Fb/%7Euser?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "http://bücher.example/a%2Fb/%7Euser?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "https://example.com./a%2Fb/%7Euser?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "https://example.com./a%2Fb/%7Euser?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "http://example.com/café",
+      "output": "http://example.com/café"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/café",
+      "output": "https://example.com:443/café"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/café",
+      "output": "http://example.com:80/café"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/café",
+      "output": "https://[2001:db8::1]:443/café"
+    },
+    {
+      "input": "http://bücher.example/café?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "http://bücher.example/café?a=1"
+    },
+    {
+      "input": "https://example.com./café?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "https://example.com./café?a=1"
+    },
+    {
+      "input": "http://example.com/jobs/(engineer)?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "http://example.com/jobs/(engineer)?a=1"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/jobs/(engineer)?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "https://example.com:443/jobs/(engineer)?a=1"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/jobs/(engineer)?blank=&a=~+hello&b=two%20words",
+      "output": "http://example.com:80/jobs/(engineer)?a=~+hello&b=two+words"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/jobs/(engineer)?blank=&a=~+hello&b=two%20words",
+      "output": "https://[2001:db8::1]:443/jobs/(engineer)?a=~+hello&b=two+words"
+    },
+    {
+      "input": "http://bücher.example/jobs/(engineer)?blank=&a=~+hello&b=two%20words",
+      "output": "http://bücher.example/jobs/(engineer)?a=~+hello&b=two+words"
+    },
+    {
+      "input": "https://example.com./jobs/(engineer)?blank=&a=~+hello&b=two%20words",
+      "output": "https://example.com./jobs/(engineer)?a=~+hello&b=two+words"
+    },
+    {
+      "input": "http://example.com?z=%2F&a=2&a=1",
+      "output": "http://example.com?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "https://EXAMPLE.com:443?z=%2F&a=2&a=1",
+      "output": "https://example.com:443?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "http://EXAMPLE.com:80?z=%2F&a=2&a=1",
+      "output": "http://example.com:80?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "https://[2001:db8::1]:443?z=%2F&a=2&a=1",
+      "output": "https://[2001:db8::1]:443?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "http://bücher.example?=&keep=1#fragment",
+      "output": "http://bücher.example?keep=1"
+    },
+    {
+      "input": "https://example.com.?=&keep=1#fragment",
+      "output": "https://example.com.?keep=1"
+    },
+    {
+      "input": "http://example.com/?=&keep=1#fragment",
+      "output": "http://example.com?keep=1"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/?=&keep=1#fragment",
+      "output": "https://example.com:443?keep=1"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "http://example.com:80?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "https://[2001:db8::1]:443?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "http://bücher.example/?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "http://bücher.example?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "https://example.com./?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "https://example.com.?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "http://example.com/jobs/123///",
+      "output": "http://example.com/jobs/123"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/jobs/123///",
+      "output": "https://example.com:443/jobs/123"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/jobs/123///",
+      "output": "http://example.com:80/jobs/123"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/jobs/123///",
+      "output": "https://[2001:db8::1]:443/jobs/123"
+    },
+    {
+      "input": "http://bücher.example/jobs/123///?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "http://bücher.example/jobs/123?a=1"
+    },
+    {
+      "input": "https://example.com./jobs/123///?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "https://example.com./jobs/123?a=1"
+    },
+    {
+      "input": "http://example.com/a%2Fb/%7Euser?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "http://example.com/a%2Fb/%7Euser?a=1"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/a%2Fb/%7Euser?utm_source=ignored&source=board&ref=x&gh_src=y&a=1",
+      "output": "https://example.com:443/a%2Fb/%7Euser?a=1"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/a%2Fb/%7Euser?blank=&a=~+hello&b=two%20words",
+      "output": "http://example.com:80/a%2Fb/%7Euser?a=~+hello&b=two+words"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/a%2Fb/%7Euser?blank=&a=~+hello&b=two%20words",
+      "output": "https://[2001:db8::1]:443/a%2Fb/%7Euser?a=~+hello&b=two+words"
+    },
+    {
+      "input": "http://bücher.example/a%2Fb/%7Euser?blank=&a=~+hello&b=two%20words",
+      "output": "http://bücher.example/a%2Fb/%7Euser?a=~+hello&b=two+words"
+    },
+    {
+      "input": "https://example.com./a%2Fb/%7Euser?blank=&a=~+hello&b=two%20words",
+      "output": "https://example.com./a%2Fb/%7Euser?a=~+hello&b=two+words"
+    },
+    {
+      "input": "http://example.com/café?z=%2F&a=2&a=1",
+      "output": "http://example.com/café?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/café?z=%2F&a=2&a=1",
+      "output": "https://example.com:443/café?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/café?z=%2F&a=2&a=1",
+      "output": "http://example.com:80/café?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/café?z=%2F&a=2&a=1",
+      "output": "https://[2001:db8::1]:443/café?a=1&a=2&z=%2F"
+    },
+    {
+      "input": "http://bücher.example/café?=&keep=1#fragment",
+      "output": "http://bücher.example/café?keep=1"
+    },
+    {
+      "input": "https://example.com./café?=&keep=1#fragment",
+      "output": "https://example.com./café?keep=1"
+    },
+    {
+      "input": "http://example.com/jobs/(engineer)?=&keep=1#fragment",
+      "output": "http://example.com/jobs/(engineer)?keep=1"
+    },
+    {
+      "input": "https://EXAMPLE.com:443/jobs/(engineer)?=&keep=1#fragment",
+      "output": "https://example.com:443/jobs/(engineer)?keep=1"
+    },
+    {
+      "input": "http://EXAMPLE.com:80/jobs/(engineer)?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "http://example.com:80/jobs/(engineer)?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "https://[2001:db8::1]:443/jobs/(engineer)?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "https://[2001:db8::1]:443/jobs/(engineer)?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "http://bücher.example/jobs/(engineer)?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "http://bücher.example/jobs/(engineer)?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "https://example.com./jobs/(engineer)?UTM_source=x&b=%C2%A3%F0%9F%98%80",
+      "output": "https://example.com./jobs/(engineer)?b=%C2%A3%F0%9F%98%80"
+    },
+    {
+      "input": "file:///tmp/cv",
+      "invalid": true
+    },
+    {
+      "input": "https://a:b@example.com/job",
+      "invalid": true
+    },
+    {
+      "input": "https://example.com:99999/job",
+      "invalid": true
+    },
+    {
+      "input": "https://example.com:nope/job",
+      "invalid": true
+    },
+    {
+      "input": "https://[badhost]/job",
+      "invalid": true
+    },
+    {
+      "input": "https://",
+      "invalid": true
+    },
+    {
+      "input": "notaurl",
+      "invalid": true
+    }
+  ],
+  "companies": [
+    {
+      "input": "Straße GmbH",
+      "output": "strassegmbh"
+    },
+    {
+      "input": "Strasse GmbH",
+      "output": "strassegmbh"
+    },
+    {
+      "input": "İ",
+      "output": "i"
+    },
+    {
+      "input": "ı",
+      "output": "ı"
+    },
+    {
+      "input": "ＡＢＣ１２３",
+      "output": "ａｂｃ１２３"
+    },
+    {
+      "input": "ﬀ company",
+      "output": "ffcompany"
+    },
+    {
+      "input": "Æ & œ",
+      "output": "æœ"
+    },
+    {
+      "input": "é",
+      "output": "e"
+    },
+    {
+      "input": "é",
+      "output": "é"
+    },
+    {
+      "input": "Company (UK), Ltd",
+      "output": "companyukltd"
+    },
+    {
+      "input": "京東株式会社",
+      "output": "京東株式会社"
+    },
+    {
+      "input": "Σίσυφος",
+      "output": "σίσυφοσ"
+    },
+    {
+      "input": "K-Company",
+      "output": "kcompany"
+    }
+  ]
+}

@@ -1,103 +1,115 @@
 <div align="center">
   <img src="docs/assets/icon.svg" width="72" height="72" alt="Job Harness">
   <h1>Job Harness</h1>
-  <p><strong>Context. Commands. A workspace.</strong><br>Run your job search with any capable agent, without losing your history.</p>
+  <p><strong>Your career workspace. Any capable agent.</strong><br>A native toolkit that keeps context, commands and outcomes together.</p>
   <p><a href="https://github.com/KingPsychopath/job-harness/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/KingPsychopath/job-harness/actions/workflows/ci.yml/badge.svg"></a>
+  <img alt="Rust" src="https://img.shields.io/badge/core-Rust-243444">
   <img alt="Private preview" src="https://img.shields.io/badge/status-private_preview-7959b8">
-  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-287d72"></a>
-  <img alt="Python 3.11 and newer" src="https://img.shields.io/badge/Python-3.11%2B-243444"></p>
+  <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/license-MIT-287d72"></a></p>
 </div>
 
-![The reusable harness and a separate private workspace, connected to the agent and host.](docs/assets/hero.svg)
+![A reusable engine and a separate private career workspace.](docs/assets/hero.svg)
 
-Job Harness gives an agent dependable tools for a private career workspace: find existing applications, reuse sourced answers, organize inbox work, prepare applications and preserve verified outcomes. CLI, MCP and Python clients share one typed API. Your host supplies the model, browser, mail and calendar connectors.
+Job Harness gives humans and agents dependable tools for a private job search. Reuse sourced answers, check applications, prepare exact CV packets, reconcile email outcomes and recover interrupted work. One Rust engine serves the CLI, MCP, ACP handoffs and a small local dashboard.
 
-- **Your workspace is the durable memory.** Facts, approved answers, CVs, vacancies and receipts survive agent changes and interrupted runs.
-- **Tools do the predictable work.** Compact results, schema discovery, ordered batches and result references reduce repeated coordination.
-- **History protects the next action.** Duplicate checks and a separate begin/submit/finish boundary prevent an interrupted application from silently being retried.
-- **Personal data stays separate.** The reusable package contains no candidate profile. Private bundles move your workspace between installations.
+- **Keep your history across agents.** Your workspace owns facts, answers, interviews, CVs and receipts.
+- **Batch the predictable steps.** Discover focused schemas, chain local commands with result references, and handle partial failure explicitly.
+- **Keep uncertainty visible.** A begun application stays blocked until its actual outcome is reconciled. Restarting a model never grants another submit.
+- **Choose your host.** Bring an external agent, a compatible remote model API, or a local model. Browser, mail and calendar access remain host-owned.
+- **Take your data with you.** Versioned private bundles preserve exact artifacts and unresolved attempts. The reusable repository contains no candidate profile.
 
-This is a **private preview**, prepared for later open-source distribution. No public PyPI, npm, Homebrew or desktop-app release exists. The local engine needs no model key, cloud service or VM.
+**Private preview, Windows, macOS and Linux.** No public registry release or hosted service is required. The core does not require a model key, VM or network connection. Optional model sessions and external connectors need their own access.
 
-## Get started
+## Start in three commands
 
-Python 3.11+ on macOS or Linux. Authenticate GitHub to clone this private repository:
+After cloning this private repository and installing [Rust](https://rustup.rs):
 
 ```sh
-gh repo clone KingPsychopath/job-harness
-cd job-harness
-python3 -m venv .venv
-.venv/bin/pip install .
-.venv/bin/job-harness --version
+./scripts/install.sh
+job-harness --root "$HOME/Career/workspace" init
+job-harness configure --workspace "$HOME/Career/workspace"
 ```
 
-Create a workspace **outside the code checkout**, add your approved CV and attributed answers, then select it:
+Add your approved PDF and attributed answers in that **separate workspace**. Bootstrap explains what is missing:
 
 ```sh
-.venv/bin/job-harness --root "$HOME/Career/workspace" init
-# Edit the workspace's config/career-ledger.json and approved answer files.
-.venv/bin/job-harness configure --workspace "$HOME/Career/workspace"
-.venv/bin/job-harness call bootstrap <<'JSON'
+job-harness call bootstrap <<'JSON'
 {"operation":"apply","capabilities":[]}
 JSON
 ```
 
-Bootstrap reports missing sources/CV/capabilities; a blank workspace never invents personal facts. `--root` overrides your host-local default. [Install options](docs/INSTALL.md).
+`jh status` gives a compact human view; `jh status --json` returns the same snapshot for agents.
 
-## Connect your agent
+[Installation and onboarding](docs/INSTALL.md) · [Runnable synthetic demo](examples/README.md)
 
-```sh
-.venv/bin/job-harness connect mcp
-.venv/bin/job-harness --root "$HOME/Career/workspace" mcp --tool-profile focused
+Already have a CV? `job-harness source import --input approved-cv.pdf` preserves it as supplied evidence. No CV yet? Paste a rough note with `notes import`. [Capture and review](docs/INTAKE.md) · [Six short playbooks](resources/guides/workflows.md)
+
+## Drive it your way
+
+| Interface | What it does | Example |
+|---|---|---|
+| CLI | Compact JSON commands and pipelines | `job-harness call query_batch --input batch.json` |
+| MCP | Tools for any supporting agent host | `job-harness connect mcp` |
+| ACP client | Launch your external ACP agent with this workspace and MCP | `job-harness acp --agent /path/to/agent --prompt "Review my pipeline"` |
+| Model host | Bounded tool loop for compatible local/remote chat APIs | `job-harness agent run --endpoint http://127.0.0.1:11434/v1 --model MODEL --prompt "Review unfinished work"` |
+| Local dashboard | Read-only overview on loopback | `job-harness gui` |
+| Rust library | Embed the same versioned API | `Engine::open(root)?.call(tool, &arguments)` |
+
+![The local dashboard, shown with fictional applications and explicitly enabled review routes.](docs/assets/dashboard.png)
+
+MCP supplies tools; ACP connects a host to an agent. They are complementary protocols. Remote model keys are selected by **environment variable name**, never stored in workspace configuration or exports. Direct model sessions default to read-only tools; external actions require the host's connectors and current user scope. [Agent and model wiring](docs/AGENTS.md) · [Access boundaries](docs/AUTH.md)
+
+The focused MCP profile advertises 11 tools. `inspect_tools` discovers specialized contracts; `query_batch` and `execute_batch` invoke them with exact references. The full profile exposes the complete catalog. Every engine call returns the same versioned envelope:
+
+```json
+{"schema_version":2,"ok":true,"data":{},"error":null,"next":[]}
 ```
 
-Use the printed command/args in an MCP client. The focused profile advertises 11 tools; `inspect_tools` discovers specialized schemas, which run through `query_batch` / `execute_batch`. The full profile exposes all 29 tools directly. Hosts using ACP can give the same MCP/CLI to their agent; no agent framework is embedded.
+`next` is guidance. A failed batch reports its committed steps and failing child; it is not rolled back or blindly replayed. [Contracts and working examples](resources/guides/job-harness-contract.md)
 
-A useful first request:
+## Clear homes for code, data and access
 
-```text
-Use Job Harness with my configured private workspace. Bootstrap for the task,
-read its focused skill and relevant facts, and inspect unfinished work first.
-Batch related reads and local updates. Use my saved answers and primary CV,
-check duplicates, and keep actual outcomes separate from proposals. Use the
-host's existing connectors within my request; do not invent missing facts.
-```
+![Domain, workspace engine, adapters, and host, with private data separate.](docs/assets/architecture.svg)
 
-[Agent workflow](docs/AGENTS.md) · [Tool contract](job_harness/resources/guides/job-harness-contract.md) · [Authentication](docs/AUTH.md)
-
-## Move your private workspace
-
-```sh
-.venv/bin/job-harness workspace export --output "$HOME/Career/workspace.jhb"
-.venv/bin/job-harness --root "$HOME/Career/restored" workspace import \
-  --input "$HOME/Career/workspace.jhb"
-```
-
-A full workspace bundle preserves receipts, packets and unresolved attempts. `--kind profile` transfers reusable facts/answers and the primary CV, excluding application history. Imports require a new/empty destination. Bundles are private plaintext ZIPs with a versioned hash manifest; keep them outside Git and encrypt separately before sharing. Git history and host settings are excluded; common credential filenames are filtered, but file contents are not scanned for secrets. [Bundle format and recovery](docs/BUNDLES.md).
-
-## The layers
-
-![Workspace, harness, agent or GUI, and host connectors with credentials outside the workspace.](docs/assets/architecture.svg)
-
-| Layer | Responsibility |
+| Home | Canonical responsibility |
 |---|---|
-| Private workspace | Attributed facts, preferences, CV, application history and exact evidence |
-| Reusable harness | Schemas, retrieval, batches, duplicate guards, coordinator and bundle transfers |
-| Host | Model access, browser/mail/calendar sessions, credentials and action permissions |
-| Agent or GUI | Decisions and presentation using the same API |
+| Reusable source and `resources/` | Domain rules, engine, protocols, generic skills and templates |
+| Workspace `context/` and `applications/` | Sourced evidence, reusable answers, vacancy records, interview notes and outcomes |
+| Workspace `content/`, `output/` and coordinator | Approved CV selection, exact artifacts, runs, attempts and idempotency |
+| Workspace `config/` | Typed settings that select paths and workflows; never career facts |
+| Derived SQLite index | Search, vacancy views and linked-source relationships; safely rebuildable |
+| Host settings and credential store | Selected workspace, model/provider access, connector sessions and action permissions |
 
-A future GUI can call `Harness(root).call(tool, arguments)` and render `data`, `error` and `next`. Hosting it for multiple users needs per-user authorization and a transactional shared coordinator; local filesystem locks are for one host. [Architecture and runtime choices](docs/ARCHITECTURE.md).
+Markdown preserves human-readable attribution and flexible detail. SQLite materializes stable search and relationships. The submission journal remains the one authority for attempt state; the index cannot authorize a retry. This local coordinator supports multiple processes on one host. Multi-host/cloud coordination needs a separately designed transactional authority. [Architecture](docs/ARCHITECTURE.md)
 
-## Develop
+## Backup, restore and CVs
 
 ```sh
-.venv/bin/pip install -e '.[dev]'
-make check PYTHON=.venv/bin/python
-make check-package PYTHON=.venv/bin/python
+job-harness workspace export --output "$HOME/Career/backup.jhb"
+job-harness --root "$HOME/Career/restored" workspace import --input "$HOME/Career/backup.jhb"
+job-harness workspace search "database"
 ```
 
-The tests use synthetic temporary workspaces, including crash recovery, concurrency, duplicate prevention, bundle safety, wheel resources and independent MCP/schema checks. There are no live employer submissions in CI.
+Full bundles retain packets, receipts and unresolved attempts. Profile-only exports are refused while attempts are unresolved. Imports require a new or empty destination. Bundles are **private plaintext ZIPs**, not software artifacts; encrypt separately before sharing. [Format and recovery](docs/BUNDLES.md)
 
-[Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Development](docs/DEVELOPMENT.md) · [Changelog](CHANGELOG.md) · [Roadmap](docs/ROADMAP.md)
+The optional evidence-linked [Typst CV generator](docs/CV.md) has typography/theme knobs, a one-page default and explicit approval/provenance. It never silently replaces your configured primary CV.
 
-MIT for the reusable software. A candidate's private data is their own and is separate from the software distribution.
+Use [selected document templates](docs/DOCUMENTS.md) for cover letters, answers, interview stories, portfolio pages and period reviews. Export Markdown/JSON with cited source identities. `workspace outcomes` shows denominators and pending cases without guessing which platform caused an outcome.
+
+Optional [local model adapters](docs/MODELS.md) supply actual Gemma embeddings and Laya decisions. Exact search remains available without them. Downloads are explicit, revisions are pinned, and published comparisons stay separate from measured local results. General drafting and supplied-file transcription use replaceable compatible endpoints.
+
+![Synthetic one-page CV example; fictional information.](examples/cv/example.png)
+
+## Improve the toolkit
+
+```sh
+make check
+make check-parity
+make check-package
+```
+
+The operational loop uses the tools to handle career work. The development loop tests and improves those tools against synthetic fixtures, protocol checks and the historical compatibility oracle. Neither loop turns coaching or model output into career evidence.
+
+[Contributing](CONTRIBUTING.md) · [Development](docs/DEVELOPMENT.md) · [Independent review](docs/REVIEW.md) · [Security](SECURITY.md) · [Roadmap](docs/ROADMAP.md)
+
+MIT for the reusable software. Personal data belongs to its owner and stays outside the distribution.

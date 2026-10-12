@@ -1,31 +1,60 @@
-# Install and connect
+# Install and onboard
 
-This private preview uses standard Python packaging. No package has been published to PyPI, npm or Homebrew, and no desktop application is claimed.
+The native preview targets Windows, macOS and Linux. Exact-head CI is the platform evidence; optional native model SDK availability is a separate boundary. Public Cargo, npm and Homebrew publication is not configured. Native release archives can be produced without including a personal workspace.
 
-## Source install
+## Source installation
+
+Install Rust from its official distribution, authenticate GitHub for this private repository, then:
 
 ```sh
 gh repo clone KingPsychopath/job-harness
 cd job-harness
-python3 -m venv .venv
-.venv/bin/pip install .
-.venv/bin/job-harness --version
+./scripts/install.sh
+# Or: cargo install --locked --path crates/harness-cli --root "$HOME/.local"
 ```
 
-A Python wheel contains the CLI, local MCP and generic skills/guides. After installing it, commands work outside the source checkout. For a PATH-managed install, `pipx install .` or `uv tool install .` can manage the isolated Python environment. Homebrew can install Python/pipx; a dedicated formula can be added once release artifacts and access rules are stable. An npm launcher could wrap this engine later, but it would add a second runtime/install surface now.
+On Windows PowerShell, use `./scripts/install.ps1` (Rust with the MSVC C build tools), then add `$HOME/.local/bin` to PATH. On macOS/Linux, use the shell installer. Resources and templates are embedded in the binary; it runs outside the checkout without Python or a source-tree working directory. Typst is optional and required only for compiling CVs.
 
-## One-time private workspace setup
+## Your private workspace
 
 ```sh
 job-harness --root "$HOME/Career/workspace" init
 job-harness configure --workspace "$HOME/Career/workspace"
+job-harness call bootstrap <<'JSON'
+{"operation":"reconcile","capabilities":[]}
+JSON
 job-harness connect mcp
 ```
 
-The host-local default lives under `$XDG_CONFIG_HOME/job-harness/settings.json` or `~/.config/job-harness/settings.json`. It holds only the workspace path. `JOB_HARNESS_WORKSPACE` takes precedence, and explicit `--root` takes precedence over both. Root selection is trusted host configuration, not an MCP tool argument. Initialization needs an explicit root; it never silently creates a workspace from a typo.
+Initialization refuses a nonempty destination and creates no personal facts. Add your approved PDF, set relative `primary_cv` and answer-source paths, and choose an IANA timezone in `config/career-ledger.json`. Record facts and preferences with date, attribution, scope and limits. [Onboarding details](../resources/guides/job-harness-onboarding.md)
 
-Add the approved PDF and attributed answers described by [onboarding](../job_harness/resources/guides/job-harness-onboarding.md). The focus profile's 11 tools support discovery and batching; full exposes 29 direct tools. Use the connection's command/args, not a guessed executable. Reload the client after changing an installed package; registration is not execution proof.
+Root precedence: explicit `--root`, then `JOB_HARNESS_WORKSPACE`, then host-local `$XDG_CONFIG_HOME/job-harness/settings.json` (otherwise `~/.config/job-harness/settings.json`). Host settings hold a path; candidate bundles never include them. Use a fixed absolute root in MCP registration.
 
-## Skill discovery
+## Connect and verify
 
-The source `.agents/skills` symlink points to the canonical resources. Optional client installation may link each resource directory into a client's skill directory. MCP clients do not need installation: bootstrap returns a logical skill path and read_record retrieves the bundled source. Keep the same candidate root across chats. [Agent workflow](AGENTS.md).
+Use `connect mcp` output in any MCP client. Focused advertises 11 tools; full advertises the complete catalog. Optional skill installation links `resources/skills/` into your host's skill directory. Clients can retrieve embedded skills with `read_record`, so installation is not required.
+
+Reload a client after changing its server command, then verify bootstrap through that actual connection. Configuration is not proof a previously running process switched versions. ACP and local/remote model commands are described in [agent wiring](AGENTS.md).
+
+## Upgrade or move
+
+Export a full private bundle before upgrading. Keep the old installed binary until recovery and compatibility checks pass. Unknown attempts must survive; never clear the coordinator to fix a migration error. Restore into a new directory and inspect unfinished work before taking external actions.
+
+Use [workspace transfers](BUNDLES.md) for personal data, release archives for software, and the host's secure credential store for access. A GUI consumes the same boundaries.
+
+## Windows PowerShell
+
+```powershell
+gh repo clone KingPsychopath/job-harness
+Set-Location job-harness
+./scripts/install.ps1
+$env:Path = (Join-Path $HOME ".local/bin") + [IO.Path]::PathSeparator + $env:Path
+job-harness --root (Join-Path $HOME "Career/workspace") init
+job-harness configure --workspace (Join-Path $HOME "Career/workspace")
+job-harness status
+job-harness connect mcp
+```
+
+The native Windows release uses `.exe` files in a ZIP; macOS/Linux use native binaries in tar archives. Native release installation needs no Rust or Python. Source builds need the selected platform's C compiler for bundled SQLite/cryptography. Host settings use XDG/HOME where present and APPDATA on Windows otherwise. Use `--input` with UTF-8 JSON files for portable Unicode tool arguments.
+
+The same core/protocol contracts apply across operating systems. The pure domain is also WASM-checkable; browser/mobile embedding needs host storage and connector adapters. Other Rust targets need platform-specific build verification rather than an unsupported universal execution claim.

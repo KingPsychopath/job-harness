@@ -1,0 +1,40 @@
+//! Canonical workflow vocabulary shared by every presentation and adapter.
+pub const STAGES: &[&str] = &[
+    "saved",
+    "prepared",
+    "applied",
+    "introduction",
+    "screening",
+    "technical",
+    "final",
+    "offer",
+    "closed",
+    "needs-review",
+];
+pub const SCHEDULES: &[&str] = &[
+    "unbooked",
+    "proposed",
+    "availability-sent",
+    "booked",
+    "completed",
+    "awaiting-outcome",
+    "handled-unconfirmed",
+];
+pub const TRACKING_KEYS: &[&str] = &[
+    "stage",
+    "checked",
+    "next_action",
+    "status_detail",
+    "schedule_state",
+    "proposed_time",
+    "scheduled_start",
+    "booking_url",
+    "contact",
+    "brief",
+    "record_evidence",
+    "evidence",
+    "company",
+    "posting_id",
+    "vacancy_url",
+    "source",
+];

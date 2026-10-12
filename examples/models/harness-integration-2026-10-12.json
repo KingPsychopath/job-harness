@@ -1,0 +1,165 @@
+{
+  "scope": "Actual Rust CLI against real native provider; temporary fictional workspace; local verification only.",
+  "measurement_date": "2026-10-12",
+  "init": {
+    "elapsed_ms": 53.927,
+    "response": {
+      "schema_version": 2,
+      "ok": true,
+      "data": {
+        "workspace": "<temporary synthetic workspace>",
+        "ledger": "<temporary synthetic workspace>",
+        "configured": false,
+        "next": [
+          "Set timezone and relative primary_cv path in config/career-ledger.json.",
+          "Supply your CV and attributed facts and answers.",
+          "Connect host capabilities and call bootstrap."
+        ]
+      },
+      "error": null,
+      "next": []
+    }
+  },
+  "index": {
+    "elapsed_ms": 171.747,
+    "response": {
+      "schema_version": 2,
+      "ok": true,
+      "data": {
+        "authority": "derived",
+        "model": {
+          "model": "embeddinggemma2-text",
+          "revision": "9be6e8b90982095dc05c2bd162e4b954ee4dbac7",
+          "provider": "464d4aa15bcb5cf7cac7402c9882fedbdef0436b99a4f0e3f27a889efd3792ee",
+          "document_prefix": "title: none | text: ",
+          "query_prefix": "task: search result | query: ",
+          "chunk_lines": 40
+        },
+        "dimensions": 768,
+        "passages": 2,
+        "database": ".harness/semantic.sqlite",
+        "canonical_changes": false,
+        "elapsed_ms": 161,
+        "selected_sources": 2,
+        "network_batches": 1
+      },
+      "error": null,
+      "next": []
+    }
+  },
+  "search": {
+    "elapsed_ms": 66.591,
+    "response": {
+      "schema_version": 2,
+      "ok": true,
+      "data": {
+        "query": "speeding up slow database queries",
+        "model": {
+          "model": "embeddinggemma2-text",
+          "revision": "9be6e8b90982095dc05c2bd162e4b954ee4dbac7",
+          "provider": "464d4aa15bcb5cf7cac7402c9882fedbdef0436b99a4f0e3f27a889efd3792ee",
+          "document_prefix": "title: none | text: ",
+          "query_prefix": "task: search result | query: ",
+          "chunk_lines": 40
+        },
+        "authority": "derived",
+        "matches": [
+          {
+            "path": "context/projects/database.md",
+            "source_sha256": "6ac04a0de0351e464296bdb752a63c85ae43c362c013d1ef992bf782932d013a",
+            "kind": "evidence",
+            "line_start": 1,
+            "line_end": 7,
+            "text": "# Fictional database project\n\nSource: synthetic integration fixture; no real career evidence.\n\nReduced response time in a fictional application by eliminating repeated database reads.\n\nUsed SQL query planning to inspect slow joins and indexes.",
+            "similarity": 0.8128934269413004,
+            "retrieval_score": 0.01639344262295082
+          },
+          {
+            "path": "context/projects/images.md",
+            "source_sha256": "8680d4731111a65ca8a09b0fd03c5fe55b1b12ff240b54985ab0a5fd32f009ef",
+            "kind": "evidence",
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Fictional photo editor\n\nSource: synthetic integration fixture; no real career evidence.\n\nAdded image cropping and colour controls to an accessible photo editing interface.",
+            "similarity": 0.5535940442052651,
+            "retrieval_score": 0.016129032258064516
+          }
+        ],
+        "stale_passages_excluded": 0,
+        "ranking": "reciprocal-rank lexical + cosine",
+        "next": "Similarity finds passages. Read and assess the original; it does not establish a qualification or authorize an action.",
+        "elapsed_ms": 59
+      },
+      "error": null,
+      "next": []
+    }
+  },
+  "triage": {
+    "elapsed_ms": 410.073,
+    "response": {
+      "schema_version": 2,
+      "ok": true,
+      "data": {
+        "decision": {
+          "label": "receipt",
+          "needs_reply": true,
+          "urgency": "review",
+          "uncertain": true,
+          "rationale": "Typed model proposal; inspect the source before acting.",
+          "probabilities": {
+            "label": {
+              "type": "choice",
+              "value": "receipt",
+              "probabilities": {
+                "other": 0.014948800206184387,
+                "scheduling": 0.06845187395811081,
+                "assessment": 0.006988717243075371,
+                "rejection": 0.011410101316869259,
+                "receipt": 0.898200511932373
+              },
+              "confidence": 0.7337238192558289
+            },
+            "needs_reply": {
+              "type": "nullable_boolean",
+              "value": null,
+              "probability_true": 0.7510512471199036,
+              "confidence": 0.5021024942398071,
+              "abstained": true
+            },
+            "urgency": {
+              "type": "choice",
+              "value": "review",
+              "probabilities": {
+                "urgent": 0.18948404490947723,
+                "normal": 0.21636338531970978,
+                "review": 0.594152569770813
+              },
+              "confidence": 0.13005457818508148
+            }
+          },
+          "request_guard": true
+        },
+        "baseline": {
+          "label": "scheduling",
+          "needs_reply": true,
+          "urgency": "review",
+          "method": "bounded-keyword-baseline",
+          "uncertain": false,
+          "action": "suggestion_only",
+          "text_sha256": "7fbdb12820e9cffc933a5b0cf206a31b1487ccdc1267187ea773453b2537a21b",
+          "archive_permitted": false
+        },
+        "method": "optional-model-proposal",
+        "model": {
+          "id": "laya-s256",
+          "revision": "gcs-1791231584156797"
+        },
+        "text_sha256": "7fbdb12820e9cffc933a5b0cf206a31b1487ccdc1267187ea773453b2537a21b",
+        "action": "suggestion_only",
+        "archive_permitted": false
+      },
+      "error": null,
+      "next": []
+    }
+  }
+}

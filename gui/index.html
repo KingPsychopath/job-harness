@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="job-harness-csrf" content="{{CSRF}}" />
+    <meta name="job-harness-mode" content="{{WRITE_MODE}}" />
+    <title>Job Harness · Workspace</title>
+    <link rel="stylesheet" href="/app.css" />
+    <script defer src="/app.js"></script>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <a class="brand" href="/"
+          ><span class="mark">jh</span
+          ><span>Job Harness<small>YOUR CAREER WORKSPACE</small></span></a
+        >
+        <div class="nav-label">WORKSPACE</div>
+        <nav>
+          <button class="nav-item active" data-view="pipeline">
+            ◇ Pipeline</button
+          ><button class="nav-item" data-view="attention">◎ Attention</button
+          ><button class="nav-item" data-view="knowledge">
+            ▤ Notes & evidence</button
+          ><button class="nav-item" data-view="connections">
+            ⌁ Connections
+          </button>
+        </nav>
+        <label class="focus-choice">FOCUS
+          <select id="focus">
+            <option value="searching">Searching</option>
+            <option value="building">Building experience</option>
+            <option value="exploring">Exploring a move</option>
+            <option value="starting">Starting somewhere</option>
+          </select>
+        </label>
+        <button id="playbook" class="refresh">A useful next step</button>
+        <div class="side-note">
+          <span class="online"></span
+          ><span id="mode-label">Local, private</span>
+          <p>Context survives the agent.<br />You stay in control.</p>
+        </div>
+        <div class="loop">
+          <small>THE WORKING LOOP</small>
+          <p>Read → Decide → Prepare<br />Act once → Verify → Learn</p>
+        </div>
+      </aside>
+      <main>
+        <header>
+          <div>
+            <p class="eyebrow">A CLEAR VIEW OF WHAT COMES NEXT</p>
+            <h1 id="page-title">Your pipeline.</h1>
+            <p class="subtitle" id="page-subtitle">
+              One durable history. Every next step in its place.
+            </p>
+          </div>
+          <button id="refresh" class="refresh">↻ Refresh</button>
+        </header>
+        <section class="stats">
+          <article class="stat">
+            <span>Applications</span><strong id="total">—</strong
+            ><small>Canonical records</small>
+          </article>
+          <article class="stat">
+            <span>Open work</span><strong id="runs">—</strong
+            ><small>Tracked runs</small>
+          </article>
+          <article class="stat amber">
+            <span>Verify before retrying</span><strong id="recovery">—</strong
+            ><small>Unfinished attempts</small>
+          </article>
+          <article class="stat green">
+            <span>Workspace status</span><strong id="health">Loading</strong
+            ><small>Local engine</small>
+          </article>
+        </section>
+        <p id="status" role="status" aria-live="polite"></p>
+        <p id="focus-hint" class="metadata">Bring applications and unanswered requests forward.</p>
+        <section id="view" class="pipeline"></section>
+        <footer>
+          Workspace → Engine → Agent / Human → Host connectors<span
+            >Versioned tools. Verified outcomes.</span
+          >
+        </footer>
+      </main>
+    </div>
+    <dialog id="detail">
+      <div class="dialog-top">
+        <h2 id="detail-title">Source</h2>
+        <button id="close-detail" class="refresh">Close</button>
+      </div>
+      <div id="detail-body"></div>
+    </dialog>
+  </body>
+</html>

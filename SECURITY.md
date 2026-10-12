@@ -1,6 +1,6 @@
 # Security and private data
 
-The preview supports local single-owner workspaces on macOS/Linux. It is not a multi-tenant service or a secure arbitrary-code sandbox. Do not expose it as an unauthenticated network API.
+The preview supports local single-owner workspaces on Windows/macOS/Linux. It is not a multi-tenant service or a secure arbitrary-code sandbox. Do not expose it as an unauthenticated network API.
 
 Report vulnerabilities privately through GitHub's private reporting feature when available, or contact the repository owner privately. Do not include candidate facts, tokens, session cookies, bundle files or full mailbox extracts in public issues. A private bundle is plaintext and must be stored or encrypted accordingly.
 

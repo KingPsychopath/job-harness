@@ -1,15 +1,37 @@
-# Architecture review and evidence
+# Independent review and proof
 
-On 12 October 2026, two restricted, tools-disabled Claude Opus 5.5 high reviews assessed the generic architecture and transfer/packaging implementation. Review input contained generic code and selected historical workflow lessons. No candidate facts, credentials or raw production data were supplied. The reviewer inspected pasted source; it did not execute tests or certify the system.
+The Rust migration was reviewed with independent workflow testers and repeated restricted Claude Opus 5.5 high discussions on 12 October 2026. Generic source and fictional scenarios were supplied; candidate facts, credentials and mailbox extracts were not. A review opinion is separate from executed evidence.
 
-The review supported separating durable workspace state, execution lifetime and security isolation. Persistent VMs can serve appropriate workloads; ephemeral isolation helps with untrusted code. Existing authenticated connectors suit this preview. A future compute service must still provide identity, permissions, limits, artifact transfer and verified outcomes. The model/runtime is not the source of career facts.
+## What the reviews changed
 
-Concrete fixes included refusing bundle destinations inside the workspace, retaining configured CV/answer files, validating profile shape, preventing full-import onboarding drift, safe MCP module search, common credential-filename filtering and canonical wheel resources. Redundant source export was removed. Follow-up fixes use filesystem identity for alternate-case paths, refuse final-component symlink swaps and keep distribution checks active under Python optimization. Common filename filters are not a content secret scanner.
+Architecture review supported one canonical local journal and disposable relational/search views, rather than competing Python/Rust writers or a second authority. Golden vectors preserve existing numeric encoding, Unicode identities, normalized URLs, dates, packet hashes and pipeline bytes. The historical Python implementation remains only as a test oracle.
 
-Local verification includes 72 behavioral tests, independent focused/full MCP SDK/schema checks, source/skill/link/SVG checks, exact wheel/sdist resource parity and a fresh wheel-only CLI/MCP/bundle round trip outside the checkout. Original vector graphics were rendered and visually inspected. The existing private workspace was compared separately by hashes; application data was not used as a CI fixture.
+Adversarial source review led to common state validation, fail-closed missing history, superseded replay protection, compiled read-only authority, schema-keyword validation, immediate SQLite refresh transactions, deletion cleanup, recovery ordering, explicit profile history omission and bounded provider/ACP execution. Losing bytes in a journal conflict remain recoverable; a stale success response cannot authorize another action.
 
-CI runs the same checks on Linux/Python 3.11 and macOS/Python 3.14. The exact commit's [CI run](https://github.com/KingPsychopath/job-harness/actions/workflows/ci.yml) is the source for remote evidence. Live job-provider actions, a GUI, public registries, shared cloud coordination and Windows locking are outside this verification.
+Independent forward tests then found five specific defects: an explicit project lost to an unmatched query; conflicting posting identity accepted as exact; old receipts keeping replied invitations actionable; future confirmation dates allowing answer reuse; and empty observations reporting form readiness. All five were fixed and retested through the actual native CLI. Additional counterexamples cover message order, missing request identities, changed sources, renamed uploads, stable context packs and unknown mail/proposal projection.
 
-The retained workflow lessons are ownership of mutable state, bounded batches, focused context retrieval, client-neutral AGENTS.md/skills and constrained tools. Historical cost observations were not remeasured; ledger event counts must not be used as model-round-trip metrics.
+The Windows audit found and corrected directory flushing, native atomic replacement, portable filename/alias validation, APPDATA settings and ACP descendant cleanup through a Job Object. Native Windows CI executes those branches; a local cross-check alone is compile evidence.
 
-The first remote matrix passed on Linux but exposed an exact-string interpreter-path assumption in the macOS wheel check. Launch metadata now preserves the active virtual environment, and verification checks the actual environment and installed module location rather than path spelling. The fresh-wheel check also passed under a separate macOS framework Python locally. Check the latest head for final remote results.
+The model review tightened schema/probability ranges, advertised revisions, interrupted download recovery and native worker isolation. The optional worker uses a minimal fresh environment, isolated imports, temporary cwd, bounded JSON IPC, disabled core dumps and a hard deadline. This is process/crash isolation, not a filesystem/network sandbox.
+
+## Scope decisions challenged with Claude
+
+Requested local adapters were retained and measured rather than deferred. Distinct intake operations remain discoverable behind the focused catalog; a universal proposal framework would add complexity without proven savings. Standing user scope survives normal preparation and source revalidation. Unknown submission outcomes cannot be bypassed by an “ignore unknowns” preference. Missing coordinator history requires evidence-backed recovery, while ordinary source import remains simple.
+
+Models retrieve or suggest; they do not certify qualifications, archive mail or authorize submission. More features are useful only when they remove a real manual step. Published model comparisons remain distinct from a small local trial.
+
+## Verification boundaries
+
+| Evidence | What it establishes |
+|---|---|
+| Rust unit/integration tests | Contracts, state transitions, concurrency, recovery, bundles, indexes, intake, presentation and transport fixtures |
+| Differential oracle | 49 cross-language traces, preserved historical packet/URL/number identities, exact pipeline bytes, transfer in both directions and shared locking |
+| Independent forward CLI journeys | Rough capture → selective review → scoped context; mail/form counterexamples; one-submit interruption; exact artifact/history restoration |
+| Copied native artifact | CLI/MCP/resources and private transfers run outside source with no Python on PATH |
+| Real local model runs | Released Gemma/Laya and optional Kev runtime execution, source-anchored retrieval, typed decisions and scoped latency/memory measurements |
+| Separate private migration check | Protected career files remain unchanged; a real full backup restores exact retained bytes and 218 records |
+| Exact-head GitHub CI | Remote Windows/Linux/macOS verification; inspect the latest [workflow run](https://github.com/KingPsychopath/job-harness/actions/workflows/ci.yml) for its actual result |
+
+Synthetic mail/ATS tests do not establish live provider correctness. Small model probes do not establish classification superiority. Audio transcription has an HTTP contract fixture, not a verified live recorder/model. Shared multi-host coordination, public registries and hosted deployment remain outside this preview's evidence.
+
+Review prompts and raw local test outputs are ignored development artifacts. Durable contracts, meaningful regressions and source links stay in the reusable repository. No private ledger history or model weights belong in a software release.

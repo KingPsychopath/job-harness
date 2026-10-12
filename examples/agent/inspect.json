@@ -1,0 +1,7 @@
+{
+  "steps": [
+    {"id": "workspace", "tool": "bootstrap", "arguments": {"operation": "reconcile"}},
+    {"id": "unfinished", "tool": "reconcile_tracker", "arguments": {}},
+    {"id": "pipeline", "tool": "find_application", "arguments": {"limit": 20}}
+  ]
+}

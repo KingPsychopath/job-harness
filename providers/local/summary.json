@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "required": false,
+  "automatic_downloads": false,
+  "metadata_verified": "2026-10-12",
+  "profiles": [
+    {
+      "id": "embeddinggemma2-text",
+      "status": "local_sdk_verified",
+      "capabilities": [
+        "text_embeddings"
+      ],
+      "download_bytes": 164626432,
+      "working_memory_bytes": null,
+      "hardware": "CPU; LiteRT-LM 0.18.0 wheels support macOS 12 arm64 and Linux x86_64/aarch64. This adapter selects CPU only.",
+      "runtime": "litert_lm.EmbeddingEngine",
+      "revision": "9be6e8b90982095dc05c2bd162e4b954ee4dbac7",
+      "model_card": "https://huggingface.co/litert-community/embeddinggemma-2-text-270m-litert-lm",
+      "license": "apache-2.0",
+      "license_basis": "pinned model repository metadata and card; review its license before downloading",
+      "unknowns": [
+        "RAM and latency depend on device and selected context length; measure locally",
+        "CPU threads explicitly selected through LiteRT-LM; GPU/NPU paths untested"
+      ],
+      "measured": {
+        "scope": "fictional native HTTP fixture; combined worker peak about 1.88 GiB, not a per-model RAM requirement",
+        "report": "examples/models/benchmark-2026-10-12.json"
+      }
+    },
+    {
+      "id": "laya-s256",
+      "status": "local_sdk_verified",
+      "capabilities": [
+        "choice",
+        "boolean",
+        "nullable_boolean",
+        "score",
+        "triage"
+      ],
+      "download_bytes": 678477844,
+      "working_memory_bytes": null,
+      "hardware": "CPU; MediaPipe 1.1.0 wheels support macOS arm64 and Linux glibc 2.28 x86_64/aarch64. No GPU or accelerator required.",
+      "runtime": "mediapipe.tasks.python.decision.decision_maker.DecisionMaker",
+      "revision": "gcs-1791231584156797",
+      "model_card": "https://huggingface.co/litert-community/laya-LiteRT",
+      "license": "apache-2.0",
+      "license_basis": "official guide's linked model card declares Apache-2.0; GCS does not provide separate license metadata",
+      "unknowns": [
+        "Upstream guide's 149M claim differs from linked card's 421M/322M checkpoints; artifact parameter count is unverified",
+        "RAM, latency and native CPU thread count must be measured",
+        "SHA256 verified locally against the pinned GCS generation and MD5"
+      ],
+      "measured": {
+        "scope": "fictional native HTTP fixture; combined worker peak about 1.88 GiB, not a per-model RAM requirement",
+        "report": "examples/models/benchmark-2026-10-12.json"
+      }
+    },
+    {
+      "id": "kev-0.8b",
+      "status": "local_sdk_verified_optional",
+      "capabilities": [
+        "choice",
+        "boolean_probability",
+        "score",
+        "nullable_boolean_via_host_abstention"
+      ],
+      "download_bytes": 1835370519,
+      "working_memory_bytes": null,
+      "hardware": "Apple Silicon macOS, Python3.12, author MLX bf16 backbone with Torch float32 pointer head; no quantized profile verified",
+      "runtime": "author Kev MLX bf16 via pinned kev/checkpoint.py",
+      "component_revisions": {
+        "adapter": "bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+        "base": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68"
+      },
+      "model_card": "https://huggingface.co/jaredpalmer/kev-0.8b",
+      "license": "apache-2.0",
+      "unknowns": [
+        "Published benchmark values are not local measurements",
+        "Task-specific quality, peak memory and latency require approved local evaluation",
+        "No unattended consequential decisions or tool-call routing approval"
+      ],
+      "measured": {
+        "scope": "six fictional short cases and two option orders, local macOS arm64 MLX bf16; feasibility only",
+        "report": "examples/models/kev-0.8b-2026-10-12.json",
+        "gateway_worker_startup_ms": 2794.196,
+        "first_sdk_load_ms": 8685.842,
+        "first_sdk_query_ms": 2618.115,
+        "worker_peak_rss_bytes": 3226746880,
+        "warm_http_median_ms": 26.2445,
+        "fixture_sha256": "b9b1b90236a175c897644f4a68f7bf82b9645fe7050ec29e740a71a4130513e1"
+      }
+    },
+    {
+      "id": "kev-4b",
+      "status": "metadata_only_not_downloaded",
+      "capabilities": [
+        "choice",
+        "boolean_probability",
+        "score",
+        "nullable_boolean_via_host_abstention"
+      ],
+      "download_bytes": 9502461619,
+      "working_memory_bytes": null,
+      "hardware": "Kev author-supported MLX on Apple Silicon; task RAM/latency unmeasured here",
+      "runtime": "author Kev MLX bf16 via pinned kev/checkpoint.py",
+      "component_revisions": {
+        "adapter": "6cfce5c2fa4b4bd64026336ab649c5ca78857d52",
+        "base": "1001bb4d826a52d1f399e183466143f4da7b741b"
+      },
+      "model_card": "https://huggingface.co/jaredpalmer/kev-4b",
+      "license": "apache-2.0",
+      "unknowns": [
+        "Published benchmark values are not local measurements",
+        "Task-specific quality, peak memory and latency require approved local evaluation",
+        "No unattended consequential decisions or tool-call routing approval"
+      ],
+      "measured": null
+    },
+    {
+      "id": "clef-flash",
+      "status": "metadata_only_not_downloaded",
+      "capabilities": [
+        "choice",
+        "boolean_probability",
+        "score",
+        "nullable_boolean_via_host_abstention"
+      ],
+      "download_bytes": 19083367679,
+      "working_memory_bytes": null,
+      "hardware": "9B local compatible inference or separately selected hosted API; not trialled",
+      "runtime": "publisher JointSchemaModel or compatible systemone runtime; 9B model not trialled",
+      "component_revisions": {
+        "complete_model": "8b2e5fd17c09fd49bc2880b805d5323ec7ff4ff3"
+      },
+      "model_card": "https://huggingface.co/Cloudflare/clef-flash",
+      "license": "apache-2.0",
+      "unknowns": [
+        "Published benchmark values are not local measurements",
+        "Task-specific quality, peak memory and latency require approved local evaluation",
+        "No unattended consequential decisions or tool-call routing approval"
+      ],
+      "measured": null
+    }
+  ]
+}

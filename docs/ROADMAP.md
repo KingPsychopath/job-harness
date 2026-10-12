@@ -1,7 +1,9 @@
 # Roadmap
 
-The preview provides the local engine, CLI/MCP, private bundles and package resources. It does not include a GUI, autonomous network connectors, multi-host coordinator, Windows locking or a public package release.
+The private preview includes a native Rust engine, CLI/MCP, ACP client, optional bounded compatible model host, local dashboard with optional named review routes, full/profile transfers, derived SQLite search, source-preserving intake, selected document exports, actual optional local model adapters and evidence-linked Typst CV generation.
 
-A desktop/web GUI can render the same schemas and data/error/next envelope, then bind host credentials and connectors. A hosted edition needs per-user authorization and transactional storage before concurrent remote workers. Provider integrations should return verified observations rather than duplicate the domain coordinator.
+The next product boundary is a richer GUI over the same contracts. A desktop host can provide secure credentials and connector bindings; no provider SDK needs to enter the core. Browser/mail/calendar drivers should return observations with provider identities, leaving submission coordination in one engine.
 
-Validate real workflow completion, retries, model calls, tokens and elapsed cost before optimizing infrastructure. Choose isolation/compute per operation. Public releases, npm/Homebrew distribution and a visibility change are explicit future owner decisions.
+Multi-host operation needs a deliberate transactional coordinator/storage version and per-user authorization. Flexible Markdown evidence can remain alongside relational operational records. Do not assume local file locks synchronize machines or use the search index to authorize actions.
+
+Public Cargo/npm/Homebrew distribution, auto-update, remote hosting and repository visibility changes remain explicit owner decisions. Benchmarks and actual completed workflows should determine future optimization; event counts are not model-round-trip metrics.

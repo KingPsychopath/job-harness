@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools==84.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "job-harness-local"
+version = "0.1.0"
+description = "Optional local EmbeddingGemma 2 retrieval and Laya/Kev typed decisions"
+requires-python = ">=3.11,<3.15"
+dependencies = []
+
+[project.optional-dependencies]
+runtime = ["mediapipe==1.1.0", "litert-lm-api==0.18.0", "tokenizers==0.23.3"]
+
+[project.scripts]
+job-harness-local = "job_harness_local.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["job_harness_local*"]
+
+[tool.setuptools.package-data]
+job_harness_local = ["model_profiles.json"]

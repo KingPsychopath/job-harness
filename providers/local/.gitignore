@@ -1,0 +1,4 @@
+.venv/
+*.task
+*.litertlm
+*.part

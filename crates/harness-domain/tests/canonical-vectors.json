@@ -1,0 +1,2449 @@
+[
+  {
+    "value": {},
+    "encoded": "{}\n",
+    "ascii_pretty": "{}\n",
+    "ascii_compact_sorted": "{}"
+  },
+  {
+    "value": [],
+    "encoded": "[]\n",
+    "ascii_pretty": "[]\n",
+    "ascii_compact_sorted": "[]"
+  },
+  {
+    "value": {
+      "é": "£😀",
+      "𝒜": "  \b\f\n\r\t\u0000",
+      "a": {
+        "z": 1,
+        "a": []
+      }
+    },
+    "encoded": "{\n  \"a\": {\n    \"a\": [],\n    \"z\": 1\n  },\n  \"é\": \"£😀\",\n  \"𝒜\": \"  \\b\\f\\n\\r\\t\\u0000\"\n}\n",
+    "ascii_pretty": "{\n  \"\\u00e9\": \"\\u00a3\\ud83d\\ude00\",\n  \"\\ud835\\udc9c\": \"\\u2028\\u2029\\b\\f\\n\\r\\t\\u0000\",\n  \"a\": {\n    \"z\": 1,\n    \"a\": []\n  }\n}\n",
+    "ascii_compact_sorted": "{\"a\": {\"a\": [], \"z\": 1}, \"\\u00e9\": \"\\u00a3\\ud83d\\ude00\", \"\\ud835\\udc9c\": \"\\u2028\\u2029\\b\\f\\n\\r\\t\\u0000\"}"
+  },
+  {
+    "value": [
+      1.0,
+      1e-07,
+      1e+20,
+      1e+16,
+      1000000000000000.0,
+      0.0001,
+      1e-05,
+      0.001,
+      -0.0,
+      5e-324,
+      1.7976931348623157e+308
+    ],
+    "encoded": "[\n  1.0,\n  1e-07,\n  1e+20,\n  1e+16,\n  1000000000000000.0,\n  0.0001,\n  1e-05,\n  0.001,\n  -0.0,\n  5e-324,\n  1.7976931348623157e+308\n]\n",
+    "ascii_pretty": "[\n  1.0,\n  1e-07,\n  1e+20,\n  1e+16,\n  1000000000000000.0,\n  0.0001,\n  1e-05,\n  0.001,\n  -0.0,\n  5e-324,\n  1.7976931348623157e+308\n]\n",
+    "ascii_compact_sorted": "[1.0, 1e-07, 1e+20, 1e+16, 1000000000000000.0, 0.0001, 1e-05, 0.001, -0.0, 5e-324, 1.7976931348623157e+308]"
+  },
+  {
+    "value": {
+      "name": "prepare_packet",
+      "args": {
+        "idempotency_key": "prépare:packet",
+        "run_id": "synthetic"
+      }
+    },
+    "encoded": "{\n  \"args\": {\n    \"idempotency_key\": \"prépare:packet\",\n    \"run_id\": \"synthetic\"\n  },\n  \"name\": \"prepare_packet\"\n}\n",
+    "ascii_pretty": "{\n  \"name\": \"prepare_packet\",\n  \"args\": {\n    \"idempotency_key\": \"pr\\u00e9pare:packet\",\n    \"run_id\": \"synthetic\"\n  }\n}\n",
+    "ascii_compact_sorted": "{\"args\": {\"idempotency_key\": \"pr\\u00e9pare:packet\", \"run_id\": \"synthetic\"}, \"name\": \"prepare_packet\"}"
+  },
+  {
+    "value": {
+      "number": 1.3276350964359198e+22
+    },
+    "encoded": "{\n  \"number\": 1.3276350964359198e+22\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.3276350964359198e+22\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.3276350964359198e+22}"
+  },
+  {
+    "value": {
+      "number": -4.972861989474056e+23
+    },
+    "encoded": "{\n  \"number\": -4.972861989474056e+23\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.972861989474056e+23\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.972861989474056e+23}"
+  },
+  {
+    "value": {
+      "number": 5.32574132987994e+20
+    },
+    "encoded": "{\n  \"number\": 5.32574132987994e+20\n}\n",
+    "ascii_pretty": "{\n  \"number\": 5.32574132987994e+20\n}\n",
+    "ascii_compact_sorted": "{\"number\": 5.32574132987994e+20}"
+  },
+  {
+    "value": {
+      "number": -2.837783658253005e+109
+    },
+    "encoded": "{\n  \"number\": -2.837783658253005e+109\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.837783658253005e+109\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.837783658253005e+109}"
+  },
+  {
+    "value": {
+      "number": -1.7246061741275252e+154
+    },
+    "encoded": "{\n  \"number\": -1.7246061741275252e+154\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.7246061741275252e+154\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.7246061741275252e+154}"
+  },
+  {
+    "value": {
+      "number": 3.3272096128715633e+159
+    },
+    "encoded": "{\n  \"number\": 3.3272096128715633e+159\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.3272096128715633e+159\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.3272096128715633e+159}"
+  },
+  {
+    "value": {
+      "number": -8.099481767244815e-232
+    },
+    "encoded": "{\n  \"number\": -8.099481767244815e-232\n}\n",
+    "ascii_pretty": "{\n  \"number\": -8.099481767244815e-232\n}\n",
+    "ascii_compact_sorted": "{\"number\": -8.099481767244815e-232}"
+  },
+  {
+    "value": {
+      "number": 1.8369046292795204e+112
+    },
+    "encoded": "{\n  \"number\": 1.8369046292795204e+112\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.8369046292795204e+112\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.8369046292795204e+112}"
+  },
+  {
+    "value": {
+      "number": 1.1637176177064794e-244
+    },
+    "encoded": "{\n  \"number\": 1.1637176177064794e-244\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.1637176177064794e-244\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.1637176177064794e-244}"
+  },
+  {
+    "value": {
+      "number": 3.921017676284058e-142
+    },
+    "encoded": "{\n  \"number\": 3.921017676284058e-142\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.921017676284058e-142\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.921017676284058e-142}"
+  },
+  {
+    "value": {
+      "number": -1.711319954845729e-233
+    },
+    "encoded": "{\n  \"number\": -1.711319954845729e-233\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.711319954845729e-233\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.711319954845729e-233}"
+  },
+  {
+    "value": {
+      "number": -5.582716486206069e-60
+    },
+    "encoded": "{\n  \"number\": -5.582716486206069e-60\n}\n",
+    "ascii_pretty": "{\n  \"number\": -5.582716486206069e-60\n}\n",
+    "ascii_compact_sorted": "{\"number\": -5.582716486206069e-60}"
+  },
+  {
+    "value": {
+      "number": 9.973752429017573e-107
+    },
+    "encoded": "{\n  \"number\": 9.973752429017573e-107\n}\n",
+    "ascii_pretty": "{\n  \"number\": 9.973752429017573e-107\n}\n",
+    "ascii_compact_sorted": "{\"number\": 9.973752429017573e-107}"
+  },
+  {
+    "value": {
+      "number": -3.62529578377724e+192
+    },
+    "encoded": "{\n  \"number\": -3.62529578377724e+192\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.62529578377724e+192\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.62529578377724e+192}"
+  },
+  {
+    "value": {
+      "number": -2.561270190806021e+29
+    },
+    "encoded": "{\n  \"number\": -2.561270190806021e+29\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.561270190806021e+29\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.561270190806021e+29}"
+  },
+  {
+    "value": {
+      "number": -8.215169592830037e+158
+    },
+    "encoded": "{\n  \"number\": -8.215169592830037e+158\n}\n",
+    "ascii_pretty": "{\n  \"number\": -8.215169592830037e+158\n}\n",
+    "ascii_compact_sorted": "{\"number\": -8.215169592830037e+158}"
+  },
+  {
+    "value": {
+      "number": 4.470960817379876e+157
+    },
+    "encoded": "{\n  \"number\": 4.470960817379876e+157\n}\n",
+    "ascii_pretty": "{\n  \"number\": 4.470960817379876e+157\n}\n",
+    "ascii_compact_sorted": "{\"number\": 4.470960817379876e+157}"
+  },
+  {
+    "value": {
+      "number": 1.5130659878129616e-300
+    },
+    "encoded": "{\n  \"number\": 1.5130659878129616e-300\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.5130659878129616e-300\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.5130659878129616e-300}"
+  },
+  {
+    "value": {
+      "number": -1.5170235106118762e-22
+    },
+    "encoded": "{\n  \"number\": -1.5170235106118762e-22\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.5170235106118762e-22\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.5170235106118762e-22}"
+  },
+  {
+    "value": {
+      "number": 7.314140639641799e-183
+    },
+    "encoded": "{\n  \"number\": 7.314140639641799e-183\n}\n",
+    "ascii_pretty": "{\n  \"number\": 7.314140639641799e-183\n}\n",
+    "ascii_compact_sorted": "{\"number\": 7.314140639641799e-183}"
+  },
+  {
+    "value": {
+      "number": 1.5029320951404947e-254
+    },
+    "encoded": "{\n  \"number\": 1.5029320951404947e-254\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.5029320951404947e-254\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.5029320951404947e-254}"
+  },
+  {
+    "value": {
+      "number": -1.4268977748622073e-102
+    },
+    "encoded": "{\n  \"number\": -1.4268977748622073e-102\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.4268977748622073e-102\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.4268977748622073e-102}"
+  },
+  {
+    "value": {
+      "number": 5.340220864175256e-153
+    },
+    "encoded": "{\n  \"number\": 5.340220864175256e-153\n}\n",
+    "ascii_pretty": "{\n  \"number\": 5.340220864175256e-153\n}\n",
+    "ascii_compact_sorted": "{\"number\": 5.340220864175256e-153}"
+  },
+  {
+    "value": {
+      "number": -2.675957103875808e+193
+    },
+    "encoded": "{\n  \"number\": -2.675957103875808e+193\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.675957103875808e+193\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.675957103875808e+193}"
+  },
+  {
+    "value": {
+      "number": 7.297306341383031e+51
+    },
+    "encoded": "{\n  \"number\": 7.297306341383031e+51\n}\n",
+    "ascii_pretty": "{\n  \"number\": 7.297306341383031e+51\n}\n",
+    "ascii_compact_sorted": "{\"number\": 7.297306341383031e+51}"
+  },
+  {
+    "value": {
+      "number": 1.0939893131184914e+223
+    },
+    "encoded": "{\n  \"number\": 1.0939893131184914e+223\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.0939893131184914e+223\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.0939893131184914e+223}"
+  },
+  {
+    "value": {
+      "number": 1.3416046373343451e+280
+    },
+    "encoded": "{\n  \"number\": 1.3416046373343451e+280\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.3416046373343451e+280\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.3416046373343451e+280}"
+  },
+  {
+    "value": {
+      "number": 5.167950262072084e+270
+    },
+    "encoded": "{\n  \"number\": 5.167950262072084e+270\n}\n",
+    "ascii_pretty": "{\n  \"number\": 5.167950262072084e+270\n}\n",
+    "ascii_compact_sorted": "{\"number\": 5.167950262072084e+270}"
+  },
+  {
+    "value": {
+      "number": 2.3829477612874095e-263
+    },
+    "encoded": "{\n  \"number\": 2.3829477612874095e-263\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.3829477612874095e-263\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.3829477612874095e-263}"
+  },
+  {
+    "value": {
+      "number": 1.8093955450092395e+68
+    },
+    "encoded": "{\n  \"number\": 1.8093955450092395e+68\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.8093955450092395e+68\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.8093955450092395e+68}"
+  },
+  {
+    "value": {
+      "number": -6.0645166406801845e-282
+    },
+    "encoded": "{\n  \"number\": -6.0645166406801845e-282\n}\n",
+    "ascii_pretty": "{\n  \"number\": -6.0645166406801845e-282\n}\n",
+    "ascii_compact_sorted": "{\"number\": -6.0645166406801845e-282}"
+  },
+  {
+    "value": {
+      "number": 3.682939508253962e+287
+    },
+    "encoded": "{\n  \"number\": 3.682939508253962e+287\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.682939508253962e+287\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.682939508253962e+287}"
+  },
+  {
+    "value": {
+      "number": -1.5362209799237481e+88
+    },
+    "encoded": "{\n  \"number\": -1.5362209799237481e+88\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.5362209799237481e+88\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.5362209799237481e+88}"
+  },
+  {
+    "value": {
+      "number": -1.447720556490884e-137
+    },
+    "encoded": "{\n  \"number\": -1.447720556490884e-137\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.447720556490884e-137\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.447720556490884e-137}"
+  },
+  {
+    "value": {
+      "number": -9.750304845744939e-229
+    },
+    "encoded": "{\n  \"number\": -9.750304845744939e-229\n}\n",
+    "ascii_pretty": "{\n  \"number\": -9.750304845744939e-229\n}\n",
+    "ascii_compact_sorted": "{\"number\": -9.750304845744939e-229}"
+  },
+  {
+    "value": {
+      "number": -9.028996109350518e+259
+    },
+    "encoded": "{\n  \"number\": -9.028996109350518e+259\n}\n",
+    "ascii_pretty": "{\n  \"number\": -9.028996109350518e+259\n}\n",
+    "ascii_compact_sorted": "{\"number\": -9.028996109350518e+259}"
+  },
+  {
+    "value": {
+      "number": 3.499730363268829e-293
+    },
+    "encoded": "{\n  \"number\": 3.499730363268829e-293\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.499730363268829e-293\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.499730363268829e-293}"
+  },
+  {
+    "value": {
+      "number": -3.7675748231077244e+176
+    },
+    "encoded": "{\n  \"number\": -3.7675748231077244e+176\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.7675748231077244e+176\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.7675748231077244e+176}"
+  },
+  {
+    "value": {
+      "number": -1.9032775348670754e-128
+    },
+    "encoded": "{\n  \"number\": -1.9032775348670754e-128\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.9032775348670754e-128\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.9032775348670754e-128}"
+  },
+  {
+    "value": {
+      "number": 4.729611632547864e+227
+    },
+    "encoded": "{\n  \"number\": 4.729611632547864e+227\n}\n",
+    "ascii_pretty": "{\n  \"number\": 4.729611632547864e+227\n}\n",
+    "ascii_compact_sorted": "{\"number\": 4.729611632547864e+227}"
+  },
+  {
+    "value": {
+      "number": -3.608825571551714e-261
+    },
+    "encoded": "{\n  \"number\": -3.608825571551714e-261\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.608825571551714e-261\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.608825571551714e-261}"
+  },
+  {
+    "value": {
+      "number": -4.1777044813050206e+57
+    },
+    "encoded": "{\n  \"number\": -4.1777044813050206e+57\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.1777044813050206e+57\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.1777044813050206e+57}"
+  },
+  {
+    "value": {
+      "number": -1.1515480927770464e-189
+    },
+    "encoded": "{\n  \"number\": -1.1515480927770464e-189\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.1515480927770464e-189\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.1515480927770464e-189}"
+  },
+  {
+    "value": {
+      "number": -1.8995382096149284e+103
+    },
+    "encoded": "{\n  \"number\": -1.8995382096149284e+103\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.8995382096149284e+103\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.8995382096149284e+103}"
+  },
+  {
+    "value": {
+      "number": -3.0438782873521747e-283
+    },
+    "encoded": "{\n  \"number\": -3.0438782873521747e-283\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.0438782873521747e-283\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.0438782873521747e-283}"
+  },
+  {
+    "value": {
+      "number": 2.0656696714435174e+209
+    },
+    "encoded": "{\n  \"number\": 2.0656696714435174e+209\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.0656696714435174e+209\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.0656696714435174e+209}"
+  },
+  {
+    "value": {
+      "number": -3.012202528899527e-296
+    },
+    "encoded": "{\n  \"number\": -3.012202528899527e-296\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.012202528899527e-296\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.012202528899527e-296}"
+  },
+  {
+    "value": {
+      "number": -2.2103171424280302e+120
+    },
+    "encoded": "{\n  \"number\": -2.2103171424280302e+120\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.2103171424280302e+120\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.2103171424280302e+120}"
+  },
+  {
+    "value": {
+      "number": -2.5516840148694047e-129
+    },
+    "encoded": "{\n  \"number\": -2.5516840148694047e-129\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.5516840148694047e-129\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.5516840148694047e-129}"
+  },
+  {
+    "value": {
+      "number": -3.1409587942544402e-30
+    },
+    "encoded": "{\n  \"number\": -3.1409587942544402e-30\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.1409587942544402e-30\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.1409587942544402e-30}"
+  },
+  {
+    "value": {
+      "number": 8.531836481208176e-207
+    },
+    "encoded": "{\n  \"number\": 8.531836481208176e-207\n}\n",
+    "ascii_pretty": "{\n  \"number\": 8.531836481208176e-207\n}\n",
+    "ascii_compact_sorted": "{\"number\": 8.531836481208176e-207}"
+  },
+  {
+    "value": {
+      "number": 2.721344512449098e+292
+    },
+    "encoded": "{\n  \"number\": 2.721344512449098e+292\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.721344512449098e+292\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.721344512449098e+292}"
+  },
+  {
+    "value": {
+      "number": 951492375671178.4
+    },
+    "encoded": "{\n  \"number\": 951492375671178.4\n}\n",
+    "ascii_pretty": "{\n  \"number\": 951492375671178.4\n}\n",
+    "ascii_compact_sorted": "{\"number\": 951492375671178.4}"
+  },
+  {
+    "value": {
+      "number": 1.0048629933185813e+105
+    },
+    "encoded": "{\n  \"number\": 1.0048629933185813e+105\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.0048629933185813e+105\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.0048629933185813e+105}"
+  },
+  {
+    "value": {
+      "number": -7.635087013905235e-242
+    },
+    "encoded": "{\n  \"number\": -7.635087013905235e-242\n}\n",
+    "ascii_pretty": "{\n  \"number\": -7.635087013905235e-242\n}\n",
+    "ascii_compact_sorted": "{\"number\": -7.635087013905235e-242}"
+  },
+  {
+    "value": {
+      "number": -2.8053932830287556e+165
+    },
+    "encoded": "{\n  \"number\": -2.8053932830287556e+165\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.8053932830287556e+165\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.8053932830287556e+165}"
+  },
+  {
+    "value": {
+      "number": -1.4422640313793342e-33
+    },
+    "encoded": "{\n  \"number\": -1.4422640313793342e-33\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.4422640313793342e-33\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.4422640313793342e-33}"
+  },
+  {
+    "value": {
+      "number": 1.1095069787637383e+170
+    },
+    "encoded": "{\n  \"number\": 1.1095069787637383e+170\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.1095069787637383e+170\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.1095069787637383e+170}"
+  },
+  {
+    "value": {
+      "number": -5.6930238311950105e+35
+    },
+    "encoded": "{\n  \"number\": -5.6930238311950105e+35\n}\n",
+    "ascii_pretty": "{\n  \"number\": -5.6930238311950105e+35\n}\n",
+    "ascii_compact_sorted": "{\"number\": -5.6930238311950105e+35}"
+  },
+  {
+    "value": {
+      "number": 1.4766229723323067e-288
+    },
+    "encoded": "{\n  \"number\": 1.4766229723323067e-288\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.4766229723323067e-288\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.4766229723323067e-288}"
+  },
+  {
+    "value": {
+      "number": -2.2094393744793684e-202
+    },
+    "encoded": "{\n  \"number\": -2.2094393744793684e-202\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.2094393744793684e-202\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.2094393744793684e-202}"
+  },
+  {
+    "value": {
+      "number": -8.744978487007568e+100
+    },
+    "encoded": "{\n  \"number\": -8.744978487007568e+100\n}\n",
+    "ascii_pretty": "{\n  \"number\": -8.744978487007568e+100\n}\n",
+    "ascii_compact_sorted": "{\"number\": -8.744978487007568e+100}"
+  },
+  {
+    "value": {
+      "number": 1.8661744408087492e+140
+    },
+    "encoded": "{\n  \"number\": 1.8661744408087492e+140\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.8661744408087492e+140\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.8661744408087492e+140}"
+  },
+  {
+    "value": {
+      "number": -3.378923102219559e+180
+    },
+    "encoded": "{\n  \"number\": -3.378923102219559e+180\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.378923102219559e+180\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.378923102219559e+180}"
+  },
+  {
+    "value": {
+      "number": -3.467815977393056e+305
+    },
+    "encoded": "{\n  \"number\": -3.467815977393056e+305\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.467815977393056e+305\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.467815977393056e+305}"
+  },
+  {
+    "value": {
+      "number": 2.0809565500286176e+192
+    },
+    "encoded": "{\n  \"number\": 2.0809565500286176e+192\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.0809565500286176e+192\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.0809565500286176e+192}"
+  },
+  {
+    "value": {
+      "number": -2.0065720062303358e-307
+    },
+    "encoded": "{\n  \"number\": -2.0065720062303358e-307\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.0065720062303358e-307\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.0065720062303358e-307}"
+  },
+  {
+    "value": {
+      "number": -4.8110543977756475e+91
+    },
+    "encoded": "{\n  \"number\": -4.8110543977756475e+91\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.8110543977756475e+91\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.8110543977756475e+91}"
+  },
+  {
+    "value": {
+      "number": 5.154466675055092e-235
+    },
+    "encoded": "{\n  \"number\": 5.154466675055092e-235\n}\n",
+    "ascii_pretty": "{\n  \"number\": 5.154466675055092e-235\n}\n",
+    "ascii_compact_sorted": "{\"number\": 5.154466675055092e-235}"
+  },
+  {
+    "value": {
+      "number": 6.5251180707885e+46
+    },
+    "encoded": "{\n  \"number\": 6.5251180707885e+46\n}\n",
+    "ascii_pretty": "{\n  \"number\": 6.5251180707885e+46\n}\n",
+    "ascii_compact_sorted": "{\"number\": 6.5251180707885e+46}"
+  },
+  {
+    "value": {
+      "number": 1.3859135479722743e+302
+    },
+    "encoded": "{\n  \"number\": 1.3859135479722743e+302\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.3859135479722743e+302\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.3859135479722743e+302}"
+  },
+  {
+    "value": {
+      "number": -6.411636933044763e+17
+    },
+    "encoded": "{\n  \"number\": -6.411636933044763e+17\n}\n",
+    "ascii_pretty": "{\n  \"number\": -6.411636933044763e+17\n}\n",
+    "ascii_compact_sorted": "{\"number\": -6.411636933044763e+17}"
+  },
+  {
+    "value": {
+      "number": -5.008430409160323e-37
+    },
+    "encoded": "{\n  \"number\": -5.008430409160323e-37\n}\n",
+    "ascii_pretty": "{\n  \"number\": -5.008430409160323e-37\n}\n",
+    "ascii_compact_sorted": "{\"number\": -5.008430409160323e-37}"
+  },
+  {
+    "value": {
+      "number": -3.274841562450004e-254
+    },
+    "encoded": "{\n  \"number\": -3.274841562450004e-254\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.274841562450004e-254\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.274841562450004e-254}"
+  },
+  {
+    "value": {
+      "number": -5.481484437028687e+284
+    },
+    "encoded": "{\n  \"number\": -5.481484437028687e+284\n}\n",
+    "ascii_pretty": "{\n  \"number\": -5.481484437028687e+284\n}\n",
+    "ascii_compact_sorted": "{\"number\": -5.481484437028687e+284}"
+  },
+  {
+    "value": {
+      "number": 4.4806251926057087e-119
+    },
+    "encoded": "{\n  \"number\": 4.4806251926057087e-119\n}\n",
+    "ascii_pretty": "{\n  \"number\": 4.4806251926057087e-119\n}\n",
+    "ascii_compact_sorted": "{\"number\": 4.4806251926057087e-119}"
+  },
+  {
+    "value": {
+      "number": -8.03905343994652e-264
+    },
+    "encoded": "{\n  \"number\": -8.03905343994652e-264\n}\n",
+    "ascii_pretty": "{\n  \"number\": -8.03905343994652e-264\n}\n",
+    "ascii_compact_sorted": "{\"number\": -8.03905343994652e-264}"
+  },
+  {
+    "value": {
+      "number": 7.492247224220111e+158
+    },
+    "encoded": "{\n  \"number\": 7.492247224220111e+158\n}\n",
+    "ascii_pretty": "{\n  \"number\": 7.492247224220111e+158\n}\n",
+    "ascii_compact_sorted": "{\"number\": 7.492247224220111e+158}"
+  },
+  {
+    "value": {
+      "number": 7.226026012200049e+260
+    },
+    "encoded": "{\n  \"number\": 7.226026012200049e+260\n}\n",
+    "ascii_pretty": "{\n  \"number\": 7.226026012200049e+260\n}\n",
+    "ascii_compact_sorted": "{\"number\": 7.226026012200049e+260}"
+  },
+  {
+    "value": {
+      "number": 3.872470162624964e-296
+    },
+    "encoded": "{\n  \"number\": 3.872470162624964e-296\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.872470162624964e-296\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.872470162624964e-296}"
+  },
+  {
+    "value": {
+      "number": 5.489684699125721e+254
+    },
+    "encoded": "{\n  \"number\": 5.489684699125721e+254\n}\n",
+    "ascii_pretty": "{\n  \"number\": 5.489684699125721e+254\n}\n",
+    "ascii_compact_sorted": "{\"number\": 5.489684699125721e+254}"
+  },
+  {
+    "value": {
+      "number": 9.055200822767605e-283
+    },
+    "encoded": "{\n  \"number\": 9.055200822767605e-283\n}\n",
+    "ascii_pretty": "{\n  \"number\": 9.055200822767605e-283\n}\n",
+    "ascii_compact_sorted": "{\"number\": 9.055200822767605e-283}"
+  },
+  {
+    "value": {
+      "number": -4.0136403221779555e+60
+    },
+    "encoded": "{\n  \"number\": -4.0136403221779555e+60\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.0136403221779555e+60\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.0136403221779555e+60}"
+  },
+  {
+    "value": {
+      "number": -1.3681438770706567e-80
+    },
+    "encoded": "{\n  \"number\": -1.3681438770706567e-80\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.3681438770706567e-80\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.3681438770706567e-80}"
+  },
+  {
+    "value": {
+      "number": -4.901060621101694e+252
+    },
+    "encoded": "{\n  \"number\": -4.901060621101694e+252\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.901060621101694e+252\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.901060621101694e+252}"
+  },
+  {
+    "value": {
+      "number": -4.025409844927684e-143
+    },
+    "encoded": "{\n  \"number\": -4.025409844927684e-143\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.025409844927684e-143\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.025409844927684e-143}"
+  },
+  {
+    "value": {
+      "number": 3.2384847683781126e-308
+    },
+    "encoded": "{\n  \"number\": 3.2384847683781126e-308\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.2384847683781126e-308\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.2384847683781126e-308}"
+  },
+  {
+    "value": {
+      "number": -1.1298987089819064e-163
+    },
+    "encoded": "{\n  \"number\": -1.1298987089819064e-163\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.1298987089819064e-163\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.1298987089819064e-163}"
+  },
+  {
+    "value": {
+      "number": -6.223268080463202e-296
+    },
+    "encoded": "{\n  \"number\": -6.223268080463202e-296\n}\n",
+    "ascii_pretty": "{\n  \"number\": -6.223268080463202e-296\n}\n",
+    "ascii_compact_sorted": "{\"number\": -6.223268080463202e-296}"
+  },
+  {
+    "value": {
+      "number": -2.270049146716633e-53
+    },
+    "encoded": "{\n  \"number\": -2.270049146716633e-53\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.270049146716633e-53\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.270049146716633e-53}"
+  },
+  {
+    "value": {
+      "number": 1.9697567228026846e-206
+    },
+    "encoded": "{\n  \"number\": 1.9697567228026846e-206\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.9697567228026846e-206\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.9697567228026846e-206}"
+  },
+  {
+    "value": {
+      "number": -1.4285062339162405e+182
+    },
+    "encoded": "{\n  \"number\": -1.4285062339162405e+182\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.4285062339162405e+182\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.4285062339162405e+182}"
+  },
+  {
+    "value": {
+      "number": -5.212905585367255e+56
+    },
+    "encoded": "{\n  \"number\": -5.212905585367255e+56\n}\n",
+    "ascii_pretty": "{\n  \"number\": -5.212905585367255e+56\n}\n",
+    "ascii_compact_sorted": "{\"number\": -5.212905585367255e+56}"
+  },
+  {
+    "value": {
+      "number": 2.94180801727503e+157
+    },
+    "encoded": "{\n  \"number\": 2.94180801727503e+157\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.94180801727503e+157\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.94180801727503e+157}"
+  },
+  {
+    "value": {
+      "number": -3.1488159077911312e-251
+    },
+    "encoded": "{\n  \"number\": -3.1488159077911312e-251\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.1488159077911312e-251\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.1488159077911312e-251}"
+  },
+  {
+    "value": {
+      "number": -4.400233578578643e-142
+    },
+    "encoded": "{\n  \"number\": -4.400233578578643e-142\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.400233578578643e-142\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.400233578578643e-142}"
+  },
+  {
+    "value": {
+      "number": 9.942110875359486e-273
+    },
+    "encoded": "{\n  \"number\": 9.942110875359486e-273\n}\n",
+    "ascii_pretty": "{\n  \"number\": 9.942110875359486e-273\n}\n",
+    "ascii_compact_sorted": "{\"number\": 9.942110875359486e-273}"
+  },
+  {
+    "value": {
+      "number": 4.5523142596397716e+89
+    },
+    "encoded": "{\n  \"number\": 4.5523142596397716e+89\n}\n",
+    "ascii_pretty": "{\n  \"number\": 4.5523142596397716e+89\n}\n",
+    "ascii_compact_sorted": "{\"number\": 4.5523142596397716e+89}"
+  },
+  {
+    "value": {
+      "number": -1.0662500325883939e+254
+    },
+    "encoded": "{\n  \"number\": -1.0662500325883939e+254\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.0662500325883939e+254\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.0662500325883939e+254}"
+  },
+  {
+    "value": {
+      "number": 6.278192100338928e-268
+    },
+    "encoded": "{\n  \"number\": 6.278192100338928e-268\n}\n",
+    "ascii_pretty": "{\n  \"number\": 6.278192100338928e-268\n}\n",
+    "ascii_compact_sorted": "{\"number\": 6.278192100338928e-268}"
+  },
+  {
+    "value": {
+      "number": -1.0187708728816562e-232
+    },
+    "encoded": "{\n  \"number\": -1.0187708728816562e-232\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.0187708728816562e-232\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.0187708728816562e-232}"
+  },
+  {
+    "value": {
+      "number": 4.064909778290056e+202
+    },
+    "encoded": "{\n  \"number\": 4.064909778290056e+202\n}\n",
+    "ascii_pretty": "{\n  \"number\": 4.064909778290056e+202\n}\n",
+    "ascii_compact_sorted": "{\"number\": 4.064909778290056e+202}"
+  },
+  {
+    "value": {
+      "number": 2.5616173892850294e-279
+    },
+    "encoded": "{\n  \"number\": 2.5616173892850294e-279\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.5616173892850294e-279\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.5616173892850294e-279}"
+  },
+  {
+    "value": {
+      "number": -7.346266720954411e-141
+    },
+    "encoded": "{\n  \"number\": -7.346266720954411e-141\n}\n",
+    "ascii_pretty": "{\n  \"number\": -7.346266720954411e-141\n}\n",
+    "ascii_compact_sorted": "{\"number\": -7.346266720954411e-141}"
+  },
+  {
+    "value": {
+      "number": 1.2696662101159588e-106
+    },
+    "encoded": "{\n  \"number\": 1.2696662101159588e-106\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.2696662101159588e-106\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.2696662101159588e-106}"
+  },
+  {
+    "value": {
+      "number": -1.4954443598959274e+263
+    },
+    "encoded": "{\n  \"number\": -1.4954443598959274e+263\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.4954443598959274e+263\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.4954443598959274e+263}"
+  },
+  {
+    "value": {
+      "number": 1.9023301026856983e-229
+    },
+    "encoded": "{\n  \"number\": 1.9023301026856983e-229\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.9023301026856983e-229\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.9023301026856983e-229}"
+  },
+  {
+    "value": {
+      "number": -8.818206273705648e+147
+    },
+    "encoded": "{\n  \"number\": -8.818206273705648e+147\n}\n",
+    "ascii_pretty": "{\n  \"number\": -8.818206273705648e+147\n}\n",
+    "ascii_compact_sorted": "{\"number\": -8.818206273705648e+147}"
+  },
+  {
+    "value": {
+      "number": 3.9654723629536e-131
+    },
+    "encoded": "{\n  \"number\": 3.9654723629536e-131\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.9654723629536e-131\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.9654723629536e-131}"
+  },
+  {
+    "value": {
+      "number": -1.4223295830792755e-100
+    },
+    "encoded": "{\n  \"number\": -1.4223295830792755e-100\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.4223295830792755e-100\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.4223295830792755e-100}"
+  },
+  {
+    "value": {
+      "number": -1.1271119063641398e-07
+    },
+    "encoded": "{\n  \"number\": -1.1271119063641398e-07\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.1271119063641398e-07\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.1271119063641398e-07}"
+  },
+  {
+    "value": {
+      "number": -3.1402806325648895e+92
+    },
+    "encoded": "{\n  \"number\": -3.1402806325648895e+92\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.1402806325648895e+92\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.1402806325648895e+92}"
+  },
+  {
+    "value": {
+      "number": -2.0327064947787365e-151
+    },
+    "encoded": "{\n  \"number\": -2.0327064947787365e-151\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.0327064947787365e-151\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.0327064947787365e-151}"
+  },
+  {
+    "value": {
+      "number": -17622614952.49646
+    },
+    "encoded": "{\n  \"number\": -17622614952.49646\n}\n",
+    "ascii_pretty": "{\n  \"number\": -17622614952.49646\n}\n",
+    "ascii_compact_sorted": "{\"number\": -17622614952.49646}"
+  },
+  {
+    "value": {
+      "number": 3.0383965516814456e+169
+    },
+    "encoded": "{\n  \"number\": 3.0383965516814456e+169\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.0383965516814456e+169\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.0383965516814456e+169}"
+  },
+  {
+    "value": {
+      "number": 3.612302230514739e+69
+    },
+    "encoded": "{\n  \"number\": 3.612302230514739e+69\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.612302230514739e+69\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.612302230514739e+69}"
+  },
+  {
+    "value": {
+      "number": -1.573341066755311e+202
+    },
+    "encoded": "{\n  \"number\": -1.573341066755311e+202\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.573341066755311e+202\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.573341066755311e+202}"
+  },
+  {
+    "value": {
+      "number": -9.711030309258245e+27
+    },
+    "encoded": "{\n  \"number\": -9.711030309258245e+27\n}\n",
+    "ascii_pretty": "{\n  \"number\": -9.711030309258245e+27\n}\n",
+    "ascii_compact_sorted": "{\"number\": -9.711030309258245e+27}"
+  },
+  {
+    "value": {
+      "number": 1.2976920778253845e+51
+    },
+    "encoded": "{\n  \"number\": 1.2976920778253845e+51\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.2976920778253845e+51\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.2976920778253845e+51}"
+  },
+  {
+    "value": {
+      "number": -8.825796292772524e+105
+    },
+    "encoded": "{\n  \"number\": -8.825796292772524e+105\n}\n",
+    "ascii_pretty": "{\n  \"number\": -8.825796292772524e+105\n}\n",
+    "ascii_compact_sorted": "{\"number\": -8.825796292772524e+105}"
+  },
+  {
+    "value": {
+      "number": 2.652509557663151e+146
+    },
+    "encoded": "{\n  \"number\": 2.652509557663151e+146\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.652509557663151e+146\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.652509557663151e+146}"
+  },
+  {
+    "value": {
+      "number": -1.2833976391658112e-265
+    },
+    "encoded": "{\n  \"number\": -1.2833976391658112e-265\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.2833976391658112e-265\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.2833976391658112e-265}"
+  },
+  {
+    "value": {
+      "number": 3.097266796485077e+108
+    },
+    "encoded": "{\n  \"number\": 3.097266796485077e+108\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.097266796485077e+108\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.097266796485077e+108}"
+  },
+  {
+    "value": {
+      "number": 3.099875301491784e-161
+    },
+    "encoded": "{\n  \"number\": 3.099875301491784e-161\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.099875301491784e-161\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.099875301491784e-161}"
+  },
+  {
+    "value": {
+      "number": 5.446239889365466e-103
+    },
+    "encoded": "{\n  \"number\": 5.446239889365466e-103\n}\n",
+    "ascii_pretty": "{\n  \"number\": 5.446239889365466e-103\n}\n",
+    "ascii_compact_sorted": "{\"number\": 5.446239889365466e-103}"
+  },
+  {
+    "value": {
+      "number": -1.4653473411535324e-198
+    },
+    "encoded": "{\n  \"number\": -1.4653473411535324e-198\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.4653473411535324e-198\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.4653473411535324e-198}"
+  },
+  {
+    "value": {
+      "number": 9.020708155003653e+224
+    },
+    "encoded": "{\n  \"number\": 9.020708155003653e+224\n}\n",
+    "ascii_pretty": "{\n  \"number\": 9.020708155003653e+224\n}\n",
+    "ascii_compact_sorted": "{\"number\": 9.020708155003653e+224}"
+  },
+  {
+    "value": {
+      "number": -4.692382765835614e-11
+    },
+    "encoded": "{\n  \"number\": -4.692382765835614e-11\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.692382765835614e-11\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.692382765835614e-11}"
+  },
+  {
+    "value": {
+      "number": 5.929096112978254e+252
+    },
+    "encoded": "{\n  \"number\": 5.929096112978254e+252\n}\n",
+    "ascii_pretty": "{\n  \"number\": 5.929096112978254e+252\n}\n",
+    "ascii_compact_sorted": "{\"number\": 5.929096112978254e+252}"
+  },
+  {
+    "value": {
+      "number": 3.073425169666748e-283
+    },
+    "encoded": "{\n  \"number\": 3.073425169666748e-283\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.073425169666748e-283\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.073425169666748e-283}"
+  },
+  {
+    "value": {
+      "number": 3.737163202434111e+246
+    },
+    "encoded": "{\n  \"number\": 3.737163202434111e+246\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.737163202434111e+246\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.737163202434111e+246}"
+  },
+  {
+    "value": {
+      "number": -1.1871802850930545e-14
+    },
+    "encoded": "{\n  \"number\": -1.1871802850930545e-14\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.1871802850930545e-14\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.1871802850930545e-14}"
+  },
+  {
+    "value": {
+      "number": -3.156920048179335e-37
+    },
+    "encoded": "{\n  \"number\": -3.156920048179335e-37\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.156920048179335e-37\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.156920048179335e-37}"
+  },
+  {
+    "value": {
+      "number": -1.8658820757564115e-48
+    },
+    "encoded": "{\n  \"number\": -1.8658820757564115e-48\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.8658820757564115e-48\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.8658820757564115e-48}"
+  },
+  {
+    "value": {
+      "number": 2.1314203247733425e+248
+    },
+    "encoded": "{\n  \"number\": 2.1314203247733425e+248\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.1314203247733425e+248\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.1314203247733425e+248}"
+  },
+  {
+    "value": {
+      "number": 1.1024179887556272e+221
+    },
+    "encoded": "{\n  \"number\": 1.1024179887556272e+221\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.1024179887556272e+221\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.1024179887556272e+221}"
+  },
+  {
+    "value": {
+      "number": -2.0661857461022015e+30
+    },
+    "encoded": "{\n  \"number\": -2.0661857461022015e+30\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.0661857461022015e+30\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.0661857461022015e+30}"
+  },
+  {
+    "value": {
+      "number": 3.984283731857024e-113
+    },
+    "encoded": "{\n  \"number\": 3.984283731857024e-113\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.984283731857024e-113\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.984283731857024e-113}"
+  },
+  {
+    "value": {
+      "number": 4.201741097683793e+92
+    },
+    "encoded": "{\n  \"number\": 4.201741097683793e+92\n}\n",
+    "ascii_pretty": "{\n  \"number\": 4.201741097683793e+92\n}\n",
+    "ascii_compact_sorted": "{\"number\": 4.201741097683793e+92}"
+  },
+  {
+    "value": {
+      "number": -6.525421464832928e-288
+    },
+    "encoded": "{\n  \"number\": -6.525421464832928e-288\n}\n",
+    "ascii_pretty": "{\n  \"number\": -6.525421464832928e-288\n}\n",
+    "ascii_compact_sorted": "{\"number\": -6.525421464832928e-288}"
+  },
+  {
+    "value": {
+      "number": -6.698319350541304e-239
+    },
+    "encoded": "{\n  \"number\": -6.698319350541304e-239\n}\n",
+    "ascii_pretty": "{\n  \"number\": -6.698319350541304e-239\n}\n",
+    "ascii_compact_sorted": "{\"number\": -6.698319350541304e-239}"
+  },
+  {
+    "value": {
+      "number": 4.989541234823696e+115
+    },
+    "encoded": "{\n  \"number\": 4.989541234823696e+115\n}\n",
+    "ascii_pretty": "{\n  \"number\": 4.989541234823696e+115\n}\n",
+    "ascii_compact_sorted": "{\"number\": 4.989541234823696e+115}"
+  },
+  {
+    "value": {
+      "number": 1.8026219714450265e-179
+    },
+    "encoded": "{\n  \"number\": 1.8026219714450265e-179\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.8026219714450265e-179\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.8026219714450265e-179}"
+  },
+  {
+    "value": {
+      "number": -1.3025275409656183e-29
+    },
+    "encoded": "{\n  \"number\": -1.3025275409656183e-29\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.3025275409656183e-29\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.3025275409656183e-29}"
+  },
+  {
+    "value": {
+      "number": 2.3821917177056946e-31
+    },
+    "encoded": "{\n  \"number\": 2.3821917177056946e-31\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.3821917177056946e-31\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.3821917177056946e-31}"
+  },
+  {
+    "value": {
+      "number": -4.09187318267555e-222
+    },
+    "encoded": "{\n  \"number\": -4.09187318267555e-222\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.09187318267555e-222\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.09187318267555e-222}"
+  },
+  {
+    "value": {
+      "number": 3.676215008807461e-194
+    },
+    "encoded": "{\n  \"number\": 3.676215008807461e-194\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.676215008807461e-194\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.676215008807461e-194}"
+  },
+  {
+    "value": {
+      "number": -1.103185796503797e+222
+    },
+    "encoded": "{\n  \"number\": -1.103185796503797e+222\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.103185796503797e+222\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.103185796503797e+222}"
+  },
+  {
+    "value": {
+      "number": 9.745985396857933e-09
+    },
+    "encoded": "{\n  \"number\": 9.745985396857933e-09\n}\n",
+    "ascii_pretty": "{\n  \"number\": 9.745985396857933e-09\n}\n",
+    "ascii_compact_sorted": "{\"number\": 9.745985396857933e-09}"
+  },
+  {
+    "value": {
+      "number": -4.084154264730441e+168
+    },
+    "encoded": "{\n  \"number\": -4.084154264730441e+168\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.084154264730441e+168\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.084154264730441e+168}"
+  },
+  {
+    "value": {
+      "number": 1.834368379282501e+18
+    },
+    "encoded": "{\n  \"number\": 1.834368379282501e+18\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.834368379282501e+18\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.834368379282501e+18}"
+  },
+  {
+    "value": {
+      "number": 1.3097035911329153e-255
+    },
+    "encoded": "{\n  \"number\": 1.3097035911329153e-255\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.3097035911329153e-255\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.3097035911329153e-255}"
+  },
+  {
+    "value": {
+      "number": -5.527073050890559e-308
+    },
+    "encoded": "{\n  \"number\": -5.527073050890559e-308\n}\n",
+    "ascii_pretty": "{\n  \"number\": -5.527073050890559e-308\n}\n",
+    "ascii_compact_sorted": "{\"number\": -5.527073050890559e-308}"
+  },
+  {
+    "value": {
+      "number": -3.0366077738366277e+254
+    },
+    "encoded": "{\n  \"number\": -3.0366077738366277e+254\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.0366077738366277e+254\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.0366077738366277e+254}"
+  },
+  {
+    "value": {
+      "number": -2.37193139679317e-302
+    },
+    "encoded": "{\n  \"number\": -2.37193139679317e-302\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.37193139679317e-302\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.37193139679317e-302}"
+  },
+  {
+    "value": {
+      "number": -21295746244.59725
+    },
+    "encoded": "{\n  \"number\": -21295746244.59725\n}\n",
+    "ascii_pretty": "{\n  \"number\": -21295746244.59725\n}\n",
+    "ascii_compact_sorted": "{\"number\": -21295746244.59725}"
+  },
+  {
+    "value": {
+      "number": -1.7862192416724378e+174
+    },
+    "encoded": "{\n  \"number\": -1.7862192416724378e+174\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.7862192416724378e+174\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.7862192416724378e+174}"
+  },
+  {
+    "value": {
+      "number": 1.6924699390449918e-287
+    },
+    "encoded": "{\n  \"number\": 1.6924699390449918e-287\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.6924699390449918e-287\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.6924699390449918e-287}"
+  },
+  {
+    "value": {
+      "number": 6.61575972911664e+22
+    },
+    "encoded": "{\n  \"number\": 6.61575972911664e+22\n}\n",
+    "ascii_pretty": "{\n  \"number\": 6.61575972911664e+22\n}\n",
+    "ascii_compact_sorted": "{\"number\": 6.61575972911664e+22}"
+  },
+  {
+    "value": {
+      "number": 6.224426712752998e-24
+    },
+    "encoded": "{\n  \"number\": 6.224426712752998e-24\n}\n",
+    "ascii_pretty": "{\n  \"number\": 6.224426712752998e-24\n}\n",
+    "ascii_compact_sorted": "{\"number\": 6.224426712752998e-24}"
+  },
+  {
+    "value": {
+      "number": -2.992663759072954e-185
+    },
+    "encoded": "{\n  \"number\": -2.992663759072954e-185\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.992663759072954e-185\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.992663759072954e-185}"
+  },
+  {
+    "value": {
+      "number": 1.998977472651777e-205
+    },
+    "encoded": "{\n  \"number\": 1.998977472651777e-205\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.998977472651777e-205\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.998977472651777e-205}"
+  },
+  {
+    "value": {
+      "number": -2.0608221509201932e-241
+    },
+    "encoded": "{\n  \"number\": -2.0608221509201932e-241\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.0608221509201932e-241\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.0608221509201932e-241}"
+  },
+  {
+    "value": {
+      "number": 4.3139576032852274e-144
+    },
+    "encoded": "{\n  \"number\": 4.3139576032852274e-144\n}\n",
+    "ascii_pretty": "{\n  \"number\": 4.3139576032852274e-144\n}\n",
+    "ascii_compact_sorted": "{\"number\": 4.3139576032852274e-144}"
+  },
+  {
+    "value": {
+      "number": -3.7797883127281894e+173
+    },
+    "encoded": "{\n  \"number\": -3.7797883127281894e+173\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.7797883127281894e+173\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.7797883127281894e+173}"
+  },
+  {
+    "value": {
+      "number": -9.87820994927178e+228
+    },
+    "encoded": "{\n  \"number\": -9.87820994927178e+228\n}\n",
+    "ascii_pretty": "{\n  \"number\": -9.87820994927178e+228\n}\n",
+    "ascii_compact_sorted": "{\"number\": -9.87820994927178e+228}"
+  },
+  {
+    "value": {
+      "number": 1.1721824473840434e-141
+    },
+    "encoded": "{\n  \"number\": 1.1721824473840434e-141\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.1721824473840434e-141\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.1721824473840434e-141}"
+  },
+  {
+    "value": {
+      "number": -4.014393353377078e+187
+    },
+    "encoded": "{\n  \"number\": -4.014393353377078e+187\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.014393353377078e+187\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.014393353377078e+187}"
+  },
+  {
+    "value": {
+      "number": 1.1780682808124439e+299
+    },
+    "encoded": "{\n  \"number\": 1.1780682808124439e+299\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.1780682808124439e+299\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.1780682808124439e+299}"
+  },
+  {
+    "value": {
+      "number": 1.7704559885230426e+183
+    },
+    "encoded": "{\n  \"number\": 1.7704559885230426e+183\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.7704559885230426e+183\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.7704559885230426e+183}"
+  },
+  {
+    "value": {
+      "number": 7.430758175816512e-274
+    },
+    "encoded": "{\n  \"number\": 7.430758175816512e-274\n}\n",
+    "ascii_pretty": "{\n  \"number\": 7.430758175816512e-274\n}\n",
+    "ascii_compact_sorted": "{\"number\": 7.430758175816512e-274}"
+  },
+  {
+    "value": {
+      "number": -4.4120028853359117e-45
+    },
+    "encoded": "{\n  \"number\": -4.4120028853359117e-45\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.4120028853359117e-45\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.4120028853359117e-45}"
+  },
+  {
+    "value": {
+      "number": -6.0340176582367e+96
+    },
+    "encoded": "{\n  \"number\": -6.0340176582367e+96\n}\n",
+    "ascii_pretty": "{\n  \"number\": -6.0340176582367e+96\n}\n",
+    "ascii_compact_sorted": "{\"number\": -6.0340176582367e+96}"
+  },
+  {
+    "value": {
+      "number": -5.7854611988310356e+144
+    },
+    "encoded": "{\n  \"number\": -5.7854611988310356e+144\n}\n",
+    "ascii_pretty": "{\n  \"number\": -5.7854611988310356e+144\n}\n",
+    "ascii_compact_sorted": "{\"number\": -5.7854611988310356e+144}"
+  },
+  {
+    "value": {
+      "number": 8.547348653941449e+111
+    },
+    "encoded": "{\n  \"number\": 8.547348653941449e+111\n}\n",
+    "ascii_pretty": "{\n  \"number\": 8.547348653941449e+111\n}\n",
+    "ascii_compact_sorted": "{\"number\": 8.547348653941449e+111}"
+  },
+  {
+    "value": {
+      "number": -1.3990711666084682e+203
+    },
+    "encoded": "{\n  \"number\": -1.3990711666084682e+203\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.3990711666084682e+203\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.3990711666084682e+203}"
+  },
+  {
+    "value": {
+      "number": -4.970984972438214e+111
+    },
+    "encoded": "{\n  \"number\": -4.970984972438214e+111\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.970984972438214e+111\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.970984972438214e+111}"
+  },
+  {
+    "value": {
+      "number": -1.125186137530753e+216
+    },
+    "encoded": "{\n  \"number\": -1.125186137530753e+216\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.125186137530753e+216\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.125186137530753e+216}"
+  },
+  {
+    "value": {
+      "number": -2.4899926354213372e-173
+    },
+    "encoded": "{\n  \"number\": -2.4899926354213372e-173\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.4899926354213372e-173\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.4899926354213372e-173}"
+  },
+  {
+    "value": {
+      "number": 2.640667163513645e-301
+    },
+    "encoded": "{\n  \"number\": 2.640667163513645e-301\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.640667163513645e-301\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.640667163513645e-301}"
+  },
+  {
+    "value": {
+      "number": -2.0825578404237304e+54
+    },
+    "encoded": "{\n  \"number\": -2.0825578404237304e+54\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.0825578404237304e+54\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.0825578404237304e+54}"
+  },
+  {
+    "value": {
+      "number": -7.079904888013151e-184
+    },
+    "encoded": "{\n  \"number\": -7.079904888013151e-184\n}\n",
+    "ascii_pretty": "{\n  \"number\": -7.079904888013151e-184\n}\n",
+    "ascii_compact_sorted": "{\"number\": -7.079904888013151e-184}"
+  },
+  {
+    "value": {
+      "number": -1.0542020694252152e+272
+    },
+    "encoded": "{\n  \"number\": -1.0542020694252152e+272\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.0542020694252152e+272\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.0542020694252152e+272}"
+  },
+  {
+    "value": {
+      "number": 3.0420324386550825e+115
+    },
+    "encoded": "{\n  \"number\": 3.0420324386550825e+115\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.0420324386550825e+115\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.0420324386550825e+115}"
+  },
+  {
+    "value": {
+      "number": -2.582233961342922e-204
+    },
+    "encoded": "{\n  \"number\": -2.582233961342922e-204\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.582233961342922e-204\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.582233961342922e-204}"
+  },
+  {
+    "value": {
+      "number": -8.152856837334516e-73
+    },
+    "encoded": "{\n  \"number\": -8.152856837334516e-73\n}\n",
+    "ascii_pretty": "{\n  \"number\": -8.152856837334516e-73\n}\n",
+    "ascii_compact_sorted": "{\"number\": -8.152856837334516e-73}"
+  },
+  {
+    "value": {
+      "number": 5.604581590611646e+136
+    },
+    "encoded": "{\n  \"number\": 5.604581590611646e+136\n}\n",
+    "ascii_pretty": "{\n  \"number\": 5.604581590611646e+136\n}\n",
+    "ascii_compact_sorted": "{\"number\": 5.604581590611646e+136}"
+  },
+  {
+    "value": {
+      "number": 1.5732844487455135e+260
+    },
+    "encoded": "{\n  \"number\": 1.5732844487455135e+260\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.5732844487455135e+260\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.5732844487455135e+260}"
+  },
+  {
+    "value": {
+      "number": -2.508801436134501e+256
+    },
+    "encoded": "{\n  \"number\": -2.508801436134501e+256\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.508801436134501e+256\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.508801436134501e+256}"
+  },
+  {
+    "value": {
+      "number": -6.036778629421384e+130
+    },
+    "encoded": "{\n  \"number\": -6.036778629421384e+130\n}\n",
+    "ascii_pretty": "{\n  \"number\": -6.036778629421384e+130\n}\n",
+    "ascii_compact_sorted": "{\"number\": -6.036778629421384e+130}"
+  },
+  {
+    "value": {
+      "number": 1.2474964049127177e+81
+    },
+    "encoded": "{\n  \"number\": 1.2474964049127177e+81\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.2474964049127177e+81\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.2474964049127177e+81}"
+  },
+  {
+    "value": {
+      "number": 1.3435566021389966e-41
+    },
+    "encoded": "{\n  \"number\": 1.3435566021389966e-41\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.3435566021389966e-41\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.3435566021389966e-41}"
+  },
+  {
+    "value": {
+      "number": 5.663010340220909e+245
+    },
+    "encoded": "{\n  \"number\": 5.663010340220909e+245\n}\n",
+    "ascii_pretty": "{\n  \"number\": 5.663010340220909e+245\n}\n",
+    "ascii_compact_sorted": "{\"number\": 5.663010340220909e+245}"
+  },
+  {
+    "value": {
+      "number": -1.2606483781707824e+76
+    },
+    "encoded": "{\n  \"number\": -1.2606483781707824e+76\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.2606483781707824e+76\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.2606483781707824e+76}"
+  },
+  {
+    "value": {
+      "number": 2.458516403131357e-71
+    },
+    "encoded": "{\n  \"number\": 2.458516403131357e-71\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.458516403131357e-71\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.458516403131357e-71}"
+  },
+  {
+    "value": {
+      "number": -8.644662814223749e+304
+    },
+    "encoded": "{\n  \"number\": -8.644662814223749e+304\n}\n",
+    "ascii_pretty": "{\n  \"number\": -8.644662814223749e+304\n}\n",
+    "ascii_compact_sorted": "{\"number\": -8.644662814223749e+304}"
+  },
+  {
+    "value": {
+      "number": 3.472198677101495e+163
+    },
+    "encoded": "{\n  \"number\": 3.472198677101495e+163\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.472198677101495e+163\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.472198677101495e+163}"
+  },
+  {
+    "value": {
+      "number": -2.998349509637193e+69
+    },
+    "encoded": "{\n  \"number\": -2.998349509637193e+69\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.998349509637193e+69\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.998349509637193e+69}"
+  },
+  {
+    "value": {
+      "number": -1.9975500497551436e+113
+    },
+    "encoded": "{\n  \"number\": -1.9975500497551436e+113\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.9975500497551436e+113\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.9975500497551436e+113}"
+  },
+  {
+    "value": {
+      "number": 7.360788631732777e+154
+    },
+    "encoded": "{\n  \"number\": 7.360788631732777e+154\n}\n",
+    "ascii_pretty": "{\n  \"number\": 7.360788631732777e+154\n}\n",
+    "ascii_compact_sorted": "{\"number\": 7.360788631732777e+154}"
+  },
+  {
+    "value": {
+      "number": 2.5879099638200197e+19
+    },
+    "encoded": "{\n  \"number\": 2.5879099638200197e+19\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.5879099638200197e+19\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.5879099638200197e+19}"
+  },
+  {
+    "value": {
+      "number": -2.508479628909426e+215
+    },
+    "encoded": "{\n  \"number\": -2.508479628909426e+215\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.508479628909426e+215\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.508479628909426e+215}"
+  },
+  {
+    "value": {
+      "number": -2.7216842768456255e+131
+    },
+    "encoded": "{\n  \"number\": -2.7216842768456255e+131\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.7216842768456255e+131\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.7216842768456255e+131}"
+  },
+  {
+    "value": {
+      "number": 1.5034704003832732e+156
+    },
+    "encoded": "{\n  \"number\": 1.5034704003832732e+156\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.5034704003832732e+156\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.5034704003832732e+156}"
+  },
+  {
+    "value": {
+      "number": 2.2065877108892855e-223
+    },
+    "encoded": "{\n  \"number\": 2.2065877108892855e-223\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.2065877108892855e-223\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.2065877108892855e-223}"
+  },
+  {
+    "value": {
+      "number": 7.86442530997492e+56
+    },
+    "encoded": "{\n  \"number\": 7.86442530997492e+56\n}\n",
+    "ascii_pretty": "{\n  \"number\": 7.86442530997492e+56\n}\n",
+    "ascii_compact_sorted": "{\"number\": 7.86442530997492e+56}"
+  },
+  {
+    "value": {
+      "number": -2.4273679406209446e+195
+    },
+    "encoded": "{\n  \"number\": -2.4273679406209446e+195\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.4273679406209446e+195\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.4273679406209446e+195}"
+  },
+  {
+    "value": {
+      "number": -3.622690260916136e-305
+    },
+    "encoded": "{\n  \"number\": -3.622690260916136e-305\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.622690260916136e-305\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.622690260916136e-305}"
+  },
+  {
+    "value": {
+      "number": -1.1902761424306652e-178
+    },
+    "encoded": "{\n  \"number\": -1.1902761424306652e-178\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.1902761424306652e-178\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.1902761424306652e-178}"
+  },
+  {
+    "value": {
+      "number": 5.752246451413172e-241
+    },
+    "encoded": "{\n  \"number\": 5.752246451413172e-241\n}\n",
+    "ascii_pretty": "{\n  \"number\": 5.752246451413172e-241\n}\n",
+    "ascii_compact_sorted": "{\"number\": 5.752246451413172e-241}"
+  },
+  {
+    "value": {
+      "number": 2.1106677907480342e+161
+    },
+    "encoded": "{\n  \"number\": 2.1106677907480342e+161\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.1106677907480342e+161\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.1106677907480342e+161}"
+  },
+  {
+    "value": {
+      "number": -1.152105583893407e-202
+    },
+    "encoded": "{\n  \"number\": -1.152105583893407e-202\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.152105583893407e-202\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.152105583893407e-202}"
+  },
+  {
+    "value": {
+      "number": 1.3770011784364769e+60
+    },
+    "encoded": "{\n  \"number\": 1.3770011784364769e+60\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.3770011784364769e+60\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.3770011784364769e+60}"
+  },
+  {
+    "value": {
+      "number": 1.2156611646414564e+266
+    },
+    "encoded": "{\n  \"number\": 1.2156611646414564e+266\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.2156611646414564e+266\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.2156611646414564e+266}"
+  },
+  {
+    "value": {
+      "number": -3.464062530003724e+19
+    },
+    "encoded": "{\n  \"number\": -3.464062530003724e+19\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.464062530003724e+19\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.464062530003724e+19}"
+  },
+  {
+    "value": {
+      "number": -3.066858657124452e-54
+    },
+    "encoded": "{\n  \"number\": -3.066858657124452e-54\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.066858657124452e-54\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.066858657124452e-54}"
+  },
+  {
+    "value": {
+      "number": 1.8492223971612418e-09
+    },
+    "encoded": "{\n  \"number\": 1.8492223971612418e-09\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.8492223971612418e-09\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.8492223971612418e-09}"
+  },
+  {
+    "value": {
+      "number": 1.9366575772568857e+241
+    },
+    "encoded": "{\n  \"number\": 1.9366575772568857e+241\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.9366575772568857e+241\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.9366575772568857e+241}"
+  },
+  {
+    "value": {
+      "number": -2.155296546887586e+112
+    },
+    "encoded": "{\n  \"number\": -2.155296546887586e+112\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.155296546887586e+112\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.155296546887586e+112}"
+  },
+  {
+    "value": {
+      "number": -2.8124923832998034e-231
+    },
+    "encoded": "{\n  \"number\": -2.8124923832998034e-231\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.8124923832998034e-231\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.8124923832998034e-231}"
+  },
+  {
+    "value": {
+      "number": 1.9584659252491023e+116
+    },
+    "encoded": "{\n  \"number\": 1.9584659252491023e+116\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.9584659252491023e+116\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.9584659252491023e+116}"
+  },
+  {
+    "value": {
+      "number": -2.702461333343635e+245
+    },
+    "encoded": "{\n  \"number\": -2.702461333343635e+245\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.702461333343635e+245\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.702461333343635e+245}"
+  },
+  {
+    "value": {
+      "number": 4.901751704019701e+253
+    },
+    "encoded": "{\n  \"number\": 4.901751704019701e+253\n}\n",
+    "ascii_pretty": "{\n  \"number\": 4.901751704019701e+253\n}\n",
+    "ascii_compact_sorted": "{\"number\": 4.901751704019701e+253}"
+  },
+  {
+    "value": {
+      "number": -2.988710497695466e-216
+    },
+    "encoded": "{\n  \"number\": -2.988710497695466e-216\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.988710497695466e-216\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.988710497695466e-216}"
+  },
+  {
+    "value": {
+      "number": -4.6217971059936975e+213
+    },
+    "encoded": "{\n  \"number\": -4.6217971059936975e+213\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.6217971059936975e+213\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.6217971059936975e+213}"
+  },
+  {
+    "value": {
+      "number": 6.355098066293755e+107
+    },
+    "encoded": "{\n  \"number\": 6.355098066293755e+107\n}\n",
+    "ascii_pretty": "{\n  \"number\": 6.355098066293755e+107\n}\n",
+    "ascii_compact_sorted": "{\"number\": 6.355098066293755e+107}"
+  },
+  {
+    "value": {
+      "number": 1.5698680642113322e-248
+    },
+    "encoded": "{\n  \"number\": 1.5698680642113322e-248\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.5698680642113322e-248\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.5698680642113322e-248}"
+  },
+  {
+    "value": {
+      "number": 1.3961705420201222e-156
+    },
+    "encoded": "{\n  \"number\": 1.3961705420201222e-156\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.3961705420201222e-156\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.3961705420201222e-156}"
+  },
+  {
+    "value": {
+      "number": 8.920732754051942e+219
+    },
+    "encoded": "{\n  \"number\": 8.920732754051942e+219\n}\n",
+    "ascii_pretty": "{\n  \"number\": 8.920732754051942e+219\n}\n",
+    "ascii_compact_sorted": "{\"number\": 8.920732754051942e+219}"
+  },
+  {
+    "value": {
+      "number": 1.6379533242121587e+304
+    },
+    "encoded": "{\n  \"number\": 1.6379533242121587e+304\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.6379533242121587e+304\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.6379533242121587e+304}"
+  },
+  {
+    "value": {
+      "number": 4.880855536608303e-146
+    },
+    "encoded": "{\n  \"number\": 4.880855536608303e-146\n}\n",
+    "ascii_pretty": "{\n  \"number\": 4.880855536608303e-146\n}\n",
+    "ascii_compact_sorted": "{\"number\": 4.880855536608303e-146}"
+  },
+  {
+    "value": {
+      "number": -2.2241209289072866e-265
+    },
+    "encoded": "{\n  \"number\": -2.2241209289072866e-265\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.2241209289072866e-265\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.2241209289072866e-265}"
+  },
+  {
+    "value": {
+      "number": 9.341140115080882e+271
+    },
+    "encoded": "{\n  \"number\": 9.341140115080882e+271\n}\n",
+    "ascii_pretty": "{\n  \"number\": 9.341140115080882e+271\n}\n",
+    "ascii_compact_sorted": "{\"number\": 9.341140115080882e+271}"
+  },
+  {
+    "value": {
+      "number": -5.5708428392971264e-257
+    },
+    "encoded": "{\n  \"number\": -5.5708428392971264e-257\n}\n",
+    "ascii_pretty": "{\n  \"number\": -5.5708428392971264e-257\n}\n",
+    "ascii_compact_sorted": "{\"number\": -5.5708428392971264e-257}"
+  },
+  {
+    "value": {
+      "number": 6.86197109309668e+93
+    },
+    "encoded": "{\n  \"number\": 6.86197109309668e+93\n}\n",
+    "ascii_pretty": "{\n  \"number\": 6.86197109309668e+93\n}\n",
+    "ascii_compact_sorted": "{\"number\": 6.86197109309668e+93}"
+  },
+  {
+    "value": {
+      "number": 1.0374606160990869e+148
+    },
+    "encoded": "{\n  \"number\": 1.0374606160990869e+148\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.0374606160990869e+148\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.0374606160990869e+148}"
+  },
+  {
+    "value": {
+      "number": -5.670040173687831e+236
+    },
+    "encoded": "{\n  \"number\": -5.670040173687831e+236\n}\n",
+    "ascii_pretty": "{\n  \"number\": -5.670040173687831e+236\n}\n",
+    "ascii_compact_sorted": "{\"number\": -5.670040173687831e+236}"
+  },
+  {
+    "value": {
+      "number": -3.275577484338032e-188
+    },
+    "encoded": "{\n  \"number\": -3.275577484338032e-188\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.275577484338032e-188\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.275577484338032e-188}"
+  },
+  {
+    "value": {
+      "number": 5.1543436694659136e-269
+    },
+    "encoded": "{\n  \"number\": 5.1543436694659136e-269\n}\n",
+    "ascii_pretty": "{\n  \"number\": 5.1543436694659136e-269\n}\n",
+    "ascii_compact_sorted": "{\"number\": 5.1543436694659136e-269}"
+  },
+  {
+    "value": {
+      "number": -1.3562864439845781e-303
+    },
+    "encoded": "{\n  \"number\": -1.3562864439845781e-303\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.3562864439845781e-303\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.3562864439845781e-303}"
+  },
+  {
+    "value": {
+      "number": -4.18245311556673e+196
+    },
+    "encoded": "{\n  \"number\": -4.18245311556673e+196\n}\n",
+    "ascii_pretty": "{\n  \"number\": -4.18245311556673e+196\n}\n",
+    "ascii_compact_sorted": "{\"number\": -4.18245311556673e+196}"
+  },
+  {
+    "value": {
+      "number": -1.2214183079494383e-183
+    },
+    "encoded": "{\n  \"number\": -1.2214183079494383e-183\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.2214183079494383e-183\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.2214183079494383e-183}"
+  },
+  {
+    "value": {
+      "number": -1.9073714752614003e+241
+    },
+    "encoded": "{\n  \"number\": -1.9073714752614003e+241\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.9073714752614003e+241\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.9073714752614003e+241}"
+  },
+  {
+    "value": {
+      "number": -5.701129222922711e-55
+    },
+    "encoded": "{\n  \"number\": -5.701129222922711e-55\n}\n",
+    "ascii_pretty": "{\n  \"number\": -5.701129222922711e-55\n}\n",
+    "ascii_compact_sorted": "{\"number\": -5.701129222922711e-55}"
+  },
+  {
+    "value": {
+      "number": -2.4991901132227002e+186
+    },
+    "encoded": "{\n  \"number\": -2.4991901132227002e+186\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.4991901132227002e+186\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.4991901132227002e+186}"
+  },
+  {
+    "value": {
+      "number": 1.74719618603931e-291
+    },
+    "encoded": "{\n  \"number\": 1.74719618603931e-291\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.74719618603931e-291\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.74719618603931e-291}"
+  },
+  {
+    "value": {
+      "number": -2.9827606288969945e-25
+    },
+    "encoded": "{\n  \"number\": -2.9827606288969945e-25\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.9827606288969945e-25\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.9827606288969945e-25}"
+  },
+  {
+    "value": {
+      "number": 4.667877894958572e-28
+    },
+    "encoded": "{\n  \"number\": 4.667877894958572e-28\n}\n",
+    "ascii_pretty": "{\n  \"number\": 4.667877894958572e-28\n}\n",
+    "ascii_compact_sorted": "{\"number\": 4.667877894958572e-28}"
+  },
+  {
+    "value": {
+      "number": -1.3571588198455863e+170
+    },
+    "encoded": "{\n  \"number\": -1.3571588198455863e+170\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.3571588198455863e+170\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.3571588198455863e+170}"
+  },
+  {
+    "value": {
+      "number": -1.6710252705222524e+150
+    },
+    "encoded": "{\n  \"number\": -1.6710252705222524e+150\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.6710252705222524e+150\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.6710252705222524e+150}"
+  },
+  {
+    "value": {
+      "number": 3.8773267010739833e+43
+    },
+    "encoded": "{\n  \"number\": 3.8773267010739833e+43\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.8773267010739833e+43\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.8773267010739833e+43}"
+  },
+  {
+    "value": {
+      "number": -8.790740377419073e+302
+    },
+    "encoded": "{\n  \"number\": -8.790740377419073e+302\n}\n",
+    "ascii_pretty": "{\n  \"number\": -8.790740377419073e+302\n}\n",
+    "ascii_compact_sorted": "{\"number\": -8.790740377419073e+302}"
+  },
+  {
+    "value": {
+      "number": 1.0418666043212951e+133
+    },
+    "encoded": "{\n  \"number\": 1.0418666043212951e+133\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.0418666043212951e+133\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.0418666043212951e+133}"
+  },
+  {
+    "value": {
+      "number": 3.8200370021542353e-255
+    },
+    "encoded": "{\n  \"number\": 3.8200370021542353e-255\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.8200370021542353e-255\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.8200370021542353e-255}"
+  },
+  {
+    "value": {
+      "number": 1.1287739972560987e-292
+    },
+    "encoded": "{\n  \"number\": 1.1287739972560987e-292\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.1287739972560987e-292\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.1287739972560987e-292}"
+  },
+  {
+    "value": {
+      "number": -2.110971407945142e-94
+    },
+    "encoded": "{\n  \"number\": -2.110971407945142e-94\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.110971407945142e-94\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.110971407945142e-94}"
+  },
+  {
+    "value": {
+      "number": 3.0300420497806525e-64
+    },
+    "encoded": "{\n  \"number\": 3.0300420497806525e-64\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.0300420497806525e-64\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.0300420497806525e-64}"
+  },
+  {
+    "value": {
+      "number": 2.0144894224564397e+24
+    },
+    "encoded": "{\n  \"number\": 2.0144894224564397e+24\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.0144894224564397e+24\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.0144894224564397e+24}"
+  },
+  {
+    "value": {
+      "number": 4.5849086828600296e-104
+    },
+    "encoded": "{\n  \"number\": 4.5849086828600296e-104\n}\n",
+    "ascii_pretty": "{\n  \"number\": 4.5849086828600296e-104\n}\n",
+    "ascii_compact_sorted": "{\"number\": 4.5849086828600296e-104}"
+  },
+  {
+    "value": {
+      "number": -6.70228988182719e-17
+    },
+    "encoded": "{\n  \"number\": -6.70228988182719e-17\n}\n",
+    "ascii_pretty": "{\n  \"number\": -6.70228988182719e-17\n}\n",
+    "ascii_compact_sorted": "{\"number\": -6.70228988182719e-17}"
+  },
+  {
+    "value": {
+      "number": -3.64268174194879e-270
+    },
+    "encoded": "{\n  \"number\": -3.64268174194879e-270\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.64268174194879e-270\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.64268174194879e-270}"
+  },
+  {
+    "value": {
+      "number": 2.1538033307489007e-69
+    },
+    "encoded": "{\n  \"number\": 2.1538033307489007e-69\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.1538033307489007e-69\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.1538033307489007e-69}"
+  },
+  {
+    "value": {
+      "number": -1.0044340696733758e+156
+    },
+    "encoded": "{\n  \"number\": -1.0044340696733758e+156\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.0044340696733758e+156\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.0044340696733758e+156}"
+  },
+  {
+    "value": {
+      "number": 2.6204272116175006e-32
+    },
+    "encoded": "{\n  \"number\": 2.6204272116175006e-32\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.6204272116175006e-32\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.6204272116175006e-32}"
+  },
+  {
+    "value": {
+      "number": -2.208481104443528e-274
+    },
+    "encoded": "{\n  \"number\": -2.208481104443528e-274\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.208481104443528e-274\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.208481104443528e-274}"
+  },
+  {
+    "value": {
+      "number": 2.19523775951237e-181
+    },
+    "encoded": "{\n  \"number\": 2.19523775951237e-181\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.19523775951237e-181\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.19523775951237e-181}"
+  },
+  {
+    "value": {
+      "number": -1.695815388442008e-169
+    },
+    "encoded": "{\n  \"number\": -1.695815388442008e-169\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.695815388442008e-169\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.695815388442008e-169}"
+  },
+  {
+    "value": {
+      "number": -6.904507734421503e-238
+    },
+    "encoded": "{\n  \"number\": -6.904507734421503e-238\n}\n",
+    "ascii_pretty": "{\n  \"number\": -6.904507734421503e-238\n}\n",
+    "ascii_compact_sorted": "{\"number\": -6.904507734421503e-238}"
+  },
+  {
+    "value": {
+      "number": -1.1110934148940081e+71
+    },
+    "encoded": "{\n  \"number\": -1.1110934148940081e+71\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.1110934148940081e+71\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.1110934148940081e+71}"
+  },
+  {
+    "value": {
+      "number": -3.903878711498901e-283
+    },
+    "encoded": "{\n  \"number\": -3.903878711498901e-283\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.903878711498901e-283\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.903878711498901e-283}"
+  },
+  {
+    "value": {
+      "number": -3.5614238793017656e+212
+    },
+    "encoded": "{\n  \"number\": -3.5614238793017656e+212\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.5614238793017656e+212\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.5614238793017656e+212}"
+  },
+  {
+    "value": {
+      "number": -1.2850871291240969e-141
+    },
+    "encoded": "{\n  \"number\": -1.2850871291240969e-141\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.2850871291240969e-141\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.2850871291240969e-141}"
+  },
+  {
+    "value": {
+      "number": 7.605590629524209e+175
+    },
+    "encoded": "{\n  \"number\": 7.605590629524209e+175\n}\n",
+    "ascii_pretty": "{\n  \"number\": 7.605590629524209e+175\n}\n",
+    "ascii_compact_sorted": "{\"number\": 7.605590629524209e+175}"
+  },
+  {
+    "value": {
+      "number": -1.6670404183327754e+59
+    },
+    "encoded": "{\n  \"number\": -1.6670404183327754e+59\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.6670404183327754e+59\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.6670404183327754e+59}"
+  },
+  {
+    "value": {
+      "number": 1.4035032562875295e+245
+    },
+    "encoded": "{\n  \"number\": 1.4035032562875295e+245\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.4035032562875295e+245\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.4035032562875295e+245}"
+  },
+  {
+    "value": {
+      "number": 1.7388577970694007e-234
+    },
+    "encoded": "{\n  \"number\": 1.7388577970694007e-234\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.7388577970694007e-234\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.7388577970694007e-234}"
+  },
+  {
+    "value": {
+      "number": 3.4708333735482067e+225
+    },
+    "encoded": "{\n  \"number\": 3.4708333735482067e+225\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.4708333735482067e+225\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.4708333735482067e+225}"
+  },
+  {
+    "value": {
+      "number": -1.1366367017836455e-118
+    },
+    "encoded": "{\n  \"number\": -1.1366367017836455e-118\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.1366367017836455e-118\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.1366367017836455e-118}"
+  },
+  {
+    "value": {
+      "number": -2.398229741709733e-287
+    },
+    "encoded": "{\n  \"number\": -2.398229741709733e-287\n}\n",
+    "ascii_pretty": "{\n  \"number\": -2.398229741709733e-287\n}\n",
+    "ascii_compact_sorted": "{\"number\": -2.398229741709733e-287}"
+  },
+  {
+    "value": {
+      "number": 5.751812317669988e-119
+    },
+    "encoded": "{\n  \"number\": 5.751812317669988e-119\n}\n",
+    "ascii_pretty": "{\n  \"number\": 5.751812317669988e-119\n}\n",
+    "ascii_compact_sorted": "{\"number\": 5.751812317669988e-119}"
+  },
+  {
+    "value": {
+      "number": 9.511572175742438e-143
+    },
+    "encoded": "{\n  \"number\": 9.511572175742438e-143\n}\n",
+    "ascii_pretty": "{\n  \"number\": 9.511572175742438e-143\n}\n",
+    "ascii_compact_sorted": "{\"number\": 9.511572175742438e-143}"
+  },
+  {
+    "value": {
+      "number": -6.08968754817728e+221
+    },
+    "encoded": "{\n  \"number\": -6.08968754817728e+221\n}\n",
+    "ascii_pretty": "{\n  \"number\": -6.08968754817728e+221\n}\n",
+    "ascii_compact_sorted": "{\"number\": -6.08968754817728e+221}"
+  },
+  {
+    "value": {
+      "number": -1.4184043986649789e+280
+    },
+    "encoded": "{\n  \"number\": -1.4184043986649789e+280\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.4184043986649789e+280\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.4184043986649789e+280}"
+  },
+  {
+    "value": {
+      "number": -3.359215654985769e+274
+    },
+    "encoded": "{\n  \"number\": -3.359215654985769e+274\n}\n",
+    "ascii_pretty": "{\n  \"number\": -3.359215654985769e+274\n}\n",
+    "ascii_compact_sorted": "{\"number\": -3.359215654985769e+274}"
+  },
+  {
+    "value": {
+      "number": 3.3052402558420494e-07
+    },
+    "encoded": "{\n  \"number\": 3.3052402558420494e-07\n}\n",
+    "ascii_pretty": "{\n  \"number\": 3.3052402558420494e-07\n}\n",
+    "ascii_compact_sorted": "{\"number\": 3.3052402558420494e-07}"
+  },
+  {
+    "value": {
+      "number": 5.626217271800688e-52
+    },
+    "encoded": "{\n  \"number\": 5.626217271800688e-52\n}\n",
+    "ascii_pretty": "{\n  \"number\": 5.626217271800688e-52\n}\n",
+    "ascii_compact_sorted": "{\"number\": 5.626217271800688e-52}"
+  },
+  {
+    "value": {
+      "number": 6.029368329807294e+189
+    },
+    "encoded": "{\n  \"number\": 6.029368329807294e+189\n}\n",
+    "ascii_pretty": "{\n  \"number\": 6.029368329807294e+189\n}\n",
+    "ascii_compact_sorted": "{\"number\": 6.029368329807294e+189}"
+  },
+  {
+    "value": {
+      "number": 8.726948200587898e-277
+    },
+    "encoded": "{\n  \"number\": 8.726948200587898e-277\n}\n",
+    "ascii_pretty": "{\n  \"number\": 8.726948200587898e-277\n}\n",
+    "ascii_compact_sorted": "{\"number\": 8.726948200587898e-277}"
+  },
+  {
+    "value": {
+      "number": 2.2441251276188303e+200
+    },
+    "encoded": "{\n  \"number\": 2.2441251276188303e+200\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.2441251276188303e+200\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.2441251276188303e+200}"
+  },
+  {
+    "value": {
+      "number": 1.0067223796135484e+89
+    },
+    "encoded": "{\n  \"number\": 1.0067223796135484e+89\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.0067223796135484e+89\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.0067223796135484e+89}"
+  },
+  {
+    "value": {
+      "number": 9.906746224351766e-272
+    },
+    "encoded": "{\n  \"number\": 9.906746224351766e-272\n}\n",
+    "ascii_pretty": "{\n  \"number\": 9.906746224351766e-272\n}\n",
+    "ascii_compact_sorted": "{\"number\": 9.906746224351766e-272}"
+  },
+  {
+    "value": {
+      "number": -5.022811857568393e+215
+    },
+    "encoded": "{\n  \"number\": -5.022811857568393e+215\n}\n",
+    "ascii_pretty": "{\n  \"number\": -5.022811857568393e+215\n}\n",
+    "ascii_compact_sorted": "{\"number\": -5.022811857568393e+215}"
+  },
+  {
+    "value": {
+      "number": 0.00010945420604355041
+    },
+    "encoded": "{\n  \"number\": 0.00010945420604355041\n}\n",
+    "ascii_pretty": "{\n  \"number\": 0.00010945420604355041\n}\n",
+    "ascii_compact_sorted": "{\"number\": 0.00010945420604355041}"
+  },
+  {
+    "value": {
+      "number": -8.761600284700099e+168
+    },
+    "encoded": "{\n  \"number\": -8.761600284700099e+168\n}\n",
+    "ascii_pretty": "{\n  \"number\": -8.761600284700099e+168\n}\n",
+    "ascii_compact_sorted": "{\"number\": -8.761600284700099e+168}"
+  },
+  {
+    "value": {
+      "number": -1.586441239255603e+127
+    },
+    "encoded": "{\n  \"number\": -1.586441239255603e+127\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.586441239255603e+127\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.586441239255603e+127}"
+  },
+  {
+    "value": {
+      "number": -1.6877924658485303e-63
+    },
+    "encoded": "{\n  \"number\": -1.6877924658485303e-63\n}\n",
+    "ascii_pretty": "{\n  \"number\": -1.6877924658485303e-63\n}\n",
+    "ascii_compact_sorted": "{\"number\": -1.6877924658485303e-63}"
+  },
+  {
+    "value": {
+      "number": -5.9313268570365975e+218
+    },
+    "encoded": "{\n  \"number\": -5.9313268570365975e+218\n}\n",
+    "ascii_pretty": "{\n  \"number\": -5.9313268570365975e+218\n}\n",
+    "ascii_compact_sorted": "{\"number\": -5.9313268570365975e+218}"
+  },
+  {
+    "value": {
+      "number": 1.3077462259595935e+67
+    },
+    "encoded": "{\n  \"number\": 1.3077462259595935e+67\n}\n",
+    "ascii_pretty": "{\n  \"number\": 1.3077462259595935e+67\n}\n",
+    "ascii_compact_sorted": "{\"number\": 1.3077462259595935e+67}"
+  },
+  {
+    "value": {
+      "number": 2.867118021073633e+40
+    },
+    "encoded": "{\n  \"number\": 2.867118021073633e+40\n}\n",
+    "ascii_pretty": "{\n  \"number\": 2.867118021073633e+40\n}\n",
+    "ascii_compact_sorted": "{\"number\": 2.867118021073633e+40}"
+  }
+]

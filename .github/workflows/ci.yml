@@ -1,29 +1,82 @@
 name: CI
 on:
   push:
-    branches: [main]
+    branches: [main, 'codex/**']
   pull_request:
+  workflow_dispatch:
 permissions:
   contents: read
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: '1'
+  PYTHONUTF8: '1'
+defaults:
+  run:
+    shell: bash
 jobs:
   verify:
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: ubuntu-latest
-            python: '3.11'
-          - os: macos-latest
-            python: '3.14'
+        os: [ubuntu-24.04, macos-15, windows-2025]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: ${{ matrix.python }}
-      - run: python -m pip install -e '.[dev]'
-      - run: make check
-      - run: make check-package
+          python-version: '3.11'
+      - name: Install the pinned Rust toolchain
+        run: rustup toolchain install 1.97.1 --profile minimal --component rustfmt,clippy --target wasm32-unknown-unknown
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: rust-ci-${{ runner.os }}-${{ runner.arch }}-1.97.1-${{ hashFiles('Cargo.lock') }}
+          restore-keys: rust-ci-${{ runner.os }}-${{ runner.arch }}-1.97.1-
+      - name: Format and lint
+        run: |
+          cargo +1.97.1 fmt --all -- --check
+          cargo +1.97.1 clippy --workspace --all-targets --locked -- -D warnings
+      - name: Behavior, recovery and adapter tests
+        run: cargo +1.97.1 test --workspace --all-targets --locked
+      - name: Keep the domain embeddable in WASM
+        run: cargo +1.97.1 check -p job-harness-domain --target wasm32-unknown-unknown --locked
+      - name: Verify the declared minimum Rust version
+        if: runner.os == 'Linux'
+        run: |
+          rustup toolchain install 1.88.0 --profile minimal
+          cargo +1.88.0 check --workspace --all-targets --locked --target-dir target/msrv
+      - name: Repository privacy and resources
+        run: |
+          python scripts/check_repository.py
+          python scripts/generate_contracts.py --check
+      - name: Optional provider contracts without SDKs, weights or network
+        run: PYTHONPATH=providers/local python -m unittest discover -s providers/local/tests -v
+      - name: Differential compatibility
+        if: runner.os != 'Windows'
+        run: |
+          cargo +1.97.1 build --workspace --locked
+          python scripts/check_parity.py
+      - name: Verify a native artifact outside the checkout
+        run: |
+          cargo +1.97.1 build --release --bins --locked
+          python scripts/verify_native.py --binary target/release/job-harness${{ runner.os == 'Windows' && '.exe' || '' }}
+      - name: Verify Windows source installation
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $HarnessPrefix = Join-Path $env:RUNNER_TEMP "job-harness-install"
+          ./scripts/install.ps1 -Prefix $HarnessPrefix
+          & (Join-Path $HarnessPrefix "bin/job-harness.exe") --version
+          if ($LASTEXITCODE -ne 0) { throw "Installed executable failed" }
+          & (Join-Path $HarnessPrefix "bin/jh.exe") --version
+          if ($LASTEXITCODE -ne 0) { throw "Installed alias failed" }

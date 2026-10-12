@@ -1,53 +1,46 @@
-# Workspace first
+# Architecture
 
-An agent needs relevant context, commands/tools and a durable workspace. Compute is an implementation choice. Job Harness keeps the workspace independent of the agent, model, process and package installation.
+A durable workspace owns career evidence. Execution can be a process, an external agent, a compatible model endpoint or a GUI. The engine never depends on a particular agent account, model SDK, browser or VM.
 
-![Four layers and their trust boundaries](assets/architecture.svg)
+![Boundaries and responsibilities](assets/architecture.svg)
 
-## Separate responsibilities
+## Four code layers
 
-The workspace holds attributed facts under context, approved CV selection under content, and vacancies/outcomes/evidence under applications. Personal configuration selects relative data paths and timezone; it is not proof of a career claim. The coordinator stores runs, attempts, action IDs and immutable packet references. Generated pipeline views are rebuilt from canonical vacancy records.
-
-The engine implements `Harness(root).call(tool, arguments)`. CLI and local stdio MCP delegate to that API. Every tool declares input/output schemas and returns a versioned data/error/next envelope. Root selection happens at trusted host startup; no MCP tool can switch candidates. Generic skills and guides ship as package resources, with one `.agents/skills` discovery symlink in the source checkout.
-
-The host supplies model access and browser/mail/calendar drivers. A capability declaration is not access proof or authority. External actions require current user scope and live observations. Credentials stay in the host's credential store; the model receives only the results it needs. Agents and a future GUI decide what to do and display outcomes. Neither chat memory nor a generated view can replace sourced records.
-
-## Context and commands
-
-Bootstrap returns routing, settings, configuration gaps and recovery counts. Retrieve metadata first; load the focused skill and complete relevant evidence on demand. Page through results before claiming exhaustive coverage. `query_batch` groups reads; `execute_batch` sequences local operations and resolves exact data references. Each mutation commits independently, and a failed child forwards recovery guidance. No arbitrary shell, Python or JavaScript is evaluated by batch references.
-
-The focused MCP catalog keeps common operations visible and loads specialized schemas through inspect_tools. The full catalog supports hosts that need direct child-tool authorization. Local batches never perform an external submission. The host must inspect batch children if it requires per-child authorization.
-
-## Durable coordination
-
-One local coordinator per workspace uses shared read locks, exclusive write locks, atomic fsynced files and a recoverable journal. A packet freezes exact CV, answers and source hashes. `begin_submission` is a separate one-shot boundary. An interrupted/unknown attempt never expires; resolve its real external outcome before retrying. Older receipts must preserve later interview or rejection states.
-
-A bundle is a snapshot for deliberate transfer, not live synchronization. Copying a workspace to two machines gives independent coordinators. Multi-host execution needs a single authenticated coordinator with transactional compare-and-set/leases, plus per-user data isolation. Do not assume network-mounted files or a Durable Object automatically reproduce local locking guarantees.
-
-## Choose compute for the actual operation
-
-| Work | Current or suitable runtime | Durable state |
+| Crate | Responsibility | Dependencies it must avoid |
 |---|---|---|
-| Inspect facts, prepare packets, update history | Local Python functions | Private workspace |
-| Fill authenticated job forms, review mail, book meetings | Existing host connectors/browser sessions | Workspace evidence; sessions in host credential/session stores |
-| Run untrusted third-party code | Host-selected restricted ephemeral sandbox | Deliberately exported artifacts only |
-| Test a native desktop workflow | A suitable device or VM | Separate test evidence |
-| Coordinate several cloud workers | Authenticated service with transactional storage | External workspace/coordinator, independent of workers |
+| `job-harness-domain` | Typed attempt and application vocabulary | Filesystem effects, model providers, connector sessions |
+| `job-harness-core` | Schemas, capabilities, locks, journal, artifacts, pipeline, transfers, derived index and CV preparation | Agent SDKs and model access |
+| `job-harness-protocol` | Official SDK MCP server and ACP client, optional model host, loopback dashboard | Canonical career facts and stored credentials |
+| `job-harness` | CLI arguments, host root selection and installation entry point | Candidate-specific defaults |
 
-Persistent VMs, ephemeral sandboxes, durable services and interpreters answer different questions. A worktree separates Git edits; it is not a security sandbox. Keeping a browser session or warmed build cache can be useful. No infrastructure primitive should become the owner of the candidate's career facts.
+Capabilities are grouped by purpose: configuration, queries, runs, tracking, submissions, adapter coordination and batches. All transports call `Engine::call`; adapters do not reimplement the submission rules. The pure domain crate can be checked for WebAssembly without building a browser runtime. The filesystem engine requires a native host.
 
-Keep durable state, compute lifetime and security isolation as three separate choices. A forked authenticated VM can duplicate browser sessions and coordination state. Base images must exclude them, or workers must use a single canonical writer. Authorized read-only access to related context can help an agent; competing writes to shared mutable state need ownership. Tool-call counts and context costs should be measured by the host, rather than inferred from ledger event counts.
+## Data boundaries
 
-The “magic compute box” idea is useful as an execution interface, but it still needs identity, permissions, resource limits, artifact transfer and trustworthy completion evidence. Job Harness provides the workspace/tool contract; it does not claim to implement a generic cloud execution service.
+Markdown is canonical for attributed evidence, scoped answers and vacancy narratives. JSON selects CV content and structural settings. The schema-1 coordinator is canonical for runs, attempt state, immutable artifact references and idempotency. Generated pipeline files are disposable views.
 
-## Why Python
+A derived SQLite database stores documents, content hashes, vacancy projections, citations and full-text search. Refresh updates changed rows inside one transaction. It neither promotes a hypothetical answer into a fact nor grants action permission. Search results identify source paths, classification and hashes; read the source before using a claim. Guards read canonical state and exact files, even if the index is missing or incorrect.
 
-The current engine is dominated by JSON, paths, hashing, files, URL normalization and Unix locking. Python's standard library covers those needs, the existing implementation is tested, and a wheel bundles the command and generic resources without runtime dependencies. This is an engineering choice for this engine, not a claim that Python is universally best for agents.
+Keep one coordinator during the language migration. Moving it into SQLite would require a deliberate new storage version and recovery design because Markdown writes still cross that transaction boundary. Do not silently introduce two authorities. Local state rewriting is appropriate to this bounded single-candidate workload; scale is a future storage migration, not a claim that filesystem locks work across hosts.
 
-Go would simplify native single-binary delivery; TypeScript fits a web GUI. Either can call or later replace the versioned API. Keep domain invariants and candidate data independent of that choice. [Packaging](INSTALL.md), [auth boundaries](AUTH.md), [decision record](adr/001-workspace-and-execution.md).
+## Durable local action, uncertain external action
 
-## Sources and limits
+Under one exclusive workspace lock: write and sync content-addressed artifacts, commit state plus pending canonical writes atomically, replay the journal by before/after hashes, rebuild views, then refresh the index best effort. A cache failure cannot turn a committed action into permission to retry.
 
-This design applies the just-in-time context principle from [Anthropic's context-engineering guidance](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents). The [MCP authorization specification](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization) distinguishes local stdio from HTTP authorization. [Python packaging metadata](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/) supplies the installable command and resources.
+Read helpers do not acquire nested write transactions. Every journal path is checked again during recovery. Manual edits that conflict with pending work are preserved and require explicit evidence-backed resolution.
 
-These sources inform the design; they do not certify this implementation. Tests and live checks are recorded separately in [development](DEVELOPMENT.md). Windows, multi-host writes, arbitrary sandbox execution and a GUI remain outside this preview.
+The submit boundary is separate: prepare/reserve → begin once → host submits once → finish with evidence. A begin replay never returns another submit permit. Begun or unknown attempts never expire. Local transactions cannot prove what an employer, mail provider or calendar did.
+
+## Tool and context flow
+
+Bootstrap gives focused routing, configuration gaps and unfinished-work health. Read metadata first and full relevant records on demand. `query_batch` groups independent reads; `execute_batch` runs ordered local writes with exact `$ref` values. Each child commits separately. Arbitrary expressions, shell commands and whole-workspace dumps are outside these tools.
+
+A fixed root is selected at trusted host startup. No MCP argument switches candidates. External documents are untrusted input, never authorization. Optional model sessions share only explicitly supplied context and tool results; no workspace bulk upload occurs by default.
+
+## Inner and outer loops
+
+The career loop uses capabilities to discover, prepare, reconcile, schedule and preserve outcomes. Its durable continuation is the workspace, including unfinished runs and uncertain attempts.
+
+The toolkit loop observes friction, reproduces it in a synthetic fixture, improves code or a focused skill, tests contracts and recovery, then releases a reviewed artifact. Use `harness-maintain` for this work. Skills are operational guidance; invariants belong in code and tests.
+
+Compute and isolation are host choices. Additional sandboxes are useful for untrusted execution; persistent processes or VMs may suit other workloads. Neither is required to call a local tool or replaces provenance, access control and durable state.
