@@ -8,7 +8,7 @@ use sha2::{Digest, Sha256};
 use std::{
     fs::{self, File, OpenOptions},
     io::Write,
-    path::{Path, PathBuf},
+    path::{Component, Path, PathBuf},
 };
 
 pub struct WorkspaceLock {
@@ -82,6 +82,34 @@ pub fn digest(bytes: &[u8]) -> String {
 /// Existing packet and idempotency hashes must survive a language change.
 pub fn encoded(value: &Value) -> Vec<u8> {
     job_harness_domain::canonical::encoded(value)
+}
+/// Encode an internally derived native path in the portable relative wire format.
+/// This converts native separators between components, never characters inside a
+/// component. External strings still go through the strict portable-path guards.
+pub(crate) fn portable_relative(root: &Path, path: &Path) -> Result<String> {
+    let relative = path
+        .strip_prefix(root)
+        .map_err(|_| HarnessError::new("path_denied", "Path is outside the selected workspace"))?;
+    let components = relative
+        .components()
+        .map(|component| match component {
+            Component::Normal(name) => name.to_str().ok_or_else(|| {
+                HarnessError::new("path_denied", "Workspace paths must be portable UTF-8")
+            }),
+            _ => Err(HarnessError::new(
+                "path_denied",
+                "Workspace paths must contain only normal relative components",
+            )),
+        })
+        .collect::<Result<Vec<_>>>()?;
+    let encoded = components.join("/");
+    if !crate::workspace::portable_relative_path(&encoded) {
+        return Err(HarnessError::new(
+            "path_denied",
+            "Workspace paths must use portable filename components",
+        ));
+    }
+    Ok(encoded)
 }
 pub fn atomic_write(path: &Path, bytes: &[u8]) -> Result<()> {
     reject_symlink_ancestors(path)?;
@@ -255,6 +283,52 @@ pub fn rebuild_index(root: &Path) -> Result<Value> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn derived_nested_paths_use_portable_wire_components() {
+        let workspace = tempfile::tempdir().unwrap();
+        let root = workspace.path();
+        let native = root.join("context").join("projects").join("alpha.md");
+        let relative = portable_relative(root, &native).unwrap();
+        assert_eq!(relative, "context/projects/alpha.md");
+        assert_eq!(
+            json!({"path":relative})["path"],
+            "context/projects/alpha.md"
+        );
+        assert!(portable_relative(root, root).is_err());
+        assert!(portable_relative(root, &root.join("context/../outside.md")).is_err());
+        assert!(portable_relative(root, &root.parent().unwrap().join("outside.md")).is_err());
+        for untrusted in [
+            "context\\projects\\alpha.md",
+            "C:/context/alpha.md",
+            "//server/share/alpha.md",
+            "context/alpha.md:stream",
+        ] {
+            assert!(safe_path(root, untrusted, &["context"], &[".md"]).is_err());
+        }
+    }
+    #[cfg(unix)]
+    #[test]
+    fn native_conversion_does_not_launder_literal_backslashes() {
+        let workspace = tempfile::tempdir().unwrap();
+        let native = workspace.path().join("context").join("fictional\\notes.md");
+        assert!(portable_relative(workspace.path(), &native).is_err());
+    }
+    #[cfg(windows)]
+    #[test]
+    fn native_drive_and_unc_roots_encode_relative_paths_only() {
+        for root in [
+            Path::new(r"C:\workspace"),
+            Path::new(r"\\server\share\workspace"),
+            Path::new(r"\\?\C:\workspace"),
+        ] {
+            let path = root.join("applications").join("nested").join("role.md");
+            assert!(path.as_os_str().to_string_lossy().contains('\\'));
+            assert_eq!(
+                portable_relative(root, &path).unwrap(),
+                "applications/nested/role.md"
+            );
+        }
+    }
     #[test]
     fn historical_hash_encoding_handles_unicode_and_sorting() {
         assert_eq!(

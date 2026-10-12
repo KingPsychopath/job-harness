@@ -45,6 +45,40 @@ fn prepare(h: &Engine, run: &str, key: &str) -> Value {
     )
 }
 #[test]
+fn native_record_paths_become_valid_portable_journal_paths() {
+    let directory = fixture();
+    let engine = Engine::open(directory.path()).unwrap();
+    let native = engine
+        .root
+        .join("applications")
+        .join("acme-engineer-123.md");
+    let mut changes = Vec::new();
+    engine
+        .change(
+            &native,
+            "# Synthetic vacancy\n\n<!-- tracking\n{\"stage\":\"saved\"}\n-->\n".into(),
+            &mut changes,
+        )
+        .unwrap();
+    assert_eq!(changes[0]["path"], "applications/acme-engineer-123.md");
+    assert_eq!(
+        crate::state::journal_path(&engine.root, changes[0]["path"].as_str().unwrap()).unwrap(),
+        native
+    );
+    assert!(
+        engine
+            .change(
+                &native,
+                "# Another change\n\n<!-- tracking\n{}\n-->\n".into(),
+                &mut changes
+            )
+            .is_err()
+    );
+    assert!(
+        crate::state::journal_path(&engine.root, r"applications\acme-engineer-123.md").is_err()
+    );
+}
+#[test]
 fn all_contracts_reject_extra_input_without_writes() {
     let dir = fixture();
     let h = Engine::open(dir.path()).unwrap();

@@ -101,8 +101,9 @@ pub fn source_kind(root: &Path, path: &str) -> String {
         kind(path).into()
     }
 }
-fn canonical_paths(root: &Path) -> Result<Vec<String>> {
+fn canonical_paths(root: &Path) -> Result<(Vec<String>, Vec<Value>)> {
     let mut paths = Vec::new();
+    let mut skipped = Vec::new();
     for directory in ["context", "content", "applications", "docs", "config"] {
         let base = root.join(directory);
         if !base.exists() {
@@ -120,12 +121,25 @@ fn canonical_paths(root: &Path) -> Result<Vec<String>> {
             {
                 continue;
             }
-            let rel = entry
-                .path()
-                .strip_prefix(root)
-                .map_err(|_| HarnessError::validation("Invalid index path"))?
-                .to_string_lossy()
-                .replace('\\', "/");
+            let rel = match storage::portable_relative(root, entry.path()) {
+                Ok(path) => path,
+                Err(_) => {
+                    // Preserve the observed filename in the coverage report instead
+                    // of rewriting a literal backslash into a different source.
+                    let observed = entry
+                        .path()
+                        .strip_prefix(root)
+                        .map_err(|_| HarnessError::validation("Invalid index path"))?
+                        .to_string_lossy();
+                    skipped.push(json!({"path":observed,"reason":"nonportable source path"}));
+                    if skipped.len() + paths.len() > MAX_DOCUMENTS {
+                        return Err(HarnessError::validation(
+                            "Index exceeds twenty thousand source documents",
+                        ));
+                    }
+                    continue;
+                }
+            };
             if rel.starts_with("applications/operations/")
                 || matches!(
                     rel.as_str(),
@@ -135,7 +149,7 @@ fn canonical_paths(root: &Path) -> Result<Vec<String>> {
                 continue;
             }
             paths.push(rel);
-            if paths.len() > MAX_DOCUMENTS {
+            if paths.len() + skipped.len() > MAX_DOCUMENTS {
                 return Err(HarnessError::validation(
                     "Index exceeds twenty thousand source documents",
                 ));
@@ -143,7 +157,8 @@ fn canonical_paths(root: &Path) -> Result<Vec<String>> {
         }
     }
     paths.sort();
-    Ok(paths)
+    skipped.sort_by(|a, b| a["path"].as_str().cmp(&b["path"].as_str()));
+    Ok((paths, skipped))
 }
 fn relative_link(source: &str, target: &str) -> Option<String> {
     let target = target.split('#').next()?.trim_matches(['<', '>']);
@@ -171,7 +186,7 @@ fn relative_link(source: &str, target: &str) -> Option<String> {
 /// Callers coordinating mutations already hold the workspace lock.
 pub fn refresh(root: &Path) -> Result<Value> {
     let root = root.canonicalize()?;
-    let paths = canonical_paths(&root)?;
+    let (paths, mut skipped) = canonical_paths(&root)?;
     let mut db = open(&root)?;
     let tx = db
         .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)
@@ -193,7 +208,6 @@ pub fn refresh(root: &Path) -> Result<Value> {
     let mut changed = 0;
     let mut seen = BTreeSet::new();
     let mut fingerprints = Vec::new();
-    let mut skipped = Vec::new();
     let link_rx = regex::Regex::new(r"\]\(([^)]+)\)").expect("static link pattern");
     for path in &paths {
         let full = storage::safe_path(
@@ -438,6 +452,36 @@ pub fn related_paths(root: &Path, seeds: &[String], limit: usize) -> Result<Vec<
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(unix)]
+    #[test]
+    fn nonportable_filename_is_reported_without_becoming_another_source() {
+        let root = tempfile::tempdir().unwrap();
+        fs::create_dir_all(root.path().join("context/fictional")).unwrap();
+        let nonportable = root.path().join("context").join("fictional\\notes.md");
+        fs::write(&nonportable, "# Nonportable\nwrongsourceuniquemarker\n").unwrap();
+        fs::write(
+            root.path().join("context/fictional/notes.md"),
+            "# Real nested source\nrightsourceuniquemarker\n",
+        )
+        .unwrap();
+        let result = search(root.path(), "rightsourceuniquemarker", 5).unwrap();
+        assert_eq!(result["coverage_complete"], false);
+        assert_eq!(
+            result["skipped"][0],
+            json!({"path":r"context/fictional\notes.md","reason":"nonportable source path"})
+        );
+        assert_eq!(result["matches"][0]["path"], "context/fictional/notes.md");
+        assert!(
+            search(root.path(), "wrongsourceuniquemarker", 5).unwrap()["matches"]
+                .as_array()
+                .unwrap()
+                .is_empty()
+        );
+        assert_eq!(
+            fs::read_to_string(nonportable).unwrap(),
+            "# Nonportable\nwrongsourceuniquemarker\n"
+        );
+    }
     #[test]
     fn index_is_incremental_rebuildable_and_separates_coaching() {
         let t = tempfile::tempdir().unwrap();

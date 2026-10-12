@@ -150,18 +150,13 @@ fn prepare_inner(root: &Path, content: &str, output: &str) -> Result<Value> {
     let (pdf, typ, data, provenance) = output_paths(root, output)?;
     fs::create_dir_all(pdf.parent().unwrap())?;
     let mut manifest = json!({"schema_version":1,"source":{"path":content,"sha256":digest(&bytes)},"template_sha256":digest(TEMPLATE.as_bytes()),"evidence":sources,"approved_by":selection["provenance"]["approved_by"],"approved_at":selection["provenance"]["approved_at"],"note":"Derived selection; source references do not themselves prove the truth of claims."});
-    let output_relative = |path: &Path| -> String {
-        path.strip_prefix(root)
-            .unwrap_or(path)
-            .to_string_lossy()
-            .into_owned()
-    };
-    manifest["artifacts"] = json!({"typst":output_relative(&typ),"content":output_relative(&data),"pdf":output_relative(&pdf)});
+    let output_relative = |path: &Path| crate::storage::portable_relative(root, path);
+    manifest["artifacts"] = json!({"typst":output_relative(&typ)?,"content":output_relative(&data)?,"pdf":output_relative(&pdf)?});
     crate::storage::atomic_write(&typ, TEMPLATE.as_bytes())?;
     crate::storage::atomic_write(&data, &serde_json::to_vec_pretty(&selection)?)?;
     crate::storage::atomic_write(&provenance, &serde_json::to_vec_pretty(&manifest)?)?;
     Ok(
-        json!({"prepared":true,"source":content,"output":output,"typst":output_relative(&typ),"content":output_relative(&data),"provenance":output_relative(&provenance),"built":false,"next":["Run the explicit cv build adapter or compile the emitted template with your host.","Inspect the one-page PDF and verify selected claims before choosing it as primary."]}),
+        json!({"prepared":true,"source":content,"output":output,"typst":output_relative(&typ)?,"content":output_relative(&data)?,"provenance":output_relative(&provenance)?,"built":false,"next":["Run the explicit cv build adapter or compile the emitted template with your host.","Inspect the one-page PDF and verify selected claims before choosing it as primary."]}),
     )
 }
 pub fn prepare(root: &Path, content: &str, output: &str) -> Result<Value> {
@@ -229,12 +224,7 @@ pub fn build(root: &Path, content: &str, output: &str) -> Result<Value> {
             if !entry.file_type().is_file() {
                 continue;
             }
-            let relative = entry
-                .path()
-                .strip_prefix(&root)
-                .map_err(|_| failure("Font path outside workspace"))?
-                .to_str()
-                .ok_or_else(|| failure("Font path must be UTF-8"))?;
+            let relative = crate::storage::portable_relative(&root, entry.path())?;
             if !["ttf", "otf", "ttc", "otc"].contains(
                 &entry
                     .path()
@@ -244,7 +234,7 @@ pub fn build(root: &Path, content: &str, output: &str) -> Result<Value> {
             ) {
                 continue;
             }
-            let path = crate::workspace::safe_path(&root, relative)?;
+            let path = crate::workspace::safe_path(&root, &relative)?;
             let mut bytes = Vec::new();
             fs::File::open(path)?
                 .take(16 * 1024 * 1024 + 1)
@@ -381,5 +371,37 @@ mod tests {
         assert!(!t.path().join("output/preview.pdf").exists());
         fs::remove_file(t.path().join("context/profile/example.md")).unwrap();
         assert!(prepare(t.path(), "content/selection.json", "output/second.pdf").is_err());
+    }
+    #[test]
+    fn nested_preview_and_provenance_paths_are_portable() {
+        let t = workspace();
+        let prepared = prepare(
+            t.path(),
+            "content/selection.json",
+            "output/previews/screening.pdf",
+        )
+        .unwrap();
+        assert_eq!(prepared["typst"], "output/previews/screening.harness.typ");
+        assert_eq!(
+            prepared["content"],
+            "output/previews/screening.harness.json"
+        );
+        assert_eq!(
+            prepared["provenance"],
+            "output/previews/screening.provenance.json"
+        );
+        let provenance: Value = serde_json::from_slice(
+            &fs::read(t.path().join("output/previews/screening.provenance.json")).unwrap(),
+        )
+        .unwrap();
+        assert_eq!(
+            provenance["artifacts"]["pdf"],
+            "output/previews/screening.pdf"
+        );
+        for artifact in provenance["artifacts"].as_object().unwrap().values() {
+            assert!(crate::workspace::portable_relative_path(
+                artifact.as_str().unwrap()
+            ));
+        }
     }
 }

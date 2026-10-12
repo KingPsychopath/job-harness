@@ -315,13 +315,8 @@ pub fn export_bundle_with_options(
         if entry.depth() == 0 {
             continue;
         }
-        let name = entry
-            .path()
-            .strip_prefix(&root)
-            .unwrap()
-            .to_str()
-            .ok_or_else(|| failure("Bundle paths must be UTF-8"))?
-            .replace(std::path::MAIN_SEPARATOR, "/");
+        let name = crate::storage::portable_relative(&root, entry.path())
+            .map_err(|_| failure("Workspace data uses a nonportable bundle path"))?;
         if DATA_DIRS.contains(&name.split('/').next().unwrap_or(""))
             && !crate::workspace::portable_relative_path(&name)
         {
@@ -451,6 +446,7 @@ pub fn export_bundle_with_options(
             "Safe no-overwrite publication failed; choose a local filesystem: {e}"
         ))
     })?;
+    #[cfg(unix)]
     fs::File::open(parent)?.sync_all()?;
     Ok(
         json!({"bundle":destination,"kind":kind,"files":paths.len(),"extensions":extensions,"encrypted":false,"history_dropped":kind==BundleKind::Profile && allow_drop_history,"note":"Private plaintext ZIP. Encrypt separately before sharing. No provider sessions are included."}),
@@ -763,6 +759,42 @@ mod tests {
         let t = tempfile::tempdir().unwrap();
         crate::workspace::populate(t.path()).unwrap();
         t
+    }
+    #[test]
+    fn nested_archive_names_and_manifest_paths_are_portable_and_restore_exact_bytes() {
+        let root = workspace();
+        let native = root
+            .path()
+            .join("context")
+            .join("projects")
+            .join("nested")
+            .join("evidence.md");
+        fs::create_dir_all(native.parent().unwrap()).unwrap();
+        fs::write(&native, b"# Synthetic nested evidence\nExact bytes.\n").unwrap();
+        let out = tempfile::tempdir().unwrap();
+        let file = out.path().join("nested.jhb");
+        let exported = export_bundle(root.path(), &file, "workspace").unwrap();
+        assert!(exported["files"].as_u64().unwrap() > 0);
+        let mut archive = ZipArchive::new(fs::File::open(&file).unwrap()).unwrap();
+        for index in 0..archive.len() {
+            let name = archive.by_index(index).unwrap().name().to_owned();
+            assert!(!name.contains('\\'));
+        }
+        let manifest: Value =
+            serde_json::from_reader(archive.by_name("manifest.json").unwrap()).unwrap();
+        assert!(
+            manifest["files"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|entry| entry["path"] == "context/projects/nested/evidence.md")
+        );
+        let restored = out.path().join("restored");
+        import_bundle(&restored, &file).unwrap();
+        assert_eq!(
+            fs::read(restored.join("context/projects/nested/evidence.md")).unwrap(),
+            fs::read(native).unwrap()
+        );
     }
     fn unknown_attempt(root: &Path) {
         fs::write(

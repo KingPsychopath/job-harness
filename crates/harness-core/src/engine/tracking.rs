@@ -31,7 +31,8 @@ impl Engine {
                 "A vacancy update must preserve exactly one tracking block; escape quoted tracking markup",
             ));
         }
-        changes.push(json!({"path":path.strip_prefix(&self.root).map_err(|_|Error::new("path_denied","Change outside workspace"))?,"before_sha256":if path.exists(){Some(domain::digest(&fs::read(path)?))}else{None},"text":text}));
+        let relative = storage::portable_relative(&self.root, path)?;
+        changes.push(json!({"path":relative,"before_sha256":if path.exists(){Some(domain::digest(&fs::read(path)?))}else{None},"text":text}));
         Ok(())
     }
     pub(super) fn set_tracking(
