@@ -1,17 +1,22 @@
 name: Private native release
+# Deliberately heavy: an owner explicitly requests all five native targets.
+# Creating or pushing a tag never starts this workflow.
 on:
-  push:
-    tags: ['v*']
   workflow_dispatch:
     inputs:
       tag:
         description: Existing version tag to build (for example v0.2.0)
         type: string
         required: true
+      confirm_full_release:
+        description: Build/test all five targets and three components, then publish a private preview
+        type: boolean
+        required: true
+        default: false
 permissions:
   contents: read
 concurrency:
-  group: release-${{ inputs.tag || github.ref_name }}
+  group: release-${{ inputs.tag }}
   cancel-in-progress: false
 env:
   CARGO_TERM_COLOR: always
@@ -20,8 +25,53 @@ defaults:
   run:
     shell: bash
 jobs:
+  source:
+    if: github.event.repository.private == true && inputs.confirm_full_release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      RELEASE_TAG: ${{ inputs.tag }}
+    outputs:
+      commit: ${{ steps.identity.outputs.commit }}
+    steps:
+      - name: Validate an existing version tag
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            printf '%s\n' 'Use an existing version tag that matches the package version.' >&2
+            exit 1
+          fi
+      - name: Refuse an existing release before native builds
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          release_owner=${GH_REPO%%/*}
+          release_name=${GH_REPO#*/}
+          release_lookup=$(gh api graphql \
+            -f query='query($owner: String!, $name: String!, $tag: String!) { repository(owner: $owner, name: $name) { isPrivate release(tagName: $tag) { tagName } } }' \
+            -f owner="$release_owner" -f name="$release_name" -f tag="$RELEASE_TAG")
+          if ! jq -e '(has("errors") | not) and (.data.repository.isPrivate == true) and (.data.repository | has("release"))' <<< "$release_lookup" > /dev/null; then
+            printf '%s\n' 'Could not verify a private repository and release lookup; no native builds will start.' >&2
+            exit 1
+          fi
+          if ! jq -e '.data.repository.release == null' <<< "$release_lookup" > /dev/null; then
+            printf '%s\n' 'This tag already has a release; no duplicate builds or asset replacement will start.' >&2
+            exit 1
+          fi
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/${{ inputs.tag }}
+          persist-credentials: false
+      - name: Resolve one immutable source identity
+        id: identity
+        run: |
+          commit=$(git rev-parse --verify HEAD)
+          test "$(git rev-parse --verify "refs/tags/$RELEASE_TAG^{commit}")" = "$commit"
+          test -z "$(git status --porcelain --untracked-files=normal)"
+          printf 'commit=%s\n' "$commit" >> "$GITHUB_OUTPUT"
   build:
-    if: github.event.repository.private == true
+    needs: source
+    if: github.event.repository.private == true && inputs.confirm_full_release
     # Each platform validates and links three separate native components.
     timeout-minutes: 90
     strategy:
@@ -41,7 +91,8 @@ jobs:
             suffix: .exe
     runs-on: ${{ matrix.os }}
     env:
-      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+      RELEASE_TAG: ${{ inputs.tag }}
+      RELEASE_COMMIT: ${{ needs.source.outputs.commit }}
       RELEASE_TARGET: ${{ matrix.target }}
       RELEASE_SUFFIX: ${{ matrix.suffix || '' }}
     steps:
@@ -53,8 +104,12 @@ jobs:
           fi
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ inputs.tag || github.ref_name }}
+          ref: ${{ needs.source.outputs.commit }}
           persist-credentials: false
+      - name: Verify the selected clean source
+        run: |
+          test "$(git rev-parse --verify HEAD)" = "$RELEASE_COMMIT"
+          test -z "$(git status --porcelain --untracked-files=normal)"
       - name: Keep native Linux build space available
         if: runner.os == 'Linux'
         run: |
@@ -126,18 +181,19 @@ jobs:
           if-no-files-found: error
           retention-days: 14
   publish:
-    needs: build
+    needs: [source, build]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       contents: write
     env:
       GH_TOKEN: ${{ github.token }}
-      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+      RELEASE_TAG: ${{ inputs.tag }}
+      RELEASE_COMMIT: ${{ needs.source.outputs.commit }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ inputs.tag || github.ref_name }}
+          ref: ${{ needs.source.outputs.commit }}
           persist-credentials: false
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
@@ -148,6 +204,7 @@ jobs:
           GH_REPO: ${{ github.repository }}
         run: |
           test "$(gh api "repos/$GH_REPO" --jq '.private')" = true
+          test "$(gh api "repos/$GH_REPO/commits/$RELEASE_TAG" --jq '.sha')" = "$RELEASE_COMMIT"
           cd artifacts
           cat ./*.sha256 > SHA256SUMS
           sha256sum --check SHA256SUMS

@@ -1,13 +1,37 @@
-name: CI
+name: Manual verification
+# Owner-triggered only: commits, PRs and tags spend no Actions minutes.
 on:
-  push:
-    branches: [main, 'codex/**']
-  pull_request:
   workflow_dispatch:
+    inputs:
+      platforms:
+        description: Native platforms to check (default is one Linux job)
+        type: choice
+        options: [linux, macos, windows, all]
+        default: linux
+      desktop:
+        description: Also compile and test the optional desktop on selected platforms
+        type: boolean
+        default: false
+      models:
+        description: Also test the optional native provider (no model/SDK downloads)
+        type: boolean
+        default: false
+      packaging:
+        description: Verify copied debug binaries for core and selected optional components
+        type: boolean
+        default: false
+      extended:
+        description: Add WASM and Rust 1.88 checks on Linux, when selected
+        type: boolean
+        default: false
+      source_install:
+        description: Also test the source installer on Windows, when selected (optimized rebuild)
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
-  group: ci-${{ github.ref }}
+  group: manual-ci-${{ github.ref }}
   cancel-in-progress: true
 env:
   CARGO_TERM_COLOR: always
@@ -17,19 +41,18 @@ defaults:
     shell: bash
 jobs:
   verify:
-    # Cold Windows builds compile debug, provider and optimized CLI profiles.
-    timeout-minutes: 60
+    timeout-minutes: ${{ matrix.os == 'windows-2025' && 60 || 30 }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, macos-15, windows-2025]
+        os: ${{ fromJSON(inputs.platforms == 'all' && '["ubuntu-24.04","macos-15","windows-2025"]' || inputs.platforms == 'macos' && '["macos-15"]' || inputs.platforms == 'windows' && '["windows-2025"]' || '["ubuntu-24.04"]') }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Install the pinned Rust toolchain
-        run: rustup toolchain install 1.97.1 --profile minimal --component rustfmt,clippy --target wasm32-unknown-unknown
+        run: rustup toolchain install 1.97.1 --profile minimal --component rustfmt,clippy
       - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: |
@@ -40,46 +63,40 @@ jobs:
             providers/local/native/target
           key: rust-ci-${{ runner.os }}-${{ runner.arch }}-1.97.1-${{ hashFiles('Cargo.lock', 'providers/local/native/Cargo.lock') }}
           restore-keys: rust-ci-${{ runner.os }}-${{ runner.arch }}-1.97.1-
-      - name: Format and lint
+      - name: Format, lint and core behavior tests
         run: |
           cargo +1.97.1 fmt --all -- --check
-          if ! cargo +1.97.1 clippy --workspace --all-targets --locked -- -D warnings > lint.log 2>&1; then
-            cat lint.log
-            tail -80 lint.log | while IFS= read -r line; do
-              line=${line//'%'/'%25'}
-              line=${line//$'\r'/'%0D'}
-              printf '::error::%s\n' "$line"
-            done
-            exit 1
-          fi
-          cat lint.log
-          rm lint.log
-      - name: Behavior, recovery and adapter tests
-        run: cargo +1.97.1 test --workspace --all-targets --locked
-      - name: Keep the domain embeddable in WASM
-        run: cargo +1.97.1 check -p job-harness-domain --target wasm32-unknown-unknown --locked
-      - name: Verify the declared minimum Rust version
-        if: runner.os == 'Linux'
-        run: |
-          rustup toolchain install 1.88.0 --profile minimal
-          cargo +1.88.0 check --workspace --all-targets --locked --target-dir target/msrv
+          cargo +1.97.1 clippy --workspace --all-targets --locked -- -D warnings
+          cargo +1.97.1 test --workspace --all-targets --locked
       - name: Repository privacy, resources and generated contracts
         run: |
           cargo +1.97.1 run -p job-harness-dev --locked -- repository
           cargo +1.97.1 run -p job-harness-dev --locked -- contracts --check
-      - name: Optional native provider contracts without weights or SDK downloads
+      - name: Optional WASM and minimum Rust checks
+        if: inputs.extended && runner.os == 'Linux'
+        run: |
+          rustup target add wasm32-unknown-unknown --toolchain 1.97.1
+          cargo +1.97.1 check -p job-harness-domain --target wasm32-unknown-unknown --locked
+          rustup toolchain install 1.88.0 --profile minimal
+          cargo +1.88.0 check --workspace --all-targets --locked --target-dir target/msrv
+      - name: Optional native provider contracts
+        if: inputs.models
         run: |
           cargo +1.97.1 fmt --manifest-path providers/local/native/Cargo.toml -- --check
           cargo +1.97.1 clippy --manifest-path providers/local/native/Cargo.toml --all-targets --locked -- -D warnings
           cargo +1.97.1 test --manifest-path providers/local/native/Cargo.toml --locked
-          cargo +1.97.1 build --release --manifest-path providers/local/native/Cargo.toml --locked
-          cargo +1.97.1 run -p job-harness-dev --locked -- package --component local --binary providers/local/native/target/release/job-harness-local${{ runner.os == 'Windows' && '.exe' || '' }}
-      - name: Verify a native artifact outside the checkout
+      - name: Optional copied core package check
+        if: inputs.packaging
         run: |
-          cargo +1.97.1 build --release --bins --locked
-          cargo +1.97.1 run -p job-harness-dev --locked -- package --binary target/release/job-harness${{ runner.os == 'Windows' && '.exe' || '' }}
-      - name: Verify Windows source installation
-        if: runner.os == 'Windows'
+          cargo +1.97.1 build --bins --locked
+          cargo +1.97.1 run -p job-harness-dev --locked -- package --binary target/debug/job-harness${{ runner.os == 'Windows' && '.exe' || '' }}
+      - name: Optional copied provider package check
+        if: inputs.models && inputs.packaging
+        run: |
+          cargo +1.97.1 build --manifest-path providers/local/native/Cargo.toml --locked
+          cargo +1.97.1 run -p job-harness-dev --locked -- package --component local --binary providers/local/native/target/debug/job-harness-local${{ runner.os == 'Windows' && '.exe' || '' }}
+      - name: Optional Windows source installation
+        if: inputs.source_install && runner.os == 'Windows'
         shell: pwsh
         run: |
           $HarnessPrefix = Join-Path $env:RUNNER_TEMP "job-harness-install"
@@ -89,11 +106,12 @@ jobs:
           & (Join-Path $HarnessPrefix "bin/jh.exe") --version
           if ($LASTEXITCODE -ne 0) { throw "Installed alias failed" }
   desktop:
+    if: inputs.desktop
     timeout-minutes: 35
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, macos-15, windows-2025]
+        os: ${{ fromJSON(inputs.platforms == 'all' && '["ubuntu-24.04","macos-15","windows-2025"]' || inputs.platforms == 'macos' && '["macos-15"]' || inputs.platforms == 'windows' && '["windows-2025"]' || '["ubuntu-24.04"]') }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -111,12 +129,16 @@ jobs:
             ~/.cargo/registry/cache
             ~/.cargo/git/db
             apps/desktop/target
-          key: rust-desktop-${{ runner.os }}-${{ runner.arch }}-1.97.1-${{ hashFiles('apps/desktop/Cargo.lock') }}
+            target
+          key: rust-desktop-${{ runner.os }}-${{ runner.arch }}-1.97.1-${{ hashFiles('Cargo.lock', 'apps/desktop/Cargo.lock') }}
           restore-keys: rust-desktop-${{ runner.os }}-${{ runner.arch }}-1.97.1-
-      - name: Desktop source and boundary tests
+      - name: Optional desktop source and boundary tests
         run: |
           cargo +1.97.1 fmt --manifest-path apps/desktop/Cargo.toml -- --check
           cargo +1.97.1 clippy --manifest-path apps/desktop/Cargo.toml --all-targets --locked -- -D warnings
           cargo +1.97.1 test --manifest-path apps/desktop/Cargo.toml --locked
+      - name: Optional copied desktop package check
+        if: inputs.packaging
+        run: |
           cargo +1.97.1 build --manifest-path apps/desktop/Cargo.toml --locked
           cargo +1.97.1 run -p job-harness-dev --locked -- package --component desktop --binary apps/desktop/target/debug/job-harness-desktop${{ runner.os == 'Windows' && '.exe' || '' }}
