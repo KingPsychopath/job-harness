@@ -54,7 +54,15 @@ def connection(workspace, profile="focused"):
     root = Path(workspace).expanduser().resolve()
     if not (root / "config/career-ledger.json").is_file():
         raise ValueError("Choose an initialized private workspace before connecting a client.")
+    # Framework launchers may spell sys.executable differently on macOS. Keep
+    # the selected virtual environment; resolving its symlink loses the venv.
+    interpreter = Path(sys.prefix) / "bin/python"
+    command = (
+        str(interpreter)
+        if sys.prefix != sys.base_prefix and interpreter.is_file()
+        else sys.executable
+    )
     return {
-        "command": sys.executable,
+        "command": command,
         "args": ["-P", "-m", "job_harness", "--root", str(root), "mcp", "--tool-profile", profile],
     }

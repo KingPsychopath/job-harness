@@ -77,8 +77,31 @@ def verify():
         require(value["ok"] and value["data"]["origin"] == "toolkit", "Verification failed")
         value = json.loads(run("connect", "mcp").stdout)
         require(
-            value["data"]["command"] == str(python) and value["data"]["args"][-1] == "focused",
-            "Verification failed",
+            Path(value["data"]["command"]).parent.samefile(python.parent),
+            "MCP launch must remain in the installed virtual environment",
+        )
+        require(value["data"]["args"][-1] == "focused", "Wrong MCP profile")
+        runtime = subprocess.run(
+            [
+                value["data"]["command"],
+                "-P",
+                "-c",
+                "import json,sys,job_harness; print(json.dumps({'prefix':sys.prefix,'module':job_harness.__file__}))",
+            ],
+            cwd=root,
+            env=env,
+            check=True,
+            text=True,
+            capture_output=True,
+        )
+        installed = json.loads(runtime.stdout)
+        require(
+            Path(installed["prefix"]).samefile(environment),
+            "MCP launch selected a different Python environment",
+        )
+        require(
+            Path(installed["module"]).resolve().is_relative_to(environment.resolve()),
+            "MCP module must come from the fresh installed wheel",
         )
         require(value["data"]["args"][:2] == ["-P", "-m"], "Verification failed")
         # A host may launch from an arbitrary cwd: planted modules must not shadow installed code.

@@ -184,6 +184,17 @@ class BundleTests(unittest.TestCase):
             settings = json.loads((self.home / "host/job-harness/settings.json").read_text())
             self.assertEqual(set(settings), {"schema_version", "workspace"})
 
+    def test_framework_launcher_preserves_selected_virtual_environment(self):
+        runtime = self.home / "runtime"
+        (runtime / "bin").mkdir(parents=True)
+        (runtime / "bin/python").write_text("synthetic interpreter path")
+        with (
+            patch("job_harness.host.sys.prefix", str(runtime)),
+            patch("job_harness.host.sys.base_prefix", "/framework"),
+            patch("job_harness.host.sys.executable", "/framework/python"),
+        ):
+            self.assertEqual(connection(self.root)["command"], str(runtime / "bin/python"))
+
     def test_export_refuses_destination_inside_workspace(self):
         for archive in [self.root / "snapshot.jhb", self.root / "sources/snapshot.jhb"]:
             with self.assertRaisesRegex(ValueError, "outside the private workspace"):

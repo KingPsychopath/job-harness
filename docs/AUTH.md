@@ -28,3 +28,7 @@ For a submission: complete the form, freeze/reserve exact artifacts, obtain any 
 A filesystem allowlist is not a multi-user authorization system. The current MCP is local stdio and has no OAuth server. A future HTTP service must authenticate callers, authorize each workspace and action, isolate credentials, defend redirects/token boundaries and use a transactional coordinator. Do not expose the existing stdio process through an unauthenticated tunnel or shared general shell.
 
 [Architecture](ARCHITECTURE.md) · [Bundle privacy](BUNDLES.md) · [Security reporting](../SECURITY.md)
+
+## Development CI authorization
+
+GitHub CLI authorization belongs to the developer host, not Job Harness. Pushing GitHub Actions workflow files over its OAuth credential needs the provider’s workflow permission. Refresh the same principal, preserve existing scopes and verify the saved grant before retrying. Native OS clipboards and an agent browser’s virtual clipboard may be separate; use the provider’s supported human flow or a verified native UI path, without printing or storing verification codes. A consent page is not evidence of completion: require CLI success and the saved scope. Do not switch credentials after a denied action without explicit authorization.
