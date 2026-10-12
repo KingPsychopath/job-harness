@@ -40,3 +40,5 @@ Models retrieve or suggest; they do not certify qualifications, archive mail or 
 Synthetic mail/ATS tests do not establish live provider correctness. Small model probes do not establish classification superiority. Audio transcription has an HTTP contract fixture, not a verified live recorder/model. Shared multi-host coordination, public registries and hosted deployment remain outside this preview's evidence.
 
 Review prompts and raw local test outputs are ignored development artifacts. Durable contracts, meaningful regressions and source links stay in the reusable repository. No private ledger history or model weights belong in a software release.
+
+The current preview is held after a bounded Windows stress run reproduced an intermittent notification-test stall. [Validation status and next proof](VALIDATION.md) distinguish successful builds from the unresolved diagnostic and publication gate.

@@ -38,7 +38,9 @@ Your agent uses its own browser, mail and calendar connectors. Job Harness provi
 
 ## Start your workspace
 
-Download the archive for your operating system from [GitHub Releases](https://github.com/KingPsychopath/job-harness/releases), verify its SHA256, and put `job-harness` and `jh` on your PATH. Native archives need no Rust or Python installation. Source installation is also available. [Installation, checksums and platform requirements](docs/INSTALL.md)
+Source installation is available now. Preview packages are held while an intermittent Windows notification stall is investigated. [Current validation status](docs/VALIDATION.md)
+
+Published archives will be available through [GitHub Releases](https://github.com/KingPsychopath/job-harness/releases). Verify the SHA256 and put `job-harness` and `jh` on your PATH; native archives need no Rust or Python installation. [Installation, checksums and platform requirements](docs/INSTALL.md)
 
 ```sh
 jh setup --workspace "$HOME/Career/workspace"
