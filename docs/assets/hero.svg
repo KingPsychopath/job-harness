@@ -1,25 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="610" viewBox="0 0 1600 610" role="img" aria-labelledby="title description">
-  <title id="title">Job Harness: your career workspace, any capable agent</title>
-  <desc id="description">An agent or person calls one local Rust engine through CLI or MCP. The engine preserves a separate private workspace. Optional models and browser, email and calendar access belong to the host.</desc>
-  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="m2 1 4 4-4 4" fill="none" stroke="#657080" stroke-width="1.5"/></marker></defs>
-  <style>text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;fill:#20232a}.small{font-size:19px;fill:#737986}.label{font-size:17px;fill:#647082;letter-spacing:1.4px}.name{font-size:31px;font-weight:600}.body{font-size:22px;fill:#58616e}</style>
-  <rect x="1" y="1" width="1598" height="608" rx="12" fill="#fafbfc" stroke="#dfe3e9"/>
-  <path d="M62 62h28v29H62zm9 0V48h10v14M72 72v10m9-10v10" fill="none" stroke="#315eec" stroke-width="2.8" stroke-linejoin="round"/>
-  <text x="111" y="80" font-size="24" font-weight="600">Job Harness</text>
-  <text x="62" y="153" font-size="47" font-weight="500" letter-spacing="-1.5">Your career workspace. Any capable agent.</text>
-  <text x="63" y="197" font-size="23" fill="#647082">Keep the context. Give your agent dependable tools. Pick up where you left off.</text>
-  <path d="M62 234h1476" stroke="#dfe3e9"/>
-  <text x="63" y="280" class="label">YOU + YOUR AGENT</text><text x="63" y="328" class="name">Drive the work</text>
-  <text x="63" y="368" class="body">CLI · MCP · ACP launch</text><text x="63" y="404" class="body">A desktop window when useful</text>
-  <path d="M464 342h81" fill="none" stroke="#657080" stroke-width="2" marker-end="url(#arrow)"/><text x="482" y="324" font-size="15" fill="#737986">calls</text>
-  <path d="M585 270v160" stroke="#315eec" stroke-width="3"/>
-  <text x="610" y="280" class="label">LOCAL RUST ENGINE</text><text x="610" y="328" class="name">Job Harness</text>
-  <text x="610" y="368" class="body">Typed tools · search · batches</text><text x="610" y="404" class="body">Exact packets · receipts · recovery</text>
-  <path d="M1048 342h80" fill="none" stroke="#657080" stroke-width="2" marker-end="url(#arrow)"/><text x="1056" y="324" font-size="15" fill="#737986">keeps</text>
-  <text x="1170" y="280" class="label">PRIVATE WORKSPACE</text><text x="1170" y="328" class="name">Your history</text>
-  <text x="1170" y="368" class="body">Facts · answers · CVs · interviews</text><text x="1170" y="404" class="body">Applications and observed outcomes</text>
-  <path d="M62 472h1476" stroke="#dfe3e9"/>
-  <text x="63" y="516" class="label">YOUR HOST</text><text x="250" y="516" class="body">Browser · mail · calendar</text>
-  <text x="690" y="516" class="body">Optional local / remote models</text><text x="1220" y="516" class="small">Credentials stay here</text>
-  <text x="63" y="565" class="small">One reusable toolkit. One separate workspace per person. No model required.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="530" viewBox="0 0 1360 530" role="img" aria-labelledby="title description">
+  <title id="title">Job Harness: your workspace, any capable agent</title>
+  <desc id="description">A shared toolkit sits beside your separate private career workspace. Answers, CVs, notes and application history stay with you as you change agents.</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#faf8f2"/>
+      <stop offset="1" stop-color="#f2f0e9"/>
+    </linearGradient>
+  </defs>
+  <style>
+    text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;fill:#203246}
+    .muted{fill:#637078}
+    .accent{fill:#4965ae}
+    .label{font-size:15px;font-weight:600;letter-spacing:1.8px}
+    .title{font-size:34px;font-weight:600;letter-spacing:-.4px}
+    .body{font-size:22px}
+  </style>
+  <rect x="1" y="1" width="1358" height="528" rx="24" fill="url(#paper)" stroke="#e0ded6"/>
+  <text x="64" y="83" class="label muted">JOB HARNESS</text>
+  <text x="61" y="164" font-size="64" font-weight="500" letter-spacing="-2">Your workspace.</text>
+  <text x="61" y="241" font-size="64" font-weight="500" letter-spacing="-2">Any capable agent.</text>
+  <text x="65" y="306" font-size="25" class="muted">Your job search. Kept together.</text>
+  <text x="65" y="345" font-size="25" class="muted">Useful tools. Your own connections.</text>
+  <rect x="64" y="403" width="390" height="62" rx="20" fill="#e8edf8" stroke="#d1d9ec"/>
+  <text x="91" y="442" font-size="20">Context · Commands · Workspace</text>
+  <rect x="744" y="78" width="550" height="348" rx="20" fill="#fffdfa" stroke="#d8dcd9"/>
+  <path d="M781 113v99" stroke="#4965ae" stroke-width="3" stroke-linecap="round"/>
+  <text x="803" y="122" class="label accent">SHARED TOOLKIT</text>
+  <text x="803" y="174" class="title">Job Harness</text>
+  <text x="803" y="217" class="body muted">Find evidence. Prepare. Follow through.</text>
+  <path d="M782 248h475" stroke="#e0e3df"/>
+  <text x="784" y="288" class="label">YOUR PRIVATE WORKSPACE</text>
+  <text x="784" y="332" font-size="24">Answers · CVs · Notes · Applications</text>
+  <text x="784" y="375" font-size="21" class="muted">Keep your history. Change your agent.</text>
+  <text x="746" y="474" font-size="20" class="muted">Separate software. Portable private data.</text>
 </svg>

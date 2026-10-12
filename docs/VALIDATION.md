@@ -1,6 +1,8 @@
 # Preview validation
 
-The reusable software and private career workspace remain separate. The preview release is held; a Git tag and successful build artifacts are not a published release.
+The [v0.2.0 private preview](https://github.com/KingPsychopath/job-harness/releases/tag/v0.2.0) contains core, optional desktop and optional local-provider archives for five targets. Every archive is bound to clean source `95a732a4e899cb2e12fa5d9c50be3d00bf3dfe37`. The reusable software and private career workspace remain separate.
+
+**Windows is experimental:** its release executables were cross-built and inspected, not executed on Windows. Earlier native source tests passed, but a later stress test exposed an unresolved intermittent notification stall. Shared core code does not remove that platform-specific limit. See [issue 1](https://github.com/KingPsychopath/job-harness/issues/1).
 
 ## Confirmed evidence
 
@@ -9,9 +11,12 @@ The reusable software and private career workspace remain separate. The preview 
 | v0.2.0 source, `95a732a` | [Six Windows/Linux/macOS CI checks passed](https://github.com/KingPsychopath/job-harness/actions/runs/38206520740) |
 | Native release controller, `fd0618c` | [Six CI checks passed](https://github.com/KingPsychopath/job-harness/actions/runs/38211472120) |
 | Recovery release | [Both Linux builds and macOS ARM passed](https://github.com/KingPsychopath/job-harness/actions/runs/38211482260); publication canceled after additional stress evidence |
-| Uploaded macOS ARM components | Independent checksum, source/tag identity, copied version and archive-content checks passed |
-| Final surface and Notes layout | Browser rendering checked in light and dark; final native visual acceptance remains separate |
-| Protocol stress on macOS | Twenty complete runs passed with an external process deadline |
+| Twelve macOS/Linux release archives | Artifact digests, archive checksums, clean source/tag identity, executable headers and software-only contents checked |
+| macOS ARM release components | Copied core, provider and desktop version checks passed outside the checkout |
+| Final native macOS interface | Light/dark surfaces, Notes layout, card details and minimize/reopen checked in an installed app against fictional data |
+| Protocol stress on macOS | Twenty complete protocol runs passed; a further 512 synthetic workspaces exercised 1,536 canceled streams and 512 native change/teardown cycles, all under external deadlines |
+| Windows x64 release executables | All three components and the alias cross-built with Rust 1.97.1, cargo-xwin 0.23.1, LLVM/LLD 23.1.3 and Microsoft SDK 10.0.26100; PE32+/AMD64 headers and hashes checked; **not executed** |
+| Final local development gates | Core, optional models, desktop, schemas/resources and copied-package checks passed on macOS; the SDK-dependent model comparison remains explicitly ignored without its selected runtime |
 
 The first Linux x86 release attempt exhausted runner disk. The controller now removes unused hosted SDKs and restored target-triple/incremental artifacts, verifies the native host architecture and reuses native output paths. The corrected Linux x86 job passed. The existing v0.2.0 source tag was preserved.
 
@@ -23,10 +28,12 @@ A [bounded diagnostic](https://github.com/KingPsychopath/job-harness/actions/run
 
 The diagnostic now records phase-only checkpoints around watcher construction, stream updates, close and teardown, and captures child process IDs, names and creation times before termination. It never dumps environment variables, command arguments or process memory. No guard, assertion or native notification behavior has been disabled.
 
-The [next diagnostic](https://github.com/KingPsychopath/job-harness/actions/runs/38217165883) was rejected before any runner or step started. GitHub Actions execution requires account-owner action before further Windows validation. The investigation is tracked in [issue 1](https://github.com/KingPsychopath/job-harness/issues/1); account details stay outside this reusable repository.
+The [next diagnostic](https://github.com/KingPsychopath/job-harness/actions/runs/38217165883) was rejected before any runner or step started. No further Actions runs were requested for this preview. Local macOS stress did not reproduce the failure and is not Windows validation. The investigation remains open in [issue 1](https://github.com/KingPsychopath/job-harness/issues/1).
 
 ## Review decisions
 
 Restricted Claude Opus 5.5 high review and independent agents examined the generic code. A proposed blanket reentrant-lock guard was rejected because no nested acquisition was demonstrated and it would break legitimate shared readers; the reviewer withdrew it. A later claim that the release workflow changed `TMP`/`TEMP` was unsupported by the actual workflow and was rejected. Unbounded optional Git probes are a separate candidate, not an established explanation for the notification stall.
 
-The next step is to execute the instrumented Windows diagnostic, identify the stalled phase, correct the demonstrated cause and repeat the bounded test. Production changes require fresh platform checks before a new source tag and private release. Native Windows/Linux GUI acceptance, signing and live local inference remain distinct from compilation and fixture evidence.
+The next Windows step is to execute the instrumented diagnostic, identify the stalled phase, correct the demonstrated cause and repeat the bounded test. Production changes require fresh platform checks before a new source tag. Native Windows/Linux GUI acceptance and platform signing remain unverified; local inference measurements are recorded separately in [Models](MODELS.md).
+
+Release assets include `SHA256SUMS` and `PLATFORM_VALIDATION.json`, which distinguish native builds, cross-builds and actual execution. None contains career data, credentials, model weights or proprietary runtime downloads. Current documentation and screenshots can advance independently of the immutable v0.2.0 source tag.

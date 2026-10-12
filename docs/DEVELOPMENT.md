@@ -53,4 +53,6 @@ cargo run -p job-harness-dev -- release-stage \
 
 CI actions are pinned and normal jobs have read-only repository access. Publication receives only the permission needed for private release assets. No candidate bundle, model weight, secret or private profile enters an artifact. Public Cargo/npm/Homebrew publication and repository visibility changes remain owner decisions.
 
+An owner-approved manual preview can reuse verified native artifacts and clean-source local builds when Actions cannot run. Preserve the existing tag, verify every archive's source identity and checksum, and publish a per-target validation manifest alongside the checksums. Cross-built binaries must say that they were not executed; known runtime defects must remain visible. This does not replace native platform checks for a stable release. See the [v0.2.0 validation record](VALIDATION.md).
+
 Keep local tests, remote CI, installed-client execution and live provider evidence distinct in the handoff.

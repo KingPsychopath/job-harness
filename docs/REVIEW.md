@@ -24,6 +24,8 @@ Requested local adapters were retained and measured rather than deferred. Distin
 
 Models retrieve or suggest; they do not certify qualifications, archive mail or authorize submission. More features are useful only when they remove a real manual step. Published model comparisons remain distinct from a small local trial.
 
+The product documentation pass restored the earlier header and graphic, replaced the homepage's command inventory with five agent requests, and moved implementation detail into focused guides. Restricted Opus review corrected SVG colour precedence and simplified preview wording; availability was then checked against the published release. Application examples retain the user's bounded batch scope and ask for missing facts or required confirmations. They do not impose a separate approval for every role when the host already has authority for the batch.
+
 ## Verification boundaries
 
 | Evidence | What it establishes |
@@ -41,4 +43,4 @@ Synthetic mail/ATS tests do not establish live provider correctness. Small model
 
 Review prompts and raw local test outputs are ignored development artifacts. Durable contracts, meaningful regressions and source links stay in the reusable repository. No private ledger history or model weights belong in a software release.
 
-The current preview is held after a bounded Windows stress run reproduced an intermittent notification-test stall. [Validation status and next proof](VALIDATION.md) distinguish successful builds from the unresolved diagnostic and publication gate.
+The private preview includes Windows x64 as an experimental cross-build, with no Windows execution claim. A bounded native Windows stress run reproduced an intermittent notification-test stall; the issue remains open. Final native macOS interface checks and 512 additional local notification workspaces passed. [Validation status](VALIDATION.md) distinguishes release provenance, executed checks and remaining platform limits.

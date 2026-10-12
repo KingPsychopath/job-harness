@@ -14,11 +14,15 @@ Get your platform archive from [GitHub Releases](https://github.com/KingPsychopa
 | Linux ARM64 | `aarch64-unknown-linux-gnu` |
 | Windows x86-64 | `x86_64-pc-windows-msvc` |
 
+The [v0.2.0 preview](https://github.com/KingPsychopath/job-harness/releases/tag/v0.2.0) includes all five targets. **Windows packages are experimental cross-builds and have not been executed on Windows.** An intermittent notification-test stall remains under investigation in [issue 1](https://github.com/KingPsychopath/job-harness/issues/1). Read [platform validation](VALIDATION.md) before choosing a preview build.
+
 Download the matching archive and `SHA256SUMS`. On macOS, compare `shasum -a 256 ARCHIVE`; on Linux, `sha256sum ARCHIVE`; on Windows, `Get-FileHash ARCHIVE -Algorithm SHA256`. The digest must match the archive's exact entry. SHA256 detects changed bytes; it does not replace trust in the repository or signing.
 
 Extract the archive and put both `job-harness` and `jh` in your user bin directory, then add that directory to PATH. Windows executables have `.exe`. `BUILD.json` records the source commit, target and build toolchain. `jh --version` confirms which installation you are using.
 
 The optional desktop archive is separate: on macOS, open or move **Job Harness.app** into Applications; on Windows/Linux, launch its native executable after installing the platform webview requirements. It opens your configured workspace or offers an existing-folder chooser. You do not need to enter commands in the GUI. The local provider archive is another optional component; its runtime/weight lifecycle is described below.
+
+Windows executables require the Microsoft Visual C++ x64 runtime; the desktop also requires WebView2. Use Microsoft's [supported redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist) and [WebView2 runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/). Release ZIPs do not bundle those separately licensed dependencies.
 
 These preview archives are **unsigned**. macOS Gatekeeper and Windows SmartScreen may warn about them. Review provenance and your platform's normal explicit application approval; do not disable global security controls. Public package registries, signed installers and auto-update are not enabled.
 
