@@ -1,10 +1,28 @@
-name: Feature request
-description: Describe a useful workflow and its concrete outcome.
+name: Change proposal
+description: Discuss a workflow, feature or maintenance change before substantial implementation.
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Search existing issues and PRs first. Substantial changes and new capabilities need a maintainer-confirmed scope here before implementation. Describe one workflow or maintenance problem using fictional examples. See CONTRIBUTING.md for contribution scope.
   - type: textarea
     id: workflow
     attributes:
-      label: Workflow and desired behavior
-      description: Describe the problem and relevant scope using generic examples.
+      label: Problem and current behavior
+      description: Describe one workflow or maintenance problem, its impact and any current workaround. Include a fictional example when useful.
     validations:
       required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Desired outcome and proposed scope
+      description: Describe the smallest useful improvement. Mention any new dependency, host access, external action, schema or storage change. Images or short clips may help explain a UI proposal; label mockups.
+    validations:
+      required: true
+  - type: checkboxes
+    id: review
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and PRs and described one concrete problem without private data.
+          required: true

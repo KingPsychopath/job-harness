@@ -1,22 +1,35 @@
 name: Bug report
-description: Report a reproducible workflow or tooling problem using synthetic data.
+description: Report one reproducible problem using fictional data.
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Search existing issues and PRs first. Add evidence to an existing report when it covers the same problem. See CONTRIBUTING.md for scope and SECURITY.md for private security reporting. Keep candidate records, inbox extracts, credentials and session tokens out of this report and its attachments.
   - type: textarea
     id: behavior
     attributes:
       label: Expected and actual behavior
-      description: Include the intended user outcome. Do not attach candidate data, private bundles or credentials.
+      description: What were you trying to do, what did you expect, and what happened? Include the error code or recovery state when relevant.
     validations:
       required: true
   - type: textarea
     id: reproduce
     attributes:
       label: Reproduction and versions
-      description: Include jh --version, OS/CPU, the exact command or tool and a minimal fictional fixture. Add the error code and recovery state when relevant.
+      description: Include the CLI version (jh --version) or desktop version, OS/CPU, command/tool or UI steps, and the smallest fictional fixture. If a safe fixture is difficult, describe field structure, encoding and sizes without private values. State whether you reproduced this locally, with a mock or against a live provider.
     validations:
       required: true
   - type: textarea
-    id: component
+    id: evidence
     attributes:
-      label: Optional component or host
-      description: Name the agent/protocol/model component only if relevant. Do not include keys or live account information.
+      label: Screenshots, video or focused output
+      description: For UI problems, show the relevant screen; add a short recording for interactions when practical. Keep written steps above. Redact account identifiers, user paths, tokens and private data, and label mocks. Attach only the relevant sanitized output.
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and PRs; this report adds a distinct problem or reproduction.
+          required: true
+        - label: The report and attachments contain no private candidate data, credentials or session tokens.
+          required: true

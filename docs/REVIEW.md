@@ -26,6 +26,8 @@ Models retrieve or suggest; they do not certify qualifications, archive mail or 
 
 The product documentation pass restored the earlier header and graphic, replaced the homepage's command inventory with five agent requests, and moved implementation detail into focused guides. Restricted Opus review corrected SVG colour precedence and simplified preview wording; availability was then checked against the published release. Application examples retain the user's bounded batch scope and ask for missing facts or required confirmations. They do not impose a separate approval for every role when the host already has authority for the batch.
 
+Contribution review clarified issue-first substantial work, direct small fixes, practical fictional UI evidence and explicit closure rules for spam or unsupported patches. A blanket exclusion of autonomous agents was rejected: the submitting account remains responsible for understanding, reviewing and verifying every change, regardless of the tool used to produce it. Templates implement that common standard without claiming automatic spam detection.
+
 ## Verification boundaries
 
 | Evidence | What it establishes |
