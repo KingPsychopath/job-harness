@@ -933,17 +933,28 @@ mod tests {
 
     #[tokio::test]
     async fn board_moves_need_current_sources_and_cannot_invent_submission_or_materials() {
+        // Phase-only diagnostics: no workspace paths, source text or session values.
+        // A process deadline must bound a blocked spawn_blocking task; a Tokio
+        // timer alone cannot stop it or prevent runtime shutdown from waiting.
+        let phase = |name: &str| eprintln!("[board-move-test] {name}");
+        phase("workspace.initialize.begin");
         let temp = tempfile::tempdir().unwrap();
         harness_core::workspace::initialize(temp.path()).unwrap();
+        phase("workspace.initialize.complete");
         let path = temp.path().join("applications/example.md");
         std::fs::write(&path, "# Example — Engineer\n\n<!-- tracking\n{\"company\":\"Example\",\"stage\":\"saved\",\"checked\":\"2026-10-12T09:00:00Z\",\"vacancy_url\":\"https://example.com/job\",\"next_action\":\"Review role\"}\n-->\n").unwrap();
+        phase("dashboard.create.begin");
         let state = DashboardState::with_policy(temp.path(), 3210, true).unwrap();
+        phase("dashboard.create.complete");
+        phase("source.read.begin");
         let source = state
             .engine
             .call("read_record", &json!({"path":"applications/example.md"}));
+        phase("source.read.complete");
         let cookie = format!("{}={}", state.cookie_name, state.session);
         let app = router(state.clone());
         let request = json!({"record":"applications/example.md","tracking":{"stage":"applied","next_action":"Wait for response"},"board_move":true,"reason":"Dragged to a later stage","expected_record_sha256":source["data"]["sha256"],"idempotency_key":"board-applied"});
+        phase("post.applied.begin");
         let denied = reviewed_post(
             app.clone(),
             &cookie,
@@ -952,26 +963,31 @@ mod tests {
             request.clone(),
         )
         .await;
+        phase("post.applied.complete");
         assert_eq!(denied["error"]["code"], "recorded_evidence_required");
         let mut prepared = request.clone();
         prepared["tracking"]["stage"] = json!("prepared");
+        phase("post.prepared.begin");
+        let prepared_denied =
+            reviewed_post(app.clone(), &cookie, &state.csrf, "/api/tracking", prepared).await;
+        phase("post.prepared.complete");
         assert_eq!(
-            reviewed_post(app.clone(), &cookie, &state.csrf, "/api/tracking", prepared).await["error"]
-                ["code"],
+            prepared_denied["error"]["code"],
             "recorded_evidence_required"
         );
         let mut stale = request.clone();
         stale["tracking"]["stage"] = json!("screening");
         stale["expected_record_sha256"] = json!("0".repeat(64));
-        assert_eq!(
-            reviewed_post(app.clone(), &cookie, &state.csrf, "/api/tracking", stale).await["error"]
-                ["code"],
-            "stale_record"
-        );
+        phase("post.stale.begin");
+        let stale_denied =
+            reviewed_post(app.clone(), &cookie, &state.csrf, "/api/tracking", stale).await;
+        phase("post.stale.complete");
+        assert_eq!(stale_denied["error"]["code"], "stale_record");
         let mut reviewed = request;
         reviewed["tracking"]["stage"] = json!("screening");
         reviewed["reason"] = json!("The user observed a screening request in this synthetic test.");
         reviewed["idempotency_key"] = json!("board-screening");
+        phase("post.reviewed.begin");
         let applied = reviewed_post(
             app.clone(),
             &cookie,
@@ -980,14 +996,23 @@ mod tests {
             reviewed.clone(),
         )
         .await;
+        phase("post.reviewed.complete");
         assert_eq!(applied["ok"], true, "{applied}");
+        phase("post.replay.begin");
         let replay = reviewed_post(app, &cookie, &state.csrf, "/api/tracking", reviewed).await;
+        phase("post.replay.complete");
         assert_eq!(replay["ok"], true, "{replay}");
-        assert_eq!(
-            state.engine.call("bootstrap", &json!({}))["data"]["health"]["unfinished_run_count"],
-            0
-        );
+        phase("bootstrap.begin");
+        let bootstrap = state.engine.call("bootstrap", &json!({}));
+        phase("bootstrap.complete");
+        assert_eq!(bootstrap["data"]["health"]["unfinished_run_count"], 0);
         assert!(std::fs::read_to_string(path).unwrap().contains("screening"));
+        phase("dashboard.drop.begin");
+        drop(state);
+        phase("dashboard.drop.complete");
+        phase("workspace.close.begin");
+        temp.close().unwrap();
+        phase("workspace.close.complete");
     }
 
     #[tokio::test]

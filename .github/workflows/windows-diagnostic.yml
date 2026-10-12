@@ -1,0 +1,56 @@
+name: Windows board diagnostic
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    if: github.event.repository.private == true
+    runs-on: windows-2025
+    timeout-minutes: 20
+    env:
+      CARGO_TERM_COLOR: never
+      CARGO_INCREMENTAL: '0'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install the pinned Rust toolchain
+        run: rustup toolchain install 1.97.1 --profile minimal
+      - uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: diagnostic-${{ github.run_id }}
+          restore-keys: |
+            rust-release-native-Windows-X64-1.97.1-
+            rust-ci-Windows-X64-1.97.1-
+      - name: Compile protocol test executable
+        shell: pwsh
+        run: |
+          cargo +1.97.1 test -p job-harness-protocol --lib --locked --no-run --message-format json | Set-Content test-artifacts.jsonl
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Exercise board moves with a hard process deadline
+        shell: pwsh
+        run: |
+          $testArtifacts = Get-Content test-artifacts.jsonl | ForEach-Object { $_ | ConvertFrom-Json }
+          $testExecutable = ($testArtifacts | Where-Object { $_.reason -eq 'compiler-artifact' -and $_.profile.test -and $_.executable } | Select-Object -Last 1).executable
+          if (-not $testExecutable) { throw 'Protocol test executable was not found' }
+          $boardTest = 'dashboard::tests::board_moves_need_current_sources_and_cannot_invent_submission_or_materials'
+          for ($iteration = 1; $iteration -le 20; $iteration++) {
+            $testArgs = if ($iteration -le 5) { @($boardTest, '--exact', '--nocapture') } else { @('--nocapture', '--test-threads=4') }
+            $outputPath = Join-Path $PWD "test-$iteration.stdout"
+            $errorPath = Join-Path $PWD "test-$iteration.stderr"
+            Write-Output "Diagnostic iteration $iteration"
+            $testProcess = Start-Process -FilePath $testExecutable -ArgumentList $testArgs -PassThru -NoNewWindow -RedirectStandardOutput $outputPath -RedirectStandardError $errorPath
+            if (-not $testProcess.WaitForExit(20000)) {
+              taskkill /T /F /PID $testProcess.Id | Out-Null
+              Get-Content $outputPath, $errorPath
+              throw "Protocol test exceeded its 20-second process deadline in iteration $iteration"
+            }
+            Get-Content $outputPath, $errorPath
+            if ($testProcess.ExitCode -ne 0) { throw "Protocol test failed in iteration $iteration" }
+          }
