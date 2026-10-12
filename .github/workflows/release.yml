@@ -21,7 +21,8 @@ defaults:
 jobs:
   build:
     if: github.event.repository.private == true
-    timeout-minutes: 65
+    # Each platform validates and links three separate native components.
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:

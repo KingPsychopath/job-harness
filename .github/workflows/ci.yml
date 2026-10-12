@@ -17,7 +17,8 @@ defaults:
     shell: bash
 jobs:
   verify:
-    timeout-minutes: 35
+    # Cold Windows builds compile debug, provider and optimized CLI profiles.
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
