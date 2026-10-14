@@ -70,7 +70,7 @@ mocked release-preflight cases passed. No remote workflow was run for this chang
 | Native macOS window | Fictional read-only and reviewed note/tracker journeys, host-owned review menu, clipboard/navigation boundaries and current UI captures |
 | Real local model runs | Released Gemma/Laya and optional Kev runtime execution, source-anchored retrieval, typed decisions and scoped latency/memory measurements |
 | Separate private migration check | Protected career files remain unchanged; a real full backup restores exact retained bytes and 218 records |
-| Exact-head GitHub CI | Remote Windows/Linux/macOS verification; inspect the latest [workflow run](https://github.com/KingPsychopath/job-harness/actions/workflows/ci.yml) for its actual result |
+| Exact-head GitHub CI | Remote Windows/Linux/macOS verification; inspect the latest [workflow run](https://github.com/machineyearningengineer/job-harness/actions/workflows/ci.yml) for its actual result |
 
 Synthetic mail/ATS tests do not establish live provider correctness. Small model probes do not establish classification superiority. Audio transcription has an HTTP contract fixture, not a verified live recorder/model. Shared multi-host coordination, public registries and hosted deployment remain outside this preview's evidence.
 

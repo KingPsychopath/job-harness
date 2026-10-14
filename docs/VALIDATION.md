@@ -1,16 +1,16 @@
 # Preview validation
 
-The [v0.2.0 private preview](https://github.com/KingPsychopath/job-harness/releases/tag/v0.2.0) contains core, optional desktop and optional local-provider archives for five targets. Every archive is bound to clean source `95a732a4e899cb2e12fa5d9c50be3d00bf3dfe37`. The reusable software and private career workspace remain separate.
+The [v0.2.0 private preview](https://github.com/machineyearningengineer/job-harness/releases/tag/v0.2.0) contains core, optional desktop and optional local-provider archives for five targets. Every archive is bound to clean source `95a732a4e899cb2e12fa5d9c50be3d00bf3dfe37`. The reusable software and private career workspace remain separate.
 
-**Windows is experimental:** its release executables were cross-built and inspected, not executed on Windows. Earlier native source tests passed, but a later stress test exposed an unresolved intermittent notification stall. Shared core code does not remove that platform-specific limit. See [issue 1](https://github.com/KingPsychopath/job-harness/issues/1).
+**Windows is experimental:** its release executables were cross-built and inspected, not executed on Windows. Earlier native source tests passed, but a later stress test exposed an unresolved intermittent notification stall. Shared core code does not remove that platform-specific limit. See [issue 1](https://github.com/machineyearningengineer/job-harness/issues/1).
 
 ## Confirmed evidence
 
 | Check | Result |
 |---|---|
-| v0.2.0 source, `95a732a` | [Six Windows/Linux/macOS CI checks passed](https://github.com/KingPsychopath/job-harness/actions/runs/38206520740) |
-| Native release controller, `fd0618c` | [Six CI checks passed](https://github.com/KingPsychopath/job-harness/actions/runs/38211472120) |
-| Recovery release | [Both Linux builds and macOS ARM passed](https://github.com/KingPsychopath/job-harness/actions/runs/38211482260); publication canceled after additional stress evidence |
+| v0.2.0 source, `95a732a` | [Six Windows/Linux/macOS CI checks passed](https://github.com/machineyearningengineer/job-harness/actions/runs/38206520740) |
+| Native release controller, `fd0618c` | [Six CI checks passed](https://github.com/machineyearningengineer/job-harness/actions/runs/38211472120) |
+| Recovery release | [Both Linux builds and macOS ARM passed](https://github.com/machineyearningengineer/job-harness/actions/runs/38211482260); publication canceled after additional stress evidence |
 | Twelve macOS/Linux release archives | Artifact digests, archive checksums, clean source/tag identity, executable headers and software-only contents checked |
 | macOS ARM release components | Copied core, provider and desktop version checks passed outside the checkout |
 | Final native macOS interface | Light/dark surfaces, Notes layout, card details and minimize/reopen checked in an installed app against fictional data |
@@ -24,11 +24,11 @@ The first Linux x86 release attempt exhausted runner disk. The controller now re
 
 One first-release Windows run stalled in the board-move test for roughly 40 minutes before cancellation. Ordinary Windows CI and the recovery release's core tests passed, so those successes alone do not establish freedom from intermittent stalls.
 
-A [bounded diagnostic](https://github.com/KingPsychopath/job-harness/actions/runs/38215490577) completed eighteen iterations, then exceeded its 20-second deadline on iteration nineteen. All board phases and the other eighteen protocol tests completed; the unfinished test was `notifications_require_tab_nonce_and_stream_only_current_hints`.
+A [bounded diagnostic](https://github.com/machineyearningengineer/job-harness/actions/runs/38215490577) completed eighteen iterations, then exceeded its 20-second deadline on iteration nineteen. All board phases and the other eighteen protocol tests completed; the unfinished test was `notifications_require_tab_nonce_and_stream_only_current_hints`.
 
 The diagnostic now records phase-only checkpoints around watcher construction, stream updates, close and teardown, and captures child process IDs, names and creation times before termination. It never dumps environment variables, command arguments or process memory. No guard, assertion or native notification behavior has been disabled.
 
-The [next diagnostic](https://github.com/KingPsychopath/job-harness/actions/runs/38217165883) was rejected before any runner or step started. No further Actions runs were requested for this preview. Local macOS stress did not reproduce the failure and is not Windows validation. The investigation remains open in [issue 1](https://github.com/KingPsychopath/job-harness/issues/1).
+The [next diagnostic](https://github.com/machineyearningengineer/job-harness/actions/runs/38217165883) was rejected before any runner or step started. No further Actions runs were requested for this preview. Local macOS stress did not reproduce the failure and is not Windows validation. The investigation remains open in [issue 1](https://github.com/machineyearningengineer/job-harness/issues/1).
 
 ## Review decisions
 

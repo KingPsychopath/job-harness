@@ -1,7 +1,7 @@
 "use strict";
 (() => {
   let snapshot = null, snapshotKey = null, activeAction = null;
-  const releases = "https://github.com/KingPsychopath/job-harness/releases";
+  const releases = "https://github.com/machineyearningengineer/job-harness/releases";
   const labels = {
     available: ["Available", "good"], running: ["Running", "good"],
     not_found: ["Not installed", "neutral"], probe_failed: ["Check failed", "bad"],

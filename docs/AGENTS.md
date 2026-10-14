@@ -45,7 +45,7 @@ CLI calls and MCP calls use the same engine and version 2 result: check `ok`, th
 Cloning this repository gives the agent the toolkit source and reusable guidance. It does **not** create a personal career workspace or load your career history. For the easiest installation, use the [core release](INSTALL.md#download-the-core-no-compiler-required). To build the checkout, install Rust and the platform C toolchain, then run:
 
 ```sh
-gh repo clone KingPsychopath/job-harness
+gh repo clone machineyearningengineer/job-harness
 cd job-harness
 cargo build --release --bins --locked
 ./target/release/jh setup --workspace "$HOME/Career/workspace" --json

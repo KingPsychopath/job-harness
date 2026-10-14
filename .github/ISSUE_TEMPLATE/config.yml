@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Contribution guide
-    url: https://github.com/KingPsychopath/job-harness/blob/main/CONTRIBUTING.md
+    url: https://github.com/machineyearningengineer/job-harness/blob/main/CONTRIBUTING.md
     about: Check when to open an issue, when a PR is welcome and what evidence to include.
   - name: Private security reporting
-    url: https://github.com/KingPsychopath/job-harness/blob/main/SECURITY.md
+    url: https://github.com/machineyearningengineer/job-harness/blob/main/SECURITY.md
     about: Read the private reporting route before sharing sensitive vulnerability details.

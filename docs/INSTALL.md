@@ -12,7 +12,7 @@ Models, their runtimes and Typst are optional. [Connect your agent](AGENTS.md) Â
 
 ## Download the core: no compiler required
 
-Get your archive from [GitHub Releases](https://github.com/KingPsychopath/job-harness/releases). This repository and its releases are private; use your existing GitHub access. Choose the **`job-harness-vVERSION-TARGET`** archive for the core. Archives prefixed `job-harness-desktop` and `job-harness-local` are separate optional components.
+Get your archive from [GitHub Releases](https://github.com/machineyearningengineer/job-harness/releases). This repository and its releases are private; use your existing GitHub access. Choose the **`job-harness-vVERSION-TARGET`** archive for the core. Archives prefixed `job-harness-desktop` and `job-harness-local` are separate optional components.
 
 | System | Target |
 |---|---|
@@ -22,7 +22,7 @@ Get your archive from [GitHub Releases](https://github.com/KingPsychopath/job-ha
 | Linux ARM64 | `aarch64-unknown-linux-gnu` |
 | Windows x86-64 | `x86_64-pc-windows-msvc` |
 
-The [v0.2.0 preview](https://github.com/KingPsychopath/job-harness/releases/tag/v0.2.0) includes all five targets. **Windows packages are experimental cross-builds and have not been executed on Windows.** An intermittent notification-test stall is tracked in [issue 1](https://github.com/KingPsychopath/job-harness/issues/1). See [platform validation](VALIDATION.md).
+The [v0.2.0 preview](https://github.com/machineyearningengineer/job-harness/releases/tag/v0.2.0) includes all five targets. **Windows packages are experimental cross-builds and have not been executed on Windows.** An intermittent notification-test stall is tracked in [issue 1](https://github.com/machineyearningengineer/job-harness/issues/1). See [platform validation](VALIDATION.md).
 
 1. Download the matching archive and `SHA256SUMS`.
 2. Compare its exact entry with `shasum -a 256 ARCHIVE` on macOS, `sha256sum ARCHIVE` on Linux, or `Get-FileHash ARCHIVE -Algorithm SHA256` in PowerShell. SHA256 checks whether bytes changed; it does not replace trust in the publisher or signing.
@@ -98,7 +98,7 @@ On macOS, move **Job Harness.app** from the desktop archive into Applications an
 Release users can skip this section. Source builds need [Rust](https://rustup.rs), the platform C toolchain and your GitHub access. The project pins Rust 1.97.1; core minimum Rust is 1.88. Optional desktop compilation has separate requirements.
 
 ```sh
-gh repo clone KingPsychopath/job-harness
+gh repo clone machineyearningengineer/job-harness
 cd job-harness
 cargo build --release --bins --locked
 ./target/release/jh setup --workspace "$HOME/Career/workspace" --json

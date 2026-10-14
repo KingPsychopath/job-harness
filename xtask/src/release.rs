@@ -177,7 +177,7 @@ fn macos_app(version: &str, binary: Vec<u8>, icon: Vec<u8>) -> Result<Vec<(Strin
     ])
 }
 fn installation(component: Component, windows: bool, macos: bool) -> String {
-    let documentation = "Documentation: https://github.com/KingPsychopath/job-harness";
+    let documentation = "Documentation: https://github.com/machineyearningengineer/job-harness";
     match component {
         Component::Core => {
             let directory = if windows {

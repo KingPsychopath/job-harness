@@ -9,7 +9,7 @@ edition = "2024"
 rust-version = "1.88"
 license = "MIT"
 authors = ["Machineyearn"]
-repository = "https://github.com/KingPsychopath/job-harness"
+repository = "https://github.com/machineyearningengineer/job-harness"
 publish = false
 
 [workspace.dependencies]

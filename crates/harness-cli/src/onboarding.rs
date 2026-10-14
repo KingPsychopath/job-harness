@@ -30,7 +30,7 @@ pub fn catalog() -> Value {
             {"id":"desktop","name":"Use a desktop window","purpose":"Open the same local workspace in an optional native window","install":"Separate desktop package and platform webview dependencies; CLI stays independent","access":"Local loopback only; external connector access remains in your host","next":"See apps/desktop/README.md"}
         ],
         "policy":"Selecting a capability does not download software, contact a provider or grant an external action.",
-        "details":"https://github.com/KingPsychopath/job-harness/blob/main/docs/INSTALL.md"
+        "details":"https://github.com/machineyearningengineer/job-harness/blob/main/docs/INSTALL.md"
     })
 }
 
